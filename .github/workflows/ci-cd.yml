@@ -8,6 +8,12 @@ on:
   release:
     types: [ published ]
 
+# Add permissions
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -120,9 +126,10 @@ jobs:
         output: 'trivy-results.sarif'
     
     - name: Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: 'trivy-results.sarif'
+        category: 'trivy-scan'
 
   # Build and push Docker images
   build:

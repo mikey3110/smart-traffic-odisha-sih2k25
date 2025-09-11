@@ -1,3 +1,1 @@
-"""
-Test module for Smart Traffic Management System
-"""
+# Empty file to make tests a package
