@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+
+    <trafficLight id="center_junction" programID="adaptive" offset="0">
+        <phase duration="30" state="GGrrrrGGrrrr"/>
+        <phase duration="3" state="yyrrrryyrrrr"/>
+        <phase duration="1" state="rrrrrrrrrrrr"/>
+        <phase duration="30" state="rrrrGGrrrrGG"/>
+        <phase duration="3" state="rrrryyrrrryy"/>
+        <phase duration="1" state="rrrrrrrrrrrr"/>
+    </trafficLight>
+
+    <inductionLoop id="detector_north" lane="north_approach_0" pos="50" freq="60" file="detectors.xml"/>
+    <inductionLoop id="detector_south" lane="south_approach_0" pos="50" freq="60" file="detectors.xml"/>
+    <inductionLoop id="detector_east" lane="east_approach_0" pos="50" freq="60" file="detectors.xml"/>
+    <inductionLoop id="detector_west" lane="west_approach_0" pos="50" freq="60" file="detectors.xml"/>
+
+    <variableSpeedSign id="vss_center" lanes="north_approach_0 south_approach_0 east_approach_0 west_approach_0" file="vss.xml"/>
+
+    <rerouter id="rerouter_center" edges="north_approach south_approach east_approach west_approach" file="rerouter.xml"/>
+
+</additional>

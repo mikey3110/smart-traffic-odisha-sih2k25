@@ -1,0 +1,104 @@
+# ML Traffic Signal Optimization System Requirements
+# Core dependencies for machine learning and traffic optimization
+
+# Core ML Libraries
+numpy>=1.21.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+scipy>=1.7.0
+
+# Deep Learning (Optional - for LSTM models)
+tensorflow>=2.8.0
+torch>=1.11.0
+torchvision>=0.12.0
+
+# Time Series Analysis
+statsmodels>=0.13.0
+prophet>=1.0.0
+
+# Data Processing and Analysis
+matplotlib>=3.5.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# API and Web Communication
+aiohttp>=3.8.0
+requests>=2.28.0
+httpx>=0.23.0
+
+# Async Programming
+asyncio-mqtt>=0.11.0
+aioredis>=2.0.0
+
+# Database and Caching
+redis>=4.3.0
+psycopg2-binary>=2.9.0
+sqlalchemy>=1.4.0
+
+# Configuration and Environment
+pydantic>=1.10.0
+python-dotenv>=0.19.0
+pyyaml>=6.0
+
+# Monitoring and Logging
+psutil>=5.9.0
+loguru>=0.6.0
+structlog>=22.1.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.19.0
+pytest-cov>=3.0.0
+pytest-mock>=3.7.0
+pytest-xdist>=2.5.0
+
+# Code Quality
+black>=22.0.0
+flake8>=4.0.0
+mypy>=0.950
+isort>=5.10.0
+
+# Documentation
+mkdocs>=1.3.0
+mkdocs-material>=8.0.0
+mkdocs-mermaid2-plugin>=0.6.0
+
+# Performance and Optimization
+numba>=0.56.0
+cython>=0.29.0
+joblib>=1.1.0
+
+# Data Validation
+cerberus>=1.3.0
+marshmallow>=3.17.0
+
+# Statistical Analysis
+pingouin>=0.5.0
+lifelines>=0.27.0
+
+# Visualization and Reporting
+bokeh>=2.4.0
+dash>=2.5.0
+streamlit>=1.10.0
+
+# Utilities
+tqdm>=4.64.0
+click>=8.0.0
+rich>=12.0.0
+typer>=0.6.0
+
+# Development Tools
+jupyter>=1.0.0
+ipykernel>=6.15.0
+notebook>=6.4.0
+
+# Optional GPU Support
+# tensorflow-gpu>=2.8.0  # Uncomment for GPU support
+# torch-gpu>=1.11.0      # Uncomment for GPU support
+
+# Optional Advanced Features
+# ray>=1.12.0            # For distributed computing
+# dask>=2022.5.0         # For parallel processing
+# optuna>=3.0.0          # For hyperparameter optimization
+# mlflow>=1.28.0         # For ML experiment tracking
+# wandb>=0.12.0          # For experiment tracking and visualization

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+    <vType id="passenger" accel="2.6" decel="4.5" sigma="0.5" length="4.0" maxSpeed="50.0" color="1,1,0"/>
+    <vType id="truck" accel="1.5" decel="3.0" sigma="0.5" length="12.0" maxSpeed="40.0" color="0,1,1"/>
+    <vType id="bus" accel="1.8" decel="3.5" sigma="0.5" length="15.0" maxSpeed="35.0" color="1,0,1"/>
+    <vType id="motorcycle" accel="3.0" decel="6.0" sigma="0.3" length="2.0" maxSpeed="60.0" color="0,1,0"/>
+
+    <route id="north_to_south" edges="north_approach center_junction south_exit"/>
+    <route id="north_to_east" edges="north_approach center_junction east_exit"/>
+    <route id="north_to_west" edges="north_approach center_junction west_exit"/>
+
+    <route id="south_to_north" edges="south_approach center_junction north_exit"/>
+    <route id="south_to_east" edges="south_approach center_junction east_exit"/>
+    <route id="south_to_west" edges="south_approach center_junction west_exit"/>
+
+    <route id="east_to_west" edges="east_approach center_junction west_exit"/>
+    <route id="east_to_north" edges="east_approach center_junction north_exit"/>
+    <route id="east_to_south" edges="east_approach center_junction south_exit"/>
+
+    <route id="west_to_east" edges="west_approach center_junction east_exit"/>
+    <route id="west_to_north" edges="west_approach center_junction north_exit"/>
+    <route id="west_to_south" edges="west_approach center_junction south_exit"/>
+
+    <flow id="flow_north_to_south" type="passenger" route="north_to_south" begin="0" end="3600" vehsPerHour="100" color="1,1,0"/>
+    <flow id="flow_north_to_east" type="passenger" route="north_to_east" begin="0" end="3600" vehsPerHour="50" color="1,1,0"/>
+    <flow id="flow_north_to_west" type="passenger" route="north_to_west" begin="0" end="3600" vehsPerHour="30" color="1,1,0"/>
+
+    <flow id="flow_south_to_north" type="passenger" route="south_to_north" begin="0" end="3600" vehsPerHour="80" color="1,1,0"/>
+    <flow id="flow_south_to_east" type="passenger" route="south_to_east" begin="0" end="3600" vehsPerHour="40" color="1,1,0"/>
+    <flow id="flow_south_to_west" type="passenger" route="south_to_west" begin="0" end="3600" vehsPerHour="25" color="1,1,0"/>
+
+    <flow id="flow_east_to_west" type="passenger" route="east_to_west" begin="0" end="3600" vehsPerHour="90" color="1,1,0"/>
+    <flow id="flow_east_to_north" type="passenger" route="east_to_north" begin="0" end="3600" vehsPerHour="45" color="1,1,0"/>
+    <flow id="flow_east_to_south" type="passenger" route="east_to_south" begin="0" end="3600" vehsPerHour="35" color="1,1,0"/>
+
+    <flow id="flow_west_to_east" type="passenger" route="west_to_east" begin="0" end="3600" vehsPerHour="85" color="1,1,0"/>
+    <flow id="flow_west_to_north" type="passenger" route="west_to_north" begin="0" end="3600" vehsPerHour="42" color="1,1,0"/>
+    <flow id="flow_west_to_south" type="passenger" route="west_to_south" begin="0" end="3600" vehsPerHour="32" color="1,1,0"/>
+
+    <!-- Truck flows -->
+    <flow id="truck_flow_north_to_south" type="truck" route="north_to_south" begin="0" end="3600" vehsPerHour="20" color="0,1,1"/>
+    <flow id="truck_flow_south_to_north" type="truck" route="south_to_north" begin="0" end="3600" vehsPerHour="18" color="0,1,1"/>
+    <flow id="truck_flow_east_to_west" type="truck" route="east_to_west" begin="0" end="3600" vehsPerHour="15" color="0,1,1"/>
+    <flow id="truck_flow_west_to_east" type="truck" route="west_to_east" begin="0" end="3600" vehsPerHour="17" color="0,1,1"/>
+
+    <!-- Bus flows -->
+    <flow id="bus_flow_north_to_south" type="bus" route="north_to_south" begin="0" end="3600" vehsPerHour="5" color="1,0,1"/>
+    <flow id="bus_flow_south_to_north" type="bus" route="south_to_north" begin="0" end="3600" vehsPerHour="5" color="1,0,1"/>
+    <flow id="bus_flow_east_to_west" type="bus" route="east_to_west" begin="0" end="3600" vehsPerHour="4" color="1,0,1"/>
+    <flow id="bus_flow_west_to_east" type="bus" route="west_to_east" begin="0" end="3600" vehsPerHour="4" color="1,0,1"/>
+
+    <!-- Motorcycle flows -->
+    <flow id="motorcycle_flow_north_to_south" type="motorcycle" route="north_to_south" begin="0" end="3600" vehsPerHour="10" color="0,1,0"/>
+    <flow id="motorcycle_flow_south_to_north" type="motorcycle" route="south_to_north" begin="0" end="3600" vehsPerHour="8" color="0,1,0"/>
+    <flow id="motorcycle_flow_east_to_west" type="motorcycle" route="east_to_west" begin="0" end="3600" vehsPerHour="7" color="0,1,0"/>
+    <flow id="motorcycle_flow_west_to_east" type="motorcycle" route="west_to_east" begin="0" end="3600" vehsPerHour="9" color="0,1,0"/>
+
+</routes>

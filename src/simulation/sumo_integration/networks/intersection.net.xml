@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.9" junctionCornerDetail="5" limitTurnSpeed="5.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,500.00,500.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
+
+    <edge id="north_approach" from="north_junction" to="center_junction" priority="1">
+        <lane id="north_approach_0" index="0" speed="50.00" length="100.00" shape="100.00,0.00 200.00,0.00"/>
+    </edge>
+
+    <edge id="south_approach" from="south_junction" to="center_junction" priority="1">
+        <lane id="south_approach_0" index="0" speed="50.00" length="100.00" shape="300.00,100.00 200.00,100.00"/>
+    </edge>
+
+    <edge id="east_approach" from="east_junction" to="center_junction" priority="1">
+        <lane id="east_approach_0" index="0" speed="50.00" length="100.00" shape="200.00,100.00 200.00,0.00"/>
+    </edge>
+
+    <edge id="west_approach" from="west_junction" to="center_junction" priority="1">
+        <lane id="west_approach_0" index="0" speed="50.00" length="100.00" shape="100.00,0.00 100.00,100.00"/>
+    </edge>
+
+    <edge id="north_exit" from="center_junction" to="north_junction" priority="1">
+        <lane id="north_exit_0" index="0" speed="50.00" length="100.00" shape="200.00,100.00 200.00,200.00"/>
+    </edge>
+
+    <edge id="south_exit" from="center_junction" to="south_junction" priority="1">
+        <lane id="south_exit_0" index="0" speed="50.00" length="100.00" shape="100.00,0.00 100.00,-100.00"/>
+    </edge>
+
+    <edge id="east_exit" from="center_junction" to="east_junction" priority="1">
+        <lane id="east_exit_0" index="0" speed="50.00" length="100.00" shape="300.00,100.00 400.00,100.00"/>
+    </edge>
+
+    <edge id="west_exit" from="center_junction" to="west_junction" priority="1">
+        <lane id="west_exit_0" index="0" speed="50.00" length="100.00" shape="0.00,100.00 100.00,100.00"/>
+    </edge>
+
+    <junction id="center_junction" type="traffic_light" x="200.00" y="100.00" incLanes="north_approach_0 south_approach_0 east_approach_0 west_approach_0" intLanes="center_junction_0 center_junction_1 center_junction_2 center_junction_3" shape="100.00,0.00 300.00,0.00 300.00,100.00 200.00,100.00 200.00,0.00 100.00,0.00 100.00,100.00 200.00,100.00">
+        <request index="0" response="00" foes="00" cont="0"/>
+        <request index="1" response="00" foes="00" cont="0"/>
+        <request index="2" response="00" foes="00" cont="0"/>
+        <request index="3" response="00" foes="00" cont="0"/>
+    </junction>
+
+    <junction id="north_junction" type="priority" x="200.00" y="200.00" incLanes="north_exit_0" intLanes="" shape="200.00,100.00 200.00,200.00 200.00,200.00 200.00,100.00">
+        <request index="0" response="00" foes="00" cont="0"/>
+    </junction>
+
+    <junction id="south_junction" type="priority" x="100.00" y="0.00" incLanes="south_exit_0" intLanes="" shape="100.00,0.00 100.00,0.00 100.00,0.00 100.00,0.00">
+        <request index="0" response="00" foes="00" cont="0"/>
+    </junction>
+
+    <junction id="east_junction" type="priority" x="400.00" y="100.00" incLanes="east_exit_0" intLanes="" shape="300.00,100.00 400.00,100.00 400.00,100.00 300.00,100.00">
+        <request index="0" response="00" foes="00" cont="0"/>
+    </junction>
+
+    <junction id="west_junction" type="priority" x="0.00" y="100.00" incLanes="west_exit_0" intLanes="" shape="0.00,100.00 0.00,100.00 0.00,100.00 0.00,100.00">
+        <request index="0" response="00" foes="00" cont="0"/>
+    </junction>
+
+    <connection from="north_approach" to="north_exit" fromLane="0" toLane="0" via="center_junction_0" dir="s" state="M"/>
+    <connection from="north_approach" to="east_exit" fromLane="0" toLane="0" via="center_junction_1" dir="r" state="M"/>
+    <connection from="north_approach" to="south_exit" fromLane="0" toLane="0" via="center_junction_2" dir="l" state="M"/>
+
+    <connection from="south_approach" to="south_exit" fromLane="0" toLane="0" via="center_junction_0" dir="s" state="M"/>
+    <connection from="south_approach" to="west_exit" fromLane="0" toLane="0" via="center_junction_1" dir="r" state="M"/>
+    <connection from="south_approach" to="north_exit" fromLane="0" toLane="0" via="center_junction_2" dir="l" state="M"/>
+
+    <connection from="east_approach" to="east_exit" fromLane="0" toLane="0" via="center_junction_0" dir="s" state="M"/>
+    <connection from="east_approach" to="south_exit" fromLane="0" toLane="0" via="center_junction_1" dir="r" state="M"/>
+    <connection from="east_approach" to="north_exit" fromLane="0" toLane="0" via="center_junction_2" dir="l" state="M"/>
+
+    <connection from="west_approach" to="west_exit" fromLane="0" toLane="0" via="center_junction_0" dir="s" state="M"/>
+    <connection from="west_approach" to="north_exit" fromLane="0" toLane="0" via="center_junction_1" dir="r" state="M"/>
+    <connection from="west_approach" to="east_exit" fromLane="0" toLane="0" via="center_junction_2" dir="l" state="M"/>
+
+    <internal>
+        <lane id="center_junction_0" index="0" speed="50.00" length="100.00" shape="100.00,0.00 200.00,0.00"/>
+        <lane id="center_junction_1" index="1" speed="50.00" length="100.00" shape="200.00,0.00 300.00,0.00"/>
+        <lane id="center_junction_2" index="2" speed="50.00" length="100.00" shape="300.00,0.00 300.00,100.00"/>
+        <lane id="center_junction_3" index="3" speed="50.00" length="100.00" shape="300.00,100.00 200.00,100.00"/>
+    </internal>
+
+</net>

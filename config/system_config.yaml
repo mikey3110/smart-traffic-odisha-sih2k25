@@ -1,0 +1,306 @@
+# Smart Traffic Management System Configuration
+system:
+  name: "Smart Traffic Management System"
+  version: "2.1.0"
+  environment: "development"  # development, staging, production
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  timezone: "UTC"
+
+# Component configurations
+components:
+  backend:
+    port: 8000
+    host: "0.0.0.0"
+    health_check_url: "http://localhost:8000/health"
+    max_restarts: 5
+    restart_delay: 10
+    dependencies: []
+    config:
+      database_url: "sqlite:///traffic.db"
+      redis_url: "redis://localhost:6379"
+      jwt_secret: "your-jwt-secret-key"
+      cors_origins: ["http://localhost:3000"]
+      log_level: "INFO"
+    
+  ml_optimizer:
+    port: 8001
+    host: "0.0.0.0"
+    health_check_url: "http://localhost:8001/health"
+    max_restarts: 3
+    restart_delay: 15
+    dependencies: ["backend"]
+    config:
+      model_path: "models/traffic_optimizer.pkl"
+      optimization_interval: 30
+      learning_rate: 0.001
+      batch_size: 32
+      log_level: "INFO"
+    
+  sumo_simulation:
+    port: 8002
+    host: "0.0.0.0"
+    health_check_url: "http://localhost:8002/health"
+    max_restarts: 5
+    restart_delay: 5
+    dependencies: ["backend"]
+    config:
+      sumo_binary: "sumo"
+      config_file: "simulation/sumo_integration/scenarios/basic_scenario.sumocfg"
+      step_size: 1
+      end_time: 3600
+      log_level: "INFO"
+    
+  frontend:
+    port: 3000
+    host: "0.0.0.0"
+    health_check_url: "http://localhost:3000"
+    max_restarts: 3
+    restart_delay: 10
+    dependencies: ["backend"]
+    config:
+      api_base_url: "http://localhost:8000/api"
+      ws_url: "ws://localhost:8000/ws"
+      build_command: "npm run build"
+      dev_command: "npm run dev"
+
+# Monitoring configuration
+monitoring:
+  health_check_interval: 30  # seconds
+  metrics_collection_interval: 60  # seconds
+  log_retention_days: 30
+  alert_thresholds:
+    cpu_usage: 80  # percentage
+    memory_usage: 85  # percentage
+    disk_usage: 90  # percentage
+    response_time: 5.0  # seconds
+    error_rate: 5.0  # percentage
+  
+  # Prometheus metrics
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+  
+  # Grafana dashboard
+  grafana:
+    enabled: true
+    port: 3001
+    admin_user: "admin"
+    admin_password: "admin123"
+
+# Data flow configuration
+data_flow:
+  sumo_to_backend_interval: 1  # seconds
+  ml_optimization_interval: 30  # seconds
+  frontend_refresh_interval: 5  # seconds
+  batch_size: 100
+  max_queue_size: 1000
+  
+  # Data processing
+  processing:
+    enable_real_time: true
+    enable_batch_processing: true
+    batch_interval: 300  # seconds
+    enable_data_validation: true
+    enable_data_compression: true
+
+# Database configuration
+database:
+  primary:
+    type: "postgresql"
+    host: "localhost"
+    port: 5432
+    database: "traffic_management"
+    username: "traffic_user"
+    password: "traffic_password"
+    pool_size: 10
+    max_overflow: 20
+  
+  cache:
+    type: "redis"
+    host: "localhost"
+    port: 6379
+    database: 0
+    password: ""
+    max_connections: 10
+
+# Message queue configuration
+message_queue:
+  type: "redis"  # redis, rabbitmq, kafka
+  host: "localhost"
+  port: 6379
+  password: ""
+  channels:
+    traffic_data: "traffic:data"
+    optimization_results: "optimization:results"
+    alerts: "system:alerts"
+    commands: "system:commands"
+
+# Security configuration
+security:
+  jwt:
+    secret: "your-super-secret-jwt-key-change-in-production"
+    algorithm: "HS256"
+    access_token_expire_minutes: 30
+    refresh_token_expire_days: 7
+  
+  cors:
+    allow_origins: ["http://localhost:3000", "http://localhost:8000"]
+    allow_credentials: true
+    allow_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allow_headers: ["*"]
+  
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 100
+    burst_size: 20
+
+# API configuration
+api:
+  version: "v1"
+  prefix: "/api"
+  documentation:
+    enabled: true
+    title: "Smart Traffic Management API"
+    description: "API for Smart Traffic Management System"
+    version: "2.1.0"
+    contact:
+      name: "Traffic Management Team"
+      email: "support@traffic-management.com"
+  
+  pagination:
+    default_page_size: 20
+    max_page_size: 100
+  
+  caching:
+    enabled: true
+    ttl: 300  # seconds
+    max_size: 1000
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  handlers:
+    console:
+      enabled: true
+      level: "INFO"
+    file:
+      enabled: true
+      level: "DEBUG"
+      filename: "logs/system.log"
+      max_bytes: 10485760  # 10MB
+      backup_count: 5
+    json:
+      enabled: true
+      filename: "logs/system.json"
+  
+  # Component-specific logging
+  components:
+    backend:
+      level: "INFO"
+      filename: "logs/backend.log"
+    ml_optimizer:
+      level: "DEBUG"
+      filename: "logs/ml_optimizer.log"
+    sumo_simulation:
+      level: "INFO"
+      filename: "logs/sumo_simulation.log"
+    frontend:
+      level: "WARNING"
+      filename: "logs/frontend.log"
+
+# Performance configuration
+performance:
+  # Caching
+  cache:
+    enabled: true
+    backend: "redis"
+    ttl: 300  # seconds
+    max_size: 1000
+  
+  # Database optimization
+  database:
+    connection_pool_size: 10
+    max_overflow: 20
+    pool_timeout: 30
+    pool_recycle: 3600
+  
+  # API optimization
+  api:
+    enable_compression: true
+    enable_caching: true
+    cache_headers: true
+    enable_gzip: true
+  
+  # Background tasks
+  background_tasks:
+    max_workers: 4
+    queue_size: 1000
+    task_timeout: 300  # seconds
+
+# Development configuration
+development:
+  debug: true
+  reload: true
+  hot_reload: true
+  mock_data: true
+  enable_profiling: true
+  
+  # Testing
+  testing:
+    enabled: true
+    test_database: "test_traffic.db"
+    test_redis: "redis://localhost:6379/1"
+    test_timeout: 30
+
+# Production configuration
+production:
+  debug: false
+  reload: false
+  hot_reload: false
+  mock_data: false
+  enable_profiling: false
+  
+  # Security hardening
+  security:
+    require_https: true
+    secure_cookies: true
+    hsts: true
+    content_security_policy: true
+  
+  # Performance optimization
+  performance:
+    enable_gzip: true
+    enable_caching: true
+    static_files_caching: true
+    database_connection_pooling: true
+
+# Environment-specific overrides
+environments:
+  development:
+    database:
+      type: "sqlite"
+      filename: "traffic_dev.db"
+    logging:
+      level: "DEBUG"
+    monitoring:
+      health_check_interval: 10
+  
+  staging:
+    database:
+      type: "postgresql"
+      host: "staging-db.example.com"
+    logging:
+      level: "INFO"
+    monitoring:
+      health_check_interval: 30
+  
+  production:
+    database:
+      type: "postgresql"
+      host: "prod-db.example.com"
+    logging:
+      level: "WARNING"
+    monitoring:
+      health_check_interval: 60
