@@ -1,0 +1,42 @@
+# Smart Traffic Management System - Complete Requirements
+# Install with: pip install -r requirements.txt
+
+# Backend API Dependencies
+fastapi==0.104.1
+uvicorn==0.24.0
+redis==5.0.1
+pydantic==2.5.0
+python-multipart==0.0.6
+requests==2.31.0
+pandas==2.1.3
+numpy==1.25.2
+python-jose==3.3.0
+passlib==1.7.4
+python-dotenv==1.0.0
+
+# Computer Vision Dependencies
+opencv-python==4.8.1.78
+ultralytics==8.0.196
+Pillow==10.0.1
+
+# Machine Learning Dependencies
+stable-baselines3==2.1.0
+gymnasium==0.29.1
+torch==2.0.1
+torchvision==0.15.2
+
+# Data Processing
+matplotlib==3.7.2
+seaborn==0.12.2
+
+# SUMO Integration (Optional)
+traci==1.18.0
+sumolib==1.18.0
+
+# Testing
+pytest==7.4.2
+pytest-asyncio==0.21.1
+httpx==0.25.0
+
+# Utilities
+python-dotenv==1.0.0
