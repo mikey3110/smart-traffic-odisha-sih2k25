@@ -1,0 +1,18 @@
+{
+  "baseline": {
+    "avg_wait_time": 50.0,
+    "throughput": 150.0
+  },
+  "optimized": {
+    "avg_wait_time": 40.0,
+    "throughput": 180.0
+  },
+  "improvements": {
+    "wait_time_reduction_%": 20.0,
+    "throughput_increase_%": 20.0
+  },
+  "economic_impact": {
+    "daily_savings_inr": 20000.0,
+    "annual_savings_inr": 7300000.0
+  }
+}

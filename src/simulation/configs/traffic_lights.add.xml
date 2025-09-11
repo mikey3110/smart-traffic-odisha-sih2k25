@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additionalFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    
+    <tlLogic id="center" type="static" programID="0" offset="0">
+        <!-- Phase 0: North-South Green (30 seconds) -->
+        <phase duration="30" state="GrGr"/>
+        <!-- Phase 1: North-South Yellow (3 seconds) -->
+        <phase duration="3" state="yryr"/>
+        <!-- Phase 2: East-West Green (30 seconds) -->
+        <phase duration="30" state="rGrG"/>
+        <!-- Phase 3: East-West Yellow (3 seconds) -->
+        <phase duration="3" state="ryry"/>
+    </tlLogic>
+    
+</additionalFile>

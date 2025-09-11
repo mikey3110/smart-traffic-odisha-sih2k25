@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.16" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd" >
+    <location netOffset="0.0,0.0" convBoundary="-250.0,-250.0,250.0,250.0" origBoundary="-250.0,-250.0,250.0,250.0" projParameter="!"/>
+    
+    <!-- Junctions -->
+    <junction id="north" x="0.0" y="250.0" type="priority"/>
+    <junction id="south" x="0.0" y="-250.0" type="priority"/>
+    <junction id="east" x="250.0" y="0.0" type="priority"/>
+    <junction id="west" x="-250.0" y="0.0" type="priority"/>
+    <junction id="center" x="0.0" y="0.0" type="traffic_light"/>
+    
+    <!-- Edges and lanes -->
+    <edge id="north_in" from="north" to="center" priority="1" numLanes="1">
+        <lane id="north_in_0" index="0" speed="13.9" length="250" shape="0,250 0,0"/>
+    </edge>
+    <edge id="north_out" from="center" to="north" priority="1" numLanes="1">
+        <lane id="north_out_0" index="0" speed="13.9" length="250" shape="0,0 0,250"/>
+    </edge>
+    
+    <edge id="south_in" from="south" to="center" priority="1" numLanes="1">
+        <lane id="south_in_0" index="0" speed="13.9" length="250" shape="0,-250 0,0"/>
+    </edge>
+    <edge id="south_out" from="center" to="south" priority="1" numLanes="1">
+        <lane id="south_out_0" index="0" speed="13.9" length="250" shape="0,0 0,-250"/>
+    </edge>
+    
+    <edge id="east_in" from="east" to="center" priority="1" numLanes="1">
+        <lane id="east_in_0" index="0" speed="13.9" length="250" shape="250,0 0,0"/>
+    </edge>
+    <edge id="east_out" from="center" to="east" priority="1" numLanes="1">
+        <lane id="east_out_0" index="0" speed="13.9" length="250" shape="0,0 250,0"/>
+    </edge>
+    
+    <edge id="west_in" from="west" to="center" priority="1" numLanes="1">
+        <lane id="west_in_0" index="0" speed="13.9" length="250" shape="-250,0 0,0"/>
+    </edge>
+    <edge id="west_out" from="center" to="west" priority="1" numLanes="1">
+        <lane id="west_out_0" index="0" speed="13.9" length="250" shape="0,0 -250,0"/>
+    </edge>
+</net>

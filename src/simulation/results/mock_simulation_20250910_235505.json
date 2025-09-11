@@ -1,0 +1,116 @@
+{
+  "simulation": "mock",
+  "duration": 300,
+  "results": [
+    {
+      "time": 0,
+      "lane_counts": {
+        "north_lane": 12,
+        "south_lane": 13,
+        "east_lane": 13,
+        "west_lane": 8
+      },
+      "avg_wait_time": 43.8,
+      "throughput": 201.0
+    },
+    {
+      "time": 30,
+      "lane_counts": {
+        "north_lane": 1,
+        "south_lane": 20,
+        "east_lane": 11,
+        "west_lane": 15
+      },
+      "avg_wait_time": 53.7,
+      "throughput": 181.4
+    },
+    {
+      "time": 60,
+      "lane_counts": {
+        "north_lane": 16,
+        "south_lane": 0,
+        "east_lane": 7,
+        "west_lane": 4
+      },
+      "avg_wait_time": 28.0,
+      "throughput": 154.6
+    },
+    {
+      "time": 90,
+      "lane_counts": {
+        "north_lane": 1,
+        "south_lane": 17,
+        "east_lane": 6,
+        "west_lane": 2
+      },
+      "avg_wait_time": 51.7,
+      "throughput": 195.0
+    },
+    {
+      "time": 120,
+      "lane_counts": {
+        "north_lane": 8,
+        "south_lane": 1,
+        "east_lane": 14,
+        "west_lane": 5
+      },
+      "avg_wait_time": 30.7,
+      "throughput": 278.2
+    },
+    {
+      "time": 150,
+      "lane_counts": {
+        "north_lane": 11,
+        "south_lane": 16,
+        "east_lane": 16,
+        "west_lane": 4
+      },
+      "avg_wait_time": 58.5,
+      "throughput": 197.4
+    },
+    {
+      "time": 180,
+      "lane_counts": {
+        "north_lane": 15,
+        "south_lane": 5,
+        "east_lane": 16,
+        "west_lane": 1
+      },
+      "avg_wait_time": 53.0,
+      "throughput": 182.2
+    },
+    {
+      "time": 210,
+      "lane_counts": {
+        "north_lane": 19,
+        "south_lane": 7,
+        "east_lane": 6,
+        "west_lane": 5
+      },
+      "avg_wait_time": 28.5,
+      "throughput": 269.2
+    },
+    {
+      "time": 240,
+      "lane_counts": {
+        "north_lane": 4,
+        "south_lane": 8,
+        "east_lane": 1,
+        "west_lane": 13
+      },
+      "avg_wait_time": 51.2,
+      "throughput": 269.3
+    },
+    {
+      "time": 270,
+      "lane_counts": {
+        "north_lane": 6,
+        "south_lane": 19,
+        "east_lane": 10,
+        "west_lane": 7
+      },
+      "avg_wait_time": 27.8,
+      "throughput": 157.0
+    }
+  ]
+}
