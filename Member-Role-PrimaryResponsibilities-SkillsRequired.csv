@@ -1,0 +1,8 @@
+"Member","Role","Primary Responsibilities","Skills Required"
+"You (Leader)","Project Manager + Integration Lead","Coordinate tasks, final integration, demo preparation","Leadership, API integration"
+"Member 1","Computer Vision Engineer","Vehicle detection, OpenCV implementation","Python, OpenCV, YOLO"
+"Member 2","AI/ML Engineer","Reinforcement learning, signal optimization algorithms","Python, RL libraries, ML"
+"Member 3","Backend Developer","APIs, data processing, real-time streams","Python, FastAPI, Redis"
+"Member 4","Frontend Developer","Dashboard, UI/UX, data visualization","React/Vue.js, JavaScript"
+"Member 5","Traffic Simulation Specialist","SUMO integration, validation, testing","SUMO, traffic modeling"
+"Member 6","DevOps + QA","Deployment, testing, performance optimization","Docker, testing frameworks"

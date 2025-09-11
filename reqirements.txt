@@ -1,0 +1,36 @@
+# Computer Vision Dependencies
+opencv-python==4.8.1.78
+ultralytics==8.0.196
+numpy==1.24.3
+Pillow==10.0.1
+
+# Machine Learning
+stable-baselines3==2.1.0
+gymnasium==0.29.1
+torch==2.0.1
+torchvision==0.15.2
+
+# Backend API
+fastapi==0.103.1
+uvicorn==0.23.2
+redis==5.0.0
+python-multipart==0.0.6
+
+# Data Processing
+pandas==2.1.1
+matplotlib==3.7.2
+seaborn==0.12.2
+
+# SUMO Integration
+traci==1.18.0
+sumolib==1.18.0
+
+# Testing
+pytest==7.4.2
+pytest-asyncio==0.21.1
+httpx==0.25.0
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.4.2
+requests==2.31.0
