@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="complete_intersection.net.xml"/>
+        <route-files value="routes.rou.xml"/>
+    </input>
+    
+    <time>
+        <begin value="0"/>
+        <end value="300"/>
+        <step-length value="1"/>
+    </time>
+    
+    <processing>
+        <time-to-teleport value="300"/>
+        <max-depart-delay value="900"/>
+    </processing>
+    
+    <report>
+        <verbose value="false"/>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

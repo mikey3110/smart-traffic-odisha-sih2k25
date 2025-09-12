@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<net version="1.16">
+    <location netOffset="0.0,0.0" convBoundary="-200.0,-200.0,200.0,200.0" origBoundary="-200.0,-200.0,200.0,200.0" projParameter="!"/>
+    
+    <!-- Junctions -->
+    <junction id="north" x="0.0" y="200.0" type="priority"/>
+    <junction id="south" x="0.0" y="-200.0" type="priority"/>
+    <junction id="east" x="200.0" y="0.0" type="priority"/>
+    <junction id="west" x="-200.0" y="0.0" type="priority"/>
+    <junction id="center" x="0.0" y="0.0" type="traffic_light"/>
+    
+    <!-- Edges -->
+    <edge id="north_in" from="north" to="center" priority="1" numLanes="1">
+        <lane id="north_in_0" index="0" speed="13.9" length="200" shape="0,200 0,0"/>
+    </edge>
+    <edge id="north_out" from="center" to="north" priority="1" numLanes="1">
+        <lane id="north_out_0" index="0" speed="13.9" length="200" shape="0,0 0,200"/>
+    </edge>
+    
+    <edge id="south_in" from="south" to="center" priority="1" numLanes="1">
+        <lane id="south_in_0" index="0" speed="13.9" length="200" shape="0,-200 0,0"/>
+    </edge>
+    <edge id="south_out" from="center" to="south" priority="1" numLanes="1">
+        <lane id="south_out_0" index="0" speed="13.9" length="200" shape="0,0 0,-200"/>
+    </edge>
+    
+    <edge id="east_in" from="east" to="center" priority="1" numLanes="1">
+        <lane id="east_in_0" index="0" speed="13.9" length="200" shape="200,0 0,0"/>
+    </edge>
+    <edge id="east_out" from="center" to="east" priority="1" numLanes="1">
+        <lane id="east_out_0" index="0" speed="13.9" length="200" shape="0,0 200,0"/>
+    </edge>
+    
+    <edge id="west_in" from="west" to="center" priority="1" numLanes="1">
+        <lane id="west_in_0" index="0" speed="13.9" length="200" shape="-200,0 0,0"/>
+    </edge>
+    <edge id="west_out" from="center" to="west" priority="1" numLanes="1">
+        <lane id="west_out_0" index="0" speed="13.9" length="200" shape="0,0 -200,0"/>
+    </edge>
+    
+    <!-- Connections -->
+    <connection from="north_in" to="south_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="north_in" to="east_out" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from="north_in" to="west_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    
+    <connection from="south_in" to="north_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="south_in" to="east_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from="south_in" to="west_out" fromLane="0" toLane="0" dir="l" state="M"/>
+    
+    <connection from="east_in" to="west_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="east_in" to="north_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    <connection from="east_in" to="south_out" fromLane="0" toLane="0" dir="l" state="M"/>
+    
+    <connection from="west_in" to="east_out" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from="west_in" to="north_out" fromLane="0" toLane="0" dir="l" state="M"/>
+    <connection from="west_in" to="south_out" fromLane="0" toLane="0" dir="r" state="M"/>
+    
+</net>

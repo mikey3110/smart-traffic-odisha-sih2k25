@@ -2,12 +2,12 @@
 <additional>
     <tlLogic id="center" type="static" programID="0" offset="0">
         <!-- Phase 0: North-South Green (30 seconds) -->
-        <phase duration="30" state="GrGr"/>
+        <phase duration="30" state="GGrrGGrr"/>
         <!-- Phase 1: North-South Yellow (3 seconds) -->
-        <phase duration="3" state="yryr"/>
+        <phase duration="3" state="yyrryyrr"/>
         <!-- Phase 2: East-West Green (30 seconds) -->
-        <phase duration="30" state="rGrG"/>
+        <phase duration="30" state="rrGGrrGG"/>
         <!-- Phase 3: East-West Yellow (3 seconds) -->
-        <phase duration="3" state="ryry"/>
+        <phase duration="3" state="rryyrryy"/>
     </tlLogic>
 </additional>
