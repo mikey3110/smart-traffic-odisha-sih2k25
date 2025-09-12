@@ -1,0 +1,122 @@
+{
+  "simulation_type": "baseline",
+  "duration_seconds": 300,
+  "total_vehicles": 346,
+  "average_waiting_time": 61.77,
+  "average_travel_time": 91.14,
+  "throughput_vph": 4152.0,
+  "completion_rate": 87.37,
+  "efficiency_score": 0.75,
+  "detailed_data": [
+    {
+      "step": 0,
+      "vehicles_north": 15,
+      "vehicles_south": 7,
+      "vehicles_east": 12,
+      "vehicles_west": 7,
+      "total_vehicles": 41,
+      "wait_time": 53,
+      "travel_time": 79,
+      "efficiency": 0.75
+    },
+    {
+      "step": 30,
+      "vehicles_north": 10,
+      "vehicles_south": 10,
+      "vehicles_east": 18,
+      "vehicles_west": 11,
+      "total_vehicles": 49,
+      "wait_time": 48,
+      "travel_time": 67,
+      "efficiency": 0.75
+    },
+    {
+      "step": 60,
+      "vehicles_north": 8,
+      "vehicles_south": 10,
+      "vehicles_east": 18,
+      "vehicles_west": 13,
+      "total_vehicles": 49,
+      "wait_time": 45,
+      "travel_time": 63,
+      "efficiency": 0.75
+    },
+    {
+      "step": 90,
+      "vehicles_north": 11,
+      "vehicles_south": 10,
+      "vehicles_east": 11,
+      "vehicles_west": 7,
+      "total_vehicles": 39,
+      "wait_time": 44,
+      "travel_time": 71,
+      "efficiency": 0.75
+    },
+    {
+      "step": 120,
+      "vehicles_north": 10,
+      "vehicles_south": 8,
+      "vehicles_east": 16,
+      "vehicles_west": 9,
+      "total_vehicles": 43,
+      "wait_time": 38,
+      "travel_time": 61,
+      "efficiency": 0.75
+    },
+    {
+      "step": 150,
+      "vehicles_north": 14,
+      "vehicles_south": 6,
+      "vehicles_east": 15,
+      "vehicles_west": 14,
+      "total_vehicles": 49,
+      "wait_time": 49,
+      "travel_time": 70,
+      "efficiency": 0.75
+    },
+    {
+      "step": 180,
+      "vehicles_north": 11,
+      "vehicles_south": 12,
+      "vehicles_east": 14,
+      "vehicles_west": 13,
+      "total_vehicles": 50,
+      "wait_time": 45,
+      "travel_time": 69,
+      "efficiency": 0.75
+    },
+    {
+      "step": 210,
+      "vehicles_north": 9,
+      "vehicles_south": 11,
+      "vehicles_east": 18,
+      "vehicles_west": 13,
+      "total_vehicles": 51,
+      "wait_time": 38,
+      "travel_time": 60,
+      "efficiency": 0.75
+    },
+    {
+      "step": 240,
+      "vehicles_north": 14,
+      "vehicles_south": 10,
+      "vehicles_east": 18,
+      "vehicles_west": 7,
+      "total_vehicles": 49,
+      "wait_time": 48,
+      "travel_time": 67,
+      "efficiency": 0.75
+    },
+    {
+      "step": 270,
+      "vehicles_north": 14,
+      "vehicles_south": 6,
+      "vehicles_east": 17,
+      "vehicles_west": 11,
+      "total_vehicles": 48,
+      "wait_time": 49,
+      "travel_time": 69,
+      "efficiency": 0.75
+    }
+  ]
+}

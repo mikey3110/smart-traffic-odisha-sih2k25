@@ -3,6 +3,8 @@ Main FastAPI application for Smart Traffic Management System
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from api.traffic import router as traffic_router
+from api.signals import router as signals_router
 import uvicorn
 
 app = FastAPI(
@@ -19,6 +21,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Register API routers
+app.include_router(traffic_router, prefix="/traffic", tags=["traffic"])
+app.include_router(signals_router, prefix="/signal", tags=["signal"])
 
 @app.get("/")
 async def root():

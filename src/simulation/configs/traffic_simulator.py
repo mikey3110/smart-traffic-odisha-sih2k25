@@ -14,9 +14,11 @@ class TrafficSimulator:
         self.optimized_results = {}
         self.simulation_data = []
         
-        # Results directory
-        if not os.path.exists('results'):
-            os.makedirs('results')
+        # Results directory - use absolute path
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        self.results_dir = os.path.join(script_dir, '..', 'results')
+        if not os.path.exists(self.results_dir):
+            os.makedirs(self.results_dir)
     
     def run_baseline_simulation(self, duration=1800, use_gui=True):
         """Run baseline simulation with fixed timing"""
@@ -113,7 +115,7 @@ class TrafficSimulator:
         
         # Save results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        results_file = f"results/baseline_{timestamp}.json"
+        results_file = os.path.join(self.results_dir, f"baseline_{timestamp}.json")
         
         with open(results_file, 'w') as f:
             json.dump(self.baseline_results, f, indent=2)
@@ -147,7 +149,7 @@ class TrafficSimulator:
         
         # Save optimized results
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        results_file = f"results/optimized_{timestamp}.json"
+        results_file = os.path.join(self.results_dir, f"optimized_{timestamp}.json")
         
         with open(results_file, 'w') as f:
             json.dump(self.optimized_results, f, indent=2)
@@ -197,7 +199,7 @@ class TrafficSimulator:
         
         # Save comparison
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        comparison_file = f"results/comparison_{timestamp}.json"
+        comparison_file = os.path.join(self.results_dir, f"comparison_{timestamp}.json")
         
         with open(comparison_file, 'w') as f:
             json.dump(comparison, f, indent=2)
