@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from src.backend.main import app
 from src.backend.database.models import TrafficLight, Vehicle, Intersection, PerformanceMetrics
-from src.backend.services.traffic_service import TrafficService
+from src.backend.services.redis_service import TrafficService
 from src.backend.services.optimization_service import OptimizationService
 from src.backend.api.traffic import router as traffic_router
 from src.backend.api.signals import router as signals_router
@@ -400,7 +400,7 @@ class TestTrafficService:
     
     def test_get_traffic_lights(self, mock_redis):
         """Test getting traffic lights from service"""
-        with patch('src.backend.services.traffic_service.TrafficService') as mock_service:
+        with patch('src.backend.services.redis_service.TrafficService') as mock_service:
             mock_instance = Mock()
             mock_instance.get_traffic_lights.return_value = []
             mock_service.return_value = mock_instance
@@ -411,7 +411,7 @@ class TestTrafficService:
     
     def test_update_traffic_light(self, mock_redis):
         """Test updating traffic light in service"""
-        with patch('src.backend.services.traffic_service.TrafficService') as mock_service:
+        with patch('src.backend.services.redis_service.TrafficService') as mock_service:
             mock_instance = Mock()
             mock_instance.update_traffic_light.return_value = {"id": "test", "updated": True}
             mock_service.return_value = mock_instance
