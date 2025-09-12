@@ -291,16 +291,11 @@ Edit `config/system_config.yaml` for system-wide settings.
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## 🆘 Support
 
 - **Documentation**: Check the docs/ directory
 - **Issues**: Create an issue on GitHub
 - **Discussions**: Use GitHub Discussions
-- **Email**: support@traffic-management.com
 
 ## 🗺️ Roadmap
 
