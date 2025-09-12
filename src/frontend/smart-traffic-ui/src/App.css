@@ -1,246 +1,65 @@
-/* Smart Traffic Management System Dashboard Styles */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.App {
+  text-align: center;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  color: #333;
-}
-
-.app {
-  min-height: 100vh;
+.App-header {
+  background-color: #282c34;
   padding: 20px;
-}
-
-.app-header {
-  text-align: center;
-  margin-bottom: 30px;
   color: white;
-}
-
-.app-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.app-header p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-.dashboard {
-  max-width: 1400px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  overflow: hidden;
-}
-
-.controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.intersection-selector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.intersection-selector label {
-  font-weight: 600;
-  color: #495057;
-}
-
-.intersection-selector select {
-  padding: 8px 15px;
-  border: 2px solid #dee2e6;
-  border-radius: 8px;
-  font-size: 16px;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.3s;
-}
-
-.intersection-selector select:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-}
-
-.status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.status-dot.online {
-  background-color: #28a745;
-  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
-}
-
-.status-dot.offline {
-  background-color: #dc3545;
-}
-
-.error-message {
-  background: #f8d7da;
-  color: #721c24;
-  padding: 15px 30px;
-  border-left: 4px solid #dc3545;
-  margin: 0 30px 20px;
-  border-radius: 0 8px 8px 0;
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  padding: 30px;
-}
-
-.chart-container {
-  background: #f8f9fa;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-.chart-container h3 {
-  margin-bottom: 20px;
-  color: #495057;
-  font-size: 1.3rem;
-  text-align: center;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  padding: 0 30px 30px;
-}
-
-.info-card {
-  background: #f8f9fa;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-.info-card h4 {
-  margin-bottom: 20px;
-  color: #495057;
-  font-size: 1.2rem;
-  text-align: center;
-  border-bottom: 2px solid #dee2e6;
-  padding-bottom: 10px;
-}
-
-.stats {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-}
-
-.stat {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #e9ecef;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
 }
 
-.stat:last-child {
+.App-header h1 {
+  margin-bottom: 0.5rem;
+  font-size: 3rem;
+}
+
+.App-header p {
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.App-header h2 {
+  color: #61dafb;
+  margin-bottom: 1rem;
+}
+
+.App-header h3 {
+  color: #61dafb;
+  margin-bottom: 1rem;
+}
+
+.App-header ul {
+  list-style: none;
+  padding: 0;
+}
+
+.App-header li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #444;
+}
+
+.App-header li:last-child {
   border-bottom: none;
 }
 
-.stat-label {
-  font-weight: 600;
-  color: #6c757d;
+.App-header a {
+  color: #61dafb;
+  text-decoration: none;
 }
 
-.stat-value {
-  font-weight: 700;
-  color: #495057;
-  font-size: 1.1rem;
+.App-header a:hover {
+  text-decoration: underline;
 }
 
-.footer {
-  background: #495057;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 0.9rem;
-}
-
-.footer p {
-  margin: 0;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .charts-grid,
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .controls {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
-  
-  .app-header h1 {
-    font-size: 2rem;
-  }
-  
-  .dashboard {
-    margin: 10px;
-    border-radius: 15px;
-  }
-}
-
-/* Chart.js customization */
-.chart-container canvas {
-  max-height: 300px;
-}
-
-/* Loading states */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  font-size: 1.2rem;
-  color: #6c757d;
-}
-
-/* Animation for status updates */
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
-
-.status-dot.online {
-  animation: pulse 2s infinite;
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
 }
