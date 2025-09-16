@@ -1,0 +1,340 @@
+# Advanced ML Configuration for Multi-Intersection Q-Learning System
+# Production-ready configuration with comprehensive parameters
+
+# System Configuration
+system:
+  name: "Advanced Multi-Intersection Q-Learning System"
+  version: "1.0.0"
+  debug: false
+  log_level: "INFO"
+  model_save_dir: "models"
+  checkpoint_dir: "models/checkpoints"
+  max_checkpoints: 10
+
+# Q-Learning Configuration
+q_learning:
+  # Learning Parameters
+  learning_rate: 0.001
+  epsilon: 0.1
+  epsilon_decay: 0.995
+  epsilon_min: 0.01
+  discount_factor: 0.95
+  
+  # Network Architecture
+  hidden_layers: [256, 128, 64]
+  dropout_rate: 0.1
+  use_attention: true
+  use_residual: true
+  activation: "relu"
+  optimizer: "adamw"
+  weight_decay: 1e-4
+  
+  # Training Parameters
+  replay_buffer_size: 50000
+  batch_size: 64
+  target_update_frequency: 200
+  gradient_clip_norm: 1.0
+  learning_rate_scheduler: "reduce_on_plateau"
+  scheduler_patience: 50
+  scheduler_factor: 0.5
+  
+  # State Space Configuration
+  state_size: 45
+  action_size: 8
+  
+  # Adjacent Intersections
+  adjacent_intersections: []
+
+# Reward Function Configuration
+reward_function:
+  # Primary Objectives (must sum to 1.0)
+  wait_time_weight: 0.4
+  throughput_weight: 0.2
+  fuel_efficiency_weight: 0.15
+  pedestrian_safety_weight: 0.1
+  
+  # Secondary Objectives
+  coordination_weight: 0.05
+  stability_weight: 0.05
+  emergency_weight: 0.03
+  environmental_weight: 0.02
+  
+  # Normalization Factors
+  normalization_factors:
+    wait_time: 120.0
+    throughput: 1000.0
+    fuel_consumption: 50.0
+    pedestrian_delay: 60.0
+    coordination: 1.0
+    stability: 1.0
+    emergency: 1.0
+    environmental: 1.0
+  
+  # Reward Shaping
+  use_reward_shaping: true
+  potential_weight: 0.1
+  reward_clipping: true
+  min_reward: -2.0
+  max_reward: 2.0
+
+# Experience Replay Configuration
+experience_replay:
+  # Buffer Parameters
+  capacity: 50000
+  alpha: 0.6
+  beta: 0.4
+  beta_increment: 0.001
+  epsilon: 1e-6
+  
+  # Sampling Strategies
+  strategies:
+    prioritized: 0.4
+    uniform: 0.2
+    curriculum: 0.2
+    balanced: 0.2
+  
+  # Curriculum Learning
+  curriculum_threshold: 0.1
+  difficulty_adaptation: true
+  
+  # Clustering
+  use_clustering: false
+  cluster_centers: 10
+  cluster_update_frequency: 1000
+
+# Multi-Intersection Coordination
+coordination:
+  # Communication
+  message_ttl: 30.0
+  max_queue_size: 1000
+  heartbeat_interval: 10.0
+  
+  # Conflict Resolution
+  conflict_resolution_enabled: true
+  max_conflicts_per_cycle: 5
+  conflict_timeout: 5.0
+  
+  # Green Wave Coordination
+  green_wave_enabled: true
+  green_wave_speed: 50.0  # km/h
+  coordination_threshold: 0.7
+  
+  # Network Optimization
+  network_optimization_enabled: true
+  load_balancing_enabled: true
+  flow_propagation_enabled: true
+
+# Training Pipeline Configuration
+training:
+  # Data Generation
+  sumo_config_path: "config/sumo"
+  training_data_dir: "data/training"
+  validation_data_dir: "data/validation"
+  
+  # Training Parameters
+  num_episodes: 100
+  validation_frequency: 10
+  checkpoint_frequency: 20
+  max_training_time: 3600  # seconds
+  
+  # Scenarios
+  scenarios:
+    - name: "rush_hour_clear"
+      duration: 60
+      traffic_pattern: "rush_hour"
+      weather_condition: "clear"
+      vehicle_spawn_rate: 0.8
+      emergency_probability: 0.1
+      pedestrian_demand: 0.6
+    
+    - name: "normal_rainy"
+      duration: 45
+      traffic_pattern: "normal"
+      weather_condition: "rainy"
+      vehicle_spawn_rate: 0.4
+      emergency_probability: 0.05
+      pedestrian_demand: 0.3
+    
+    - name: "night_foggy"
+      duration: 30
+      traffic_pattern: "night"
+      weather_condition: "foggy"
+      vehicle_spawn_rate: 0.2
+      emergency_probability: 0.02
+      pedestrian_demand: 0.1
+    
+    - name: "emergency_stormy"
+      duration: 20
+      traffic_pattern: "emergency"
+      weather_condition: "stormy"
+      vehicle_spawn_rate: 0.6
+      emergency_probability: 0.3
+      pedestrian_demand: 0.2
+
+# Optimization Configuration
+optimization:
+  # Cycle Configuration
+  cycle_time: 30.0
+  timing_tolerance: 2.0
+  max_processing_time: 25.0
+  fallback_algorithm: "websters"
+  
+  # Safety Constraints
+  min_green_time: 10
+  max_green_time: 120
+  min_cycle_time: 60
+  max_cycle_time: 180
+  
+  # Emergency Handling
+  emergency_threshold: 0.8
+  emergency_override_enabled: true
+  emergency_priority_weight: 2.0
+  
+  # Performance Monitoring
+  performance_tracking_enabled: true
+  metrics_history_size: 1000
+  alert_thresholds:
+    success_rate: 0.8
+    avg_cycle_time: 35.0
+    error_rate: 0.1
+
+# Intersection Configuration
+intersections:
+  - id: "junction-1"
+    name: "Main Street & First Avenue"
+    lanes: ["north", "south", "east", "west"]
+    adjacent_intersections: ["junction-2", "junction-3"]
+    priority: 1
+    coordinates: [0.0, 0.0]
+    traffic_light_id: "tl_1"
+    
+  - id: "junction-2"
+    name: "Second Street & Oak Avenue"
+    lanes: ["north", "south", "east", "west"]
+    adjacent_intersections: ["junction-1", "junction-3"]
+    priority: 2
+    coordinates: [100.0, 0.0]
+    traffic_light_id: "tl_2"
+    
+  - id: "junction-3"
+    name: "Third Street & Pine Avenue"
+    lanes: ["north", "south", "east", "west"]
+    adjacent_intersections: ["junction-1", "junction-2"]
+    priority: 3
+    coordinates: [0.0, 100.0]
+    traffic_light_id: "tl_3"
+
+# Data Integration Configuration
+data_integration:
+  # Traffic Data Sources
+  traffic_sources:
+    - type: "camera"
+      intersection_id: "junction-1"
+      source_url: "rtsp://camera1.local/stream"
+      update_frequency: 1.0
+      
+    - type: "sensor"
+      intersection_id: "junction-2"
+      source_url: "http://sensor2.local/api"
+      update_frequency: 0.5
+      
+    - type: "simulation"
+      intersection_id: "junction-3"
+      source_url: "sumo://localhost:8813"
+      update_frequency: 0.1
+  
+  # Data Processing
+  data_validation_enabled: true
+  data_smoothing_enabled: true
+  smoothing_window: 5
+  outlier_detection_enabled: true
+  outlier_threshold: 3.0
+  
+  # Caching
+  cache_enabled: true
+  cache_ttl: 30.0
+  max_cache_size: 10000
+
+# Monitoring and Logging
+monitoring:
+  # Performance Monitoring
+  metrics_collection_enabled: true
+  metrics_export_interval: 60.0
+  metrics_export_format: "json"
+  metrics_export_path: "logs/metrics"
+  
+  # Health Checks
+  health_check_interval: 60.0
+  health_check_timeout: 10.0
+  max_consecutive_failures: 3
+  
+  # Alerting
+  alerting_enabled: true
+  alert_channels:
+    - type: "log"
+      level: "ERROR"
+    - type: "email"
+      recipients: ["admin@traffic.com"]
+      smtp_server: "smtp.gmail.com"
+      smtp_port: 587
+  
+  # Logging
+  log_level: "INFO"
+  log_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_file: "logs/qlearning_system.log"
+  log_rotation: true
+  max_log_size: "10MB"
+  backup_count: 5
+
+# Model Persistence
+model_persistence:
+  # Save Configuration
+  save_directory: "models"
+  checkpoint_frequency: 100
+  state_file: "optimization_state.json"
+  performance_file: "optimization_performance.json"
+  q_table_file: "q_table.json"
+  
+  # Model Versioning
+  versioning_enabled: true
+  version_format: "v{major}.{minor}.{patch}"
+  auto_increment_patch: true
+  
+  # Backup Configuration
+  backup_enabled: true
+  backup_frequency: 3600  # seconds
+  backup_retention_days: 30
+  backup_directory: "models/backups"
+
+# Security Configuration
+security:
+  # Authentication
+  authentication_enabled: false
+  api_key_required: false
+  api_key: "your-secret-api-key"
+  
+  # Data Encryption
+  encryption_enabled: false
+  encryption_key: "your-encryption-key"
+  
+  # Access Control
+  allowed_ips: ["127.0.0.1", "localhost"]
+  rate_limiting_enabled: true
+  max_requests_per_minute: 100
+
+# Development and Testing
+development:
+  # Debug Mode
+  debug_mode: false
+  verbose_logging: false
+  performance_profiling: false
+  
+  # Testing
+  test_mode: false
+  mock_data_enabled: false
+  test_scenarios: ["basic", "rush_hour", "emergency"]
+  
+  # Development Tools
+  hot_reload: false
+  auto_restart: false
+  development_server: false
