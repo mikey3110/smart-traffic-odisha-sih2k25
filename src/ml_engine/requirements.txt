@@ -1,10 +1,43 @@
-# ML Engine specific dependencies
-numpy==1.24.3
-scikit-learn==1.3.2
-pandas==2.1.4
-matplotlib==3.8.2
-seaborn==0.13.0
-plotly==5.17.0
-tensorflow==2.15.0
-torch==2.1.0
-xgboost==2.0.2
+# ML Engine Requirements
+# Day 1 Sprint Implementation - ML Engineer
+
+# Core ML dependencies
+numpy>=1.24.0
+pandas>=2.1.0
+scikit-learn>=1.3.0
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Q-Learning and RL
+stable-baselines3>=2.1.0
+gymnasium>=0.29.0
+
+# Data processing
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+
+# API and networking
+requests>=2.31.0
+fastapi>=0.103.0
+uvicorn>=0.23.0
+
+# Async programming
+asyncio
+aiohttp>=3.8.0
+
+# Configuration
+pyyaml>=6.0.0
+python-dotenv>=1.0.0
+
+# Logging and monitoring
+structlog>=23.1.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+httpx>=0.25.0
+
+# Utilities
+python-dateutil>=2.8.0
+pytz>=2023.3

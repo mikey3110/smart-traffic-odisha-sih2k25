@@ -1,0 +1,115 @@
+# ML Optimization Configuration
+# Day 1 Sprint Implementation - ML Engineer
+
+# Real-time optimization settings
+optimization:
+  cycle_time: 30.0              # 30-second optimization cycles
+  timing_tolerance: 2.0         # ±2 seconds timing tolerance
+  max_processing_time: 25.0     # Maximum processing time per cycle
+  fallback_algorithm: "websters" # Fallback algorithm
+  emergency_threshold: 0.8      # Emergency vehicle detection threshold
+
+# Q-Learning hyperparameters
+q_learning:
+  learning_rate: 0.01           # α - Learning rate
+  epsilon: 0.1                  # ε - Exploration rate
+  epsilon_decay: 0.995          # ε decay factor
+  epsilon_min: 0.01             # Minimum ε value
+  discount_factor: 0.95         # γ - Discount factor
+  replay_buffer_size: 10000     # Experience replay buffer size
+  batch_size: 32                # Training batch size
+  target_update_frequency: 100  # Target network update frequency
+  hidden_layers: [128, 64, 32]  # Neural network architecture
+  activation: "relu"            # Activation function
+  optimizer: "adam"             # Optimizer type
+
+# State space configuration
+state_space:
+  lane_counts: "continuous"     # Vehicle counts per lane
+  avg_speed: "continuous"       # Average vehicle speed
+  queue_lengths: "continuous"   # Queue lengths per lane
+  waiting_times: "continuous"   # Average waiting times
+  time_of_day: "continuous"     # Normalized hour (0-1)
+  day_of_week: "continuous"     # Normalized day (0-1)
+  is_weekend: "boolean"         # Weekend flag
+  weather_condition: "discrete" # Weather encoding
+  temperature: "continuous"     # Temperature in Celsius
+  visibility: "continuous"      # Visibility in meters
+  current_phase: "discrete"     # Current signal phase
+  phase_duration: "continuous"  # Phase duration
+  cycle_progress: "continuous"  # Cycle progress (0-1)
+
+# Action space configuration
+action_space:
+  type: "discrete"
+  size: 4
+  actions:
+    - "extend_north_south"      # Extend green for north-south
+    - "extend_east_west"        # Extend green for east-west
+    - "reduce_cycle"            # Reduce overall cycle time
+    - "emergency_override"      # Emergency vehicle priority
+
+# Reward function weights
+reward_function:
+  waiting_time_weight: -0.5     # Penalty for long waits
+  queue_length_weight: -0.3     # Penalty for long queues
+  throughput_weight: 0.2        # Bonus for high throughput
+  efficiency_weight: 0.1        # Bonus for smooth flow
+
+# Training configuration
+training:
+  max_episodes: 10000           # Maximum training episodes
+  max_steps_per_episode: 1000   # Maximum steps per episode
+  warmup_episodes: 100          # Warmup episodes before training
+  evaluation_frequency: 100     # Evaluation frequency
+  save_frequency: 500           # Model save frequency
+  early_stopping_patience: 1000 # Early stopping patience
+
+# Performance monitoring
+monitoring:
+  metrics_history_size: 1000    # Size of metrics history
+  q_table_history_size: 100     # Size of Q-table history
+  timing_drift_history_size: 100 # Size of timing drift history
+  performance_window: 10        # Performance calculation window
+  alert_thresholds:
+    timing_drift: 5.0           # Alert if drift > 5 seconds
+    success_rate: 0.8           # Alert if success rate < 80%
+    processing_time: 30.0       # Alert if processing > 30 seconds
+
+# API configuration
+api:
+  base_url: "http://localhost:8000"
+  timeout: 5.0                  # API timeout in seconds
+  retry_attempts: 3             # Number of retry attempts
+  retry_delay: 1.0              # Delay between retries
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/ml_optimizer.log"
+  max_size: 10485760            # 10MB
+  backup_count: 5
+
+# Model persistence
+model_persistence:
+  save_directory: "models"
+  checkpoint_frequency: 100     # Save checkpoint every N cycles
+  state_file: "optimization_state.json"
+  performance_file: "optimization_performance.json"
+  q_table_file: "q_table.json"
+
+# Intersection configuration
+intersections:
+  - id: "junction-1"
+    name: "Main Street & First Avenue"
+    lanes: ["north", "south", "east", "west"]
+    priority: 1
+  - id: "junction-2"
+    name: "Second Street & Oak Avenue"
+    lanes: ["north", "south", "east", "west"]
+    priority: 2
+  - id: "junction-3"
+    name: "Third Street & Pine Avenue"
+    lanes: ["north", "south", "east", "west"]
+    priority: 3
