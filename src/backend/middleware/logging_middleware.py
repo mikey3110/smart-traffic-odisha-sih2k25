@@ -339,3 +339,4 @@ class SecurityLoggingMiddleware(BaseHTTPMiddleware):
         except Exception as e:
             logger.error(f"Failed to log security response: {e}")
 
+

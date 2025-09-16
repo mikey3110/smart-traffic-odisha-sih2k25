@@ -123,3 +123,4 @@ CACHE_TTL_MEDIUM = 300  # 5 minutes
 CACHE_TTL_LONG = 3600  # 1 hour
 CACHE_TTL_VERY_LONG = 86400  # 24 hours
 
+

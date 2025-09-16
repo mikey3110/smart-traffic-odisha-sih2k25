@@ -412,3 +412,4 @@ async def restart_application(
         raise HTTPException(status_code=500, detail=f"Failed to initiate application restart: {str(e)}")
 
 
+

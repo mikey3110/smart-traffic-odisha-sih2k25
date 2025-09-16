@@ -474,3 +474,4 @@ class PaginatedResponseSchema(BaseSchema):
         description="Pagination information"
     )
 
+

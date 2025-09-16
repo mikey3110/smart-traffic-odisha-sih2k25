@@ -517,3 +517,4 @@ class EnhancedWebstersFormulaOptimizer:
         self.performance_metrics.clear()
         self.logger.info("Webster's formula optimization history cleared")
 
+
