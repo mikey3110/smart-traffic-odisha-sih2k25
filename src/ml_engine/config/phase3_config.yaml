@@ -1,0 +1,395 @@
+# Phase 3: ML Model Validation & Performance Analytics Configuration
+# Complete configuration for comprehensive validation and analytics
+
+# Model Validator Configuration
+model_validator:
+  test_duration: 3600  # seconds (1 hour)
+  num_iterations: 10
+  cross_validation_folds: 5
+  alpha: 0.05  # significance level
+  confidence_level: 0.95
+  min_sample_size: 30
+  
+  # Scenario generator settings
+  scenario_generator:
+    vehicle_spawn_rates:
+      rush_hour: 0.8
+      emergency: 0.6
+      special_event: 1.2
+      weather_conditions: 0.7
+      normal_traffic: 0.5
+      congestion: 1.0
+      low_traffic: 0.2
+    
+    duration_settings:
+      rush_hour: 3600
+      emergency: 1800
+      special_event: 7200
+      weather_conditions: 3600
+      normal_traffic: 3600
+      congestion: 1800
+      low_traffic: 1800
+  
+  # Statistical analyzer settings
+  statistical_analyzer:
+    alpha: 0.05
+    confidence_level: 0.95
+    min_sample_size: 30
+    effect_size_threshold: 0.5
+
+# Performance Analytics Configuration
+performance_analytics:
+  # Metrics collector settings
+  metrics_collector:
+    collection_interval: 1.0  # seconds
+    buffer_size: 10000
+    max_intersections: 20
+  
+  # Learning curve analyzer settings
+  learning_analyzer:
+    convergence_threshold: 0.01
+    min_epochs: 100
+    stability_window: 100
+  
+  # Comparative dashboard settings
+  dashboard:
+    update_interval: 60  # seconds
+    max_data_points: 1000
+    chart_types: ['line', 'bar', 'scatter', 'heatmap']
+  
+  # Predictive analytics settings
+  predictive:
+    forecast_horizon: 60  # minutes
+    training_window: 1440  # minutes (24 hours)
+    model_types: ['linear', 'polynomial', 'exponential']
+    confidence_level: 0.95
+  
+  # Anomaly detector settings
+  anomaly_detector:
+    contamination: 0.1
+    min_samples: 100
+    anomaly_threshold: 0.5
+    severity_levels:
+      low: 1.0
+      medium: 1.5
+      high: 2.0
+      critical: 3.0
+
+# ML Monitoring Configuration
+ml_monitoring:
+  # Drift detector settings
+  drift_detector:
+    drift_threshold: 0.1
+    window_size: 1000
+    min_samples: 100
+    ks_test_alpha: 0.05
+    psi_threshold: 0.2
+    
+    # Drift severity levels
+    severity_thresholds:
+      emergency: 0.5
+      critical: 0.3
+      warning: 0.1
+      info: 0.05
+  
+  # Feature importance analyzer settings
+  feature_analyzer:
+    stability_window: 100
+    min_importance_threshold: 0.01
+    importance_methods: ['permutation', 'shap', 'model_based']
+  
+  # Explainable AI settings
+  explainable_ai:
+    max_explanations: 1000
+    explanation_confidence_threshold: 0.7
+    shap_explainer_type: 'tree'  # 'tree', 'linear', 'kernel'
+    lime_samples: 1000
+  
+  # Performance alert system settings
+  alert_system:
+    alert_thresholds:
+      wait_time:
+        warning: 0.1
+        critical: 0.2
+        emergency: 0.5
+      throughput:
+        warning: -0.1
+        critical: -0.2
+        emergency: -0.5
+      queue_length:
+        warning: 0.15
+        critical: 0.3
+        emergency: 0.6
+      delay:
+        warning: 0.1
+        critical: 0.25
+        emergency: 0.5
+    
+    retraining_threshold: 0.3
+    retraining_cooldown: 3600  # seconds (1 hour)
+
+# Advanced ML Features Configuration
+advanced_features:
+  # Transfer learning settings
+  transfer_learning:
+    freeze_layers: 0.7
+    learning_rate_multiplier: 0.1
+    fine_tuning_epochs: 50
+    adaptation_threshold: 0.8
+    similarity_metrics: ['cosine', 'euclidean', 'correlation']
+  
+  # Meta-learning settings
+  meta_learning:
+    meta_learning_rate: 0.001
+    inner_learning_rate: 0.01
+    meta_epochs: 100
+    few_shot_samples: 10
+    task_embedding_dim: 64
+    adaptation_steps: 5
+  
+  # Ensemble methods settings
+  ensemble_methods:
+    ensemble_types: ['voting', 'stacking', 'bagging']
+    diversity_threshold: 0.1
+    performance_threshold: 0.7
+    max_models: 10
+    weight_optimization: true
+  
+  # RLHF settings
+  rlhf:
+    feedback_weight: 0.1
+    learning_rate_adjustment: 0.01
+    confidence_threshold: 0.7
+    feedback_history_size: 1000
+    quality_threshold: 0.6
+    expert_feedback_multiplier: 1.2
+
+# Validation Reports Configuration
+validation_reports:
+  output_dir: "reports"
+  template_dir: "templates"
+  
+  # Statistical analyzer settings
+  statistical_analyzer:
+    alpha: 0.05
+    confidence_level: 0.95
+    min_sample_size: 30
+    effect_size_thresholds:
+      small: 0.2
+      medium: 0.5
+      large: 0.8
+  
+  # Visualization settings
+  visualization:
+    output_dir: "reports/visualizations"
+    figure_size: [12, 8]
+    dpi: 300
+    chart_formats: ['png', 'html', 'pdf']
+    color_schemes:
+      primary: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+      secondary: ['#9467bd', '#8c564b', '#e377c2', '#7f7f7f']
+  
+  # Report templates
+  templates:
+    executive_summary: "executive_summary.md.j2"
+    technical_report: "technical_report.md.j2"
+    performance_analysis: "performance_analysis.md.j2"
+    statistical_validation: "statistical_validation.md.j2"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/phase3.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+  
+  # Component-specific logging
+  components:
+    model_validator: "INFO"
+    performance_analytics: "INFO"
+    ml_monitoring: "WARNING"
+    advanced_features: "INFO"
+    validation_reports: "INFO"
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  metrics_interval: 30  # seconds
+  health_check_interval: 60  # seconds
+  
+  # Performance thresholds
+  performance_thresholds:
+    cpu_usage: 80.0
+    memory_usage: 80.0
+    disk_usage: 90.0
+    processing_time: 10.0  # seconds
+    error_rate: 0.05
+  
+  # Alerting
+  alerts:
+    email:
+      enabled: false
+      smtp_server: "smtp.gmail.com"
+      smtp_port: 587
+      username: "your_email@gmail.com"
+      password: "your_password"
+      recipients: ["admin@company.com"]
+    
+    slack:
+      enabled: false
+      webhook_url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+      channel: "#alerts"
+    
+    webhook:
+      enabled: false
+      url: "https://your-webhook-url.com/alerts"
+      timeout: 10
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  name: "traffic_validation"
+  user: "validation_user"
+  password: "validation_password"
+  
+  # Connection pool
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+  
+  # Tables
+  tables:
+    validation_results: "validation_results"
+    ab_test_results: "ab_test_results"
+    performance_metrics: "performance_metrics"
+    drift_detections: "drift_detections"
+    model_explanations: "model_explanations"
+
+# API Configuration
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8001
+  cors_origins: ["*"]
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+    burst_size: 20
+  
+  # Authentication
+  auth:
+    enabled: false
+    api_key_required: false
+    api_key: "your_api_key_here"
+  
+  # Endpoints
+  endpoints:
+    validation_status: "/api/v1/validation/status"
+    performance_metrics: "/api/v1/performance/metrics"
+    ml_monitoring: "/api/v1/monitoring/ml"
+    advanced_features: "/api/v1/features/advanced"
+    validation_reports: "/api/v1/reports/validation"
+
+# Security Configuration
+security:
+  # Data encryption
+  encryption:
+    enabled: false
+    algorithm: "AES-256-GCM"
+    key_file: "config/encryption.key"
+  
+  # Access control
+  access_control:
+    enabled: false
+    admin_users: ["admin@company.com"]
+    read_only_users: ["viewer@company.com"]
+  
+  # Audit logging
+  audit_logging:
+    enabled: true
+    log_file: "logs/audit.log"
+    max_size: 52428800  # 50MB
+    backup_count: 10
+
+# Backup Configuration
+backup:
+  enabled: true
+  interval: 3600  # seconds (1 hour)
+  retention_days: 30
+  backup_path: "backups/phase3/"
+  
+  # What to backup
+  validation_results: true
+  performance_metrics: true
+  model_explanations: true
+  configuration: true
+  logs: true
+  
+  # Compression
+  compression:
+    enabled: true
+    algorithm: "gzip"
+    level: 6
+
+# Development Configuration
+development:
+  debug_mode: false
+  mock_data: false
+  test_mode: false
+  
+  # Testing
+  testing:
+    unit_tests: true
+    integration_tests: true
+    performance_tests: true
+    load_tests: true
+    
+    # Test data
+    test_data_path: "test_data/"
+    mock_intersections: 3
+    mock_scenarios: 5
+  
+  # Profiling
+  profiling:
+    enabled: false
+    profile_file: "profiles/phase3_profile.prof"
+    memory_profiling: false
+    cpu_profiling: true
+
+# Deployment Configuration
+deployment:
+  environment: "production"  # development, staging, production
+  
+  # Docker
+  docker:
+    enabled: false
+    image_name: "traffic-optimization-phase3"
+    tag: "latest"
+    registry: "your-registry.com"
+  
+  # Kubernetes
+  kubernetes:
+    enabled: false
+    namespace: "traffic-optimization"
+    replicas: 3
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "2000m"
+        memory: "4Gi"
+  
+  # Health checks
+  health_checks:
+    enabled: true
+    endpoint: "/health"
+    interval: 30
+    timeout: 10
+    retries: 3

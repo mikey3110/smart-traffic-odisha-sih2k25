@@ -1,0 +1,178 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: traffic-ml
+  labels:
+    app: postgres
+    version: "15"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        version: "15"
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "traffic_ml"
+        - name: POSTGRES_USER
+          value: "traffic_user"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - traffic_user
+            - -d
+            - traffic_ml
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - traffic_user
+            - -d
+            - traffic_ml
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-data-pvc
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: traffic-ml
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-pvc
+  namespace: traffic-ml
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: fast-ssd
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+  namespace: traffic-ml
+data:
+  init-db.sql: |
+    -- Create traffic_ml database
+    CREATE DATABASE traffic_ml;
+    
+    -- Create tables
+    CREATE TABLE IF NOT EXISTS intersections (
+        id SERIAL PRIMARY KEY,
+        intersection_id VARCHAR(50) UNIQUE NOT NULL,
+        name VARCHAR(100),
+        location POINT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    
+    CREATE TABLE IF NOT EXISTS traffic_data (
+        id SERIAL PRIMARY KEY,
+        intersection_id VARCHAR(50) NOT NULL,
+        timestamp TIMESTAMP NOT NULL,
+        lane_counts INTEGER[],
+        queue_lengths INTEGER[],
+        wait_times FLOAT[],
+        signal_states VARCHAR(10)[],
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (intersection_id) REFERENCES intersections(intersection_id)
+    );
+    
+    CREATE TABLE IF NOT EXISTS ml_predictions (
+        id SERIAL PRIMARY KEY,
+        intersection_id VARCHAR(50) NOT NULL,
+        request_id VARCHAR(100) UNIQUE NOT NULL,
+        prediction JSONB NOT NULL,
+        confidence FLOAT NOT NULL,
+        processing_time FLOAT NOT NULL,
+        timestamp TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (intersection_id) REFERENCES intersections(intersection_id)
+    );
+    
+    CREATE TABLE IF NOT EXISTS performance_metrics (
+        id SERIAL PRIMARY KEY,
+        intersection_id VARCHAR(50) NOT NULL,
+        timestamp TIMESTAMP NOT NULL,
+        wait_time_reduction FLOAT,
+        throughput_increase FLOAT,
+        fuel_consumption_reduction FLOAT,
+        emission_reduction FLOAT,
+        queue_length INTEGER,
+        delay_time FLOAT,
+        signal_efficiency FLOAT,
+        safety_score FLOAT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (intersection_id) REFERENCES intersections(intersection_id)
+    );
+    
+    -- Create indexes
+    CREATE INDEX idx_traffic_data_intersection_timestamp ON traffic_data(intersection_id, timestamp);
+    CREATE INDEX idx_ml_predictions_intersection_timestamp ON ml_predictions(intersection_id, timestamp);
+    CREATE INDEX idx_performance_metrics_intersection_timestamp ON performance_metrics(intersection_id, timestamp);
+    
+    -- Insert sample intersection
+    INSERT INTO intersections (intersection_id, name, location) 
+    VALUES ('demo_intersection', 'Demo Intersection', POINT(40.7128, -74.0060))
+    ON CONFLICT (intersection_id) DO NOTHING;

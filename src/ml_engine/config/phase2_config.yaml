@@ -1,0 +1,264 @@
+# Phase 2: Real-Time Optimization Loop & Safety Systems Configuration
+# Complete configuration for production deployment
+
+# Real-Time Optimizer Configuration
+real_time_optimizer:
+  cycle_time: 30.0  # seconds
+  max_processing_time: 25.0  # seconds
+  confidence_threshold: 0.6
+  safety_mode_threshold: 0.3
+  max_intersections: 10
+  thread_pool_size: 4
+
+# Safety Manager Configuration
+safety_manager:
+  webster:
+    min_cycle_time: 40  # seconds
+    max_cycle_time: 120  # seconds
+    saturation_flow_rate: 1800  # vehicles/hour
+    yellow_time: 3  # seconds
+    all_red_time: 2  # seconds
+    min_green_time: 10  # seconds
+    max_green_time: 60  # seconds
+  
+  emergency:
+    override_duration: 300  # seconds
+    priority_extension: 20  # seconds
+    priority_levels:
+      ambulance: 1
+      fire_truck: 1
+      police: 2
+      emergency_services: 3
+      public_transport: 4
+      other: 5
+  
+  constraints:
+    min_green_time: 10  # seconds
+    max_green_time: 90  # seconds
+    min_cycle_time: 40  # seconds
+    max_cycle_time: 120  # seconds
+    pedestrian_crossing_time: 20  # seconds
+    max_wait_time: 120  # seconds
+    congestion_threshold: 0.8
+    safety_check_interval: 5.0  # seconds
+
+# Performance Optimization Configuration
+performance:
+  max_cache_size: 10000
+  memory_limit: 1024  # MB
+  cleanup_interval: 300  # seconds
+  compression_threshold: 0.8
+  hash_cache_size: 10000
+  
+  # Memory-mapped Q-table settings
+  memory_mapped:
+    enabled: false
+    file_path: "data/q_table_mmap.dat"
+    max_size: 1000000
+
+# SUMO Integration Configuration
+sumo:
+  sumo_binary: "sumo"
+  sumo_config: "config/simulation.sumocfg"
+  port: 8813
+  host: "localhost"
+  step_length: 1.0
+  error_threshold: 10
+  recovery_timeout: 5.0
+
+# ML Agent Configuration
+ml_agent:
+  state_dim: 20
+  action_dim: 4
+  learning_rate: 0.001
+  discount_factor: 0.95
+  epsilon_start: 1.0
+  epsilon_end: 0.01
+  epsilon_decay: 0.995
+  batch_size: 32
+  target_update_frequency: 100
+  memory_size: 10000
+
+# Multi-Intersection Coordinator Configuration
+coordinator:
+  communication_radius: 500  # meters
+  coordination_weight: 0.3
+  conflict_resolution_weight: 0.2
+  network_optimization_weight: 0.5
+  max_coordination_distance: 1000  # meters
+
+# Advanced Reward Function Configuration
+reward_function:
+  weights:
+    wait_time_reduction: 0.4
+    throughput_increase: 0.3
+    fuel_efficiency: 0.2
+    pedestrian_safety: 0.1
+  
+  thresholds:
+    max_wait_time: 120  # seconds
+    min_throughput: 0.1  # vehicles/second
+    fuel_efficiency_threshold: 0.8
+    pedestrian_safety_threshold: 0.9
+
+# Experience Replay Configuration
+experience_replay:
+  capacity: 10000
+  batch_size: 32
+  alpha: 0.6  # Prioritization exponent
+  beta: 0.4  # Importance sampling exponent
+  beta_increment: 0.001
+  epsilon: 1e-6  # Small constant for numerical stability
+
+# Intersection Configurations
+intersections:
+  intersection_1:
+    lanes: ["north", "south", "east", "west"]
+    traffic_lights: ["tl_1"]
+    detectors: ["det_1", "det_2", "det_3", "det_4"]
+    phases: [0, 1, 2, 3]
+    approach_angles: [0, 180, 90, 270]
+    lane_widths: [3.5, 3.5, 3.5, 3.5]
+    pedestrian_volume: 0.1
+    turning_ratios: [0.1, 0.1, 0.1, 0.1]
+    
+  intersection_2:
+    lanes: ["north", "south", "east", "west"]
+    traffic_lights: ["tl_2"]
+    detectors: ["det_5", "det_6", "det_7", "det_8"]
+    phases: [0, 1, 2, 3]
+    approach_angles: [0, 180, 90, 270]
+    lane_widths: [3.5, 3.5, 3.5, 3.5]
+    pedestrian_volume: 0.15
+    turning_ratios: [0.15, 0.15, 0.15, 0.15]
+
+# Data Sources Configuration
+data_sources:
+  camera_1:
+    type: "camera"
+    intersection_id: "intersection_1"
+    frequency: 1.0  # Hz
+    resolution: [1920, 1080]
+    fps: 30
+    
+  camera_2:
+    type: "camera"
+    intersection_id: "intersection_2"
+    frequency: 1.0  # Hz
+    resolution: [1920, 1080]
+    fps: 30
+    
+  sensor_1:
+    type: "sensor"
+    intersection_id: "intersection_1"
+    frequency: 2.0  # Hz
+    sensor_type: "induction_loop"
+    
+  sensor_2:
+    type: "sensor"
+    intersection_id: "intersection_2"
+    frequency: 2.0  # Hz
+    sensor_type: "induction_loop"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/phase2.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+
+# Monitoring Configuration
+monitoring:
+  enabled: true
+  metrics_interval: 10  # seconds
+  alert_thresholds:
+    cpu_usage: 90.0
+    memory_usage: 90.0
+    processing_time: 5.0
+    error_rate: 0.1
+    safety_violations: 5
+  
+  # Prometheus metrics
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+
+# API Configuration
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins: ["*"]
+  
+  endpoints:
+    optimization_status: "/api/v1/optimization/status"
+    safety_metrics: "/api/v1/safety/metrics"
+    performance_metrics: "/api/v1/performance/metrics"
+    system_status: "/api/v1/system/status"
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "localhost"
+  port: 5432
+  name: "traffic_optimization"
+  user: "traffic_user"
+  password: "traffic_password"
+  
+  # Connection pool
+  pool_size: 10
+  max_overflow: 20
+  pool_timeout: 30
+  pool_recycle: 3600
+
+# Redis Configuration
+redis:
+  host: "localhost"
+  port: 6379
+  db: 0
+  password: null
+  
+  # Connection pool
+  max_connections: 20
+  retry_on_timeout: true
+  socket_timeout: 5
+  socket_connect_timeout: 5
+
+# Security Configuration
+security:
+  api_key_required: false
+  api_key: "your_api_key_here"
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+    burst_size: 20
+
+# Backup Configuration
+backup:
+  enabled: true
+  interval: 3600  # seconds (1 hour)
+  retention_days: 7
+  backup_path: "backups/"
+  
+  # What to backup
+  q_tables: true
+  configuration: true
+  logs: true
+  metrics: true
+
+# Development Configuration
+development:
+  debug_mode: false
+  mock_sumo: false
+  mock_cameras: false
+  test_data_path: "test_data/"
+  
+  # Testing
+  unit_tests: true
+  integration_tests: true
+  performance_tests: true
+  load_tests: true
