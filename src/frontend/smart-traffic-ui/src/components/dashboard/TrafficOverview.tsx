@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 import {
   Card,
   CardHeader,
@@ -7,10 +7,10 @@ import {
   Title,
   Icon,
   Badge,
-  ProgressIndicator
-} from '@ui5/webcomponents-react';
-import { PerformanceMetrics } from '@/types';
-import './TrafficOverview.scss';
+  ProgressIndicator,
+} from "@ui5/webcomponents-react";
+import { PerformanceMetrics } from "@/types";
+import "./TrafficOverview.scss";
 
 interface TrafficOverviewProps {
   metrics: PerformanceMetrics | null;
@@ -41,7 +41,7 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
         </CardHeader>
         <div className="card-content">
           <div className="empty-state">
-            <Icon name="traffic-light" size="L" />
+            <Icon name="traffic-light" />
             <Text>No traffic data available</Text>
           </div>
         </div>
@@ -49,24 +49,26 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
     );
   }
 
-  const efficiency = metrics.totalVehicles > 0 
-    ? Math.round((metrics.runningVehicles / metrics.totalVehicles) * 100)
-    : 0;
+  const efficiency =
+    metrics.totalVehicles > 0
+      ? Math.round((metrics.runningVehicles / metrics.totalVehicles) * 100)
+      : 0;
 
-  const averageWaitingTime = metrics.totalVehicles > 0
-    ? Math.round(metrics.totalWaitingTime / metrics.totalVehicles)
-    : 0;
+  const averageWaitingTime =
+    metrics.totalVehicles > 0
+      ? Math.round(metrics.totalWaitingTime / metrics.totalVehicles)
+      : 0;
 
   const getEfficiencyColor = (efficiency: number) => {
-    if (efficiency >= 80) return 'var(--sapPositiveColor)';
-    if (efficiency >= 60) return 'var(--sapCriticalColor)';
-    return 'var(--sapNegativeColor)';
+    if (efficiency >= 80) return "var(--sapPositiveColor)";
+    if (efficiency >= 60) return "var(--sapCriticalColor)";
+    return "var(--sapNegativeColor)";
   };
 
   const getEfficiencyStatus = (efficiency: number) => {
-    if (efficiency >= 80) return 'Excellent';
-    if (efficiency >= 60) return 'Good';
-    return 'Poor';
+    if (efficiency >= 80) return "Excellent";
+    if (efficiency >= 60) return "Good";
+    return "Poor";
   };
 
   return (
@@ -79,7 +81,7 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
           </Text>
         </div>
       </CardHeader>
-      
+
       <div className="card-content">
         {/* Key Metrics */}
         <div className="metrics-grid">
@@ -138,7 +140,9 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
               <Icon name="speed" />
             </div>
             <div className="metric-content">
-              <Text className="metric-value">{metrics.averageSpeed.toFixed(1)}</Text>
+              <Text className="metric-value">
+                {metrics.averageSpeed.toFixed(1)}
+              </Text>
               <Text className="metric-label">Avg Speed (km/h)</Text>
             </div>
           </motion.div>
@@ -148,7 +152,7 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
         <div className="efficiency-section">
           <div className="efficiency-header">
             <Text>Traffic Efficiency</Text>
-            <Text 
+            <Text
               className="efficiency-status"
               style={{ color: getEfficiencyColor(efficiency) }}
             >
@@ -156,11 +160,11 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
             </Text>
           </div>
           <div className="efficiency-bar">
-            <div 
+            <div
               className="efficiency-fill"
-              style={{ 
+              style={{
                 width: `${efficiency}%`,
-                backgroundColor: getEfficiencyColor(efficiency)
+                backgroundColor: getEfficiencyColor(efficiency),
               }}
             />
           </div>
@@ -176,7 +180,7 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
               <Text className="stat-label">Avg Wait Time</Text>
             </div>
           </div>
-          
+
           <div className="stat-item">
             <Icon name="trending-up" />
             <div className="stat-content">
@@ -184,11 +188,13 @@ export function TrafficOverview({ metrics, loading }: TrafficOverviewProps) {
               <Text className="stat-label">Throughput</Text>
             </div>
           </div>
-          
+
           <div className="stat-item">
             <Icon name="environment" />
             <div className="stat-content">
-              <Text className="stat-value">{metrics.totalCo2Emission.toFixed(1)}</Text>
+              <Text className="stat-value">
+                {metrics.totalCo2Emission.toFixed(1)}
+              </Text>
               <Text className="stat-label">CO2 (kg)</Text>
             </div>
           </div>

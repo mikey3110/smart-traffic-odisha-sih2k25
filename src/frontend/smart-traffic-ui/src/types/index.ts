@@ -10,17 +10,17 @@ export interface User {
 }
 
 export enum UserRole {
-  ADMIN = 'admin',
-  OPERATOR = 'operator',
-  VIEWER = 'viewer'
+  ADMIN = "admin",
+  OPERATOR = "operator",
+  VIEWER = "viewer",
 }
 
 export enum Permission {
-  VIEW_DASHBOARD = 'view_dashboard',
-  MANAGE_TRAFFIC = 'manage_traffic',
-  CONFIGURE_SYSTEM = 'configure_system',
-  VIEW_ANALYTICS = 'view_analytics',
-  MANAGE_USERS = 'manage_users'
+  VIEW_DASHBOARD = "view_dashboard",
+  MANAGE_TRAFFIC = "manage_traffic",
+  CONFIGURE_SYSTEM = "configure_system",
+  VIEW_ANALYTICS = "view_analytics",
+  MANAGE_USERS = "manage_users",
 }
 
 // Traffic management types
@@ -41,10 +41,10 @@ export interface TrafficLight {
 }
 
 export enum TrafficLightStatus {
-  NORMAL = 'normal',
-  MAINTENANCE = 'maintenance',
-  ERROR = 'error',
-  OFFLINE = 'offline'
+  NORMAL = "normal",
+  MAINTENANCE = "maintenance",
+  ERROR = "error",
+  OFFLINE = "offline",
 }
 
 export interface Vehicle {
@@ -64,11 +64,11 @@ export interface Vehicle {
 }
 
 export enum VehicleType {
-  PASSENGER = 'passenger',
-  TRUCK = 'truck',
-  BUS = 'bus',
-  MOTORCYCLE = 'motorcycle',
-  EMERGENCY = 'emergency'
+  PASSENGER = "passenger",
+  TRUCK = "truck",
+  BUS = "bus",
+  MOTORCYCLE = "motorcycle",
+  EMERGENCY = "emergency",
 }
 
 export interface Intersection {
@@ -127,18 +127,18 @@ export interface Notification {
 }
 
 export enum NotificationType {
-  INFO = 'info',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-  ALERT = 'alert'
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+  ERROR = "error",
+  ALERT = "alert",
 }
 
 export enum NotificationPriority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 // Configuration types
@@ -245,7 +245,7 @@ export interface FilterOptions {
 
 export interface SortOptions {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 
 export interface TableColumn {
@@ -254,7 +254,7 @@ export interface TableColumn {
   sortable?: boolean;
   filterable?: boolean;
   width?: string;
-  align?: 'left' | 'center' | 'right';
+  align?: "left" | "center" | "right";
   render?: (value: any, row: any) => React.ReactNode;
 }
 
@@ -318,7 +318,9 @@ export interface AppContextType {
   login: (credentials: LoginForm) => Promise<void>;
   logout: () => void;
   updateTheme: (theme: Theme) => void;
-  addNotification: (notification: Omit<Notification, 'id' | 'timestamp'>) => void;
+  addNotification: (
+    notification: Omit<Notification, "id" | "timestamp">
+  ) => void;
   removeNotification: (id: string) => void;
   markNotificationAsRead: (id: string) => void;
   updateSystemConfig: (config: Partial<SystemConfig>) => void;

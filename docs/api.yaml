@@ -1,0 +1,667 @@
+openapi: 3.0.3
+info:
+  title: Smart Traffic Management System API
+  description: |
+    Comprehensive API for the Smart Traffic Management System including traffic data ingestion,
+    signal optimization, ML metrics, and computer vision integration.
+  version: 1.0.0
+  contact:
+    name: Smart Traffic Management Team
+    email: support@smarttraffic.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.smarttraffic.com
+    description: Production server
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Check system health status
+      tags:
+        - System
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                  services:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        status:
+                          type: string
+                        response_time:
+                          type: number
+
+  /api/v1/traffic/ingest:
+    post:
+      summary: Ingest Traffic Data
+      description: Submit traffic data for processing and storage
+      tags:
+        - Traffic
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - intersection_id
+                - timestamp
+                - vehicle_counts
+                - coordinates
+              properties:
+                intersection_id:
+                  type: string
+                  example: "intersection_1"
+                timestamp:
+                  type: integer
+                  format: int64
+                  example: 1640995200
+                vehicle_counts:
+                  type: object
+                  properties:
+                    car:
+                      type: integer
+                      minimum: 0
+                      example: 15
+                    motorcycle:
+                      type: integer
+                      minimum: 0
+                      example: 5
+                    bus:
+                      type: integer
+                      minimum: 0
+                      example: 2
+                    truck:
+                      type: integer
+                      minimum: 0
+                      example: 1
+                lane_occupancy:
+                  type: object
+                  additionalProperties:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                  example:
+                    lane_1: 0.75
+                    lane_2: 0.60
+                    lane_3: 0.45
+                waiting_times:
+                  type: object
+                  additionalProperties:
+                    type: number
+                    minimum: 0
+                  example:
+                    lane_1: 45.2
+                    lane_2: 38.7
+                    lane_3: 52.1
+                coordinates:
+                  type: object
+                  properties:
+                    lat:
+                      type: number
+                      format: float
+                      example: 20.2961
+                    lng:
+                      type: number
+                      format: float
+                      example: 85.8245
+      responses:
+        '200':
+          description: Traffic data ingested successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '400':
+          description: Bad request - invalid data
+        '422':
+          description: Validation error
+        '500':
+          description: Internal server error
+
+  /api/v1/traffic/status/{intersection_id}:
+    get:
+      summary: Get Traffic Status
+      description: Retrieve current traffic status for an intersection
+      tags:
+        - Traffic
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      responses:
+        '200':
+          description: Traffic status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intersection_id:
+                    type: string
+                  current_phase:
+                    type: integer
+                  vehicle_counts:
+                    type: object
+                  lane_occupancy:
+                    type: object
+                  waiting_times:
+                    type: object
+                  last_updated:
+                    type: string
+                    format: date-time
+        '404':
+          description: Intersection not found
+
+  /api/v1/traffic/history/{intersection_id}:
+    get:
+      summary: Get Traffic History
+      description: Retrieve historical traffic data for an intersection
+      tags:
+        - Traffic
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+        - name: hours
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 168
+            default: 24
+          description: Number of hours of history to retrieve
+      responses:
+        '200':
+          description: Traffic history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    timestamp:
+                      type: string
+                      format: date-time
+                    vehicle_counts:
+                      type: object
+                    lane_occupancy:
+                      type: object
+                    waiting_times:
+                      type: object
+        '404':
+          description: Intersection not found
+
+  /api/v1/signals/optimize/{intersection_id}:
+    post:
+      summary: Optimize Traffic Signals
+      description: Request signal optimization for an intersection
+      tags:
+        - Signals
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - current_phase
+                - traffic_data
+                - optimization_type
+              properties:
+                current_phase:
+                  type: integer
+                  minimum: 0
+                  maximum: 7
+                  example: 0
+                traffic_data:
+                  type: object
+                  properties:
+                    vehicle_counts:
+                      type: object
+                    lane_occupancy:
+                      type: object
+                    waiting_times:
+                      type: object
+                optimization_type:
+                  type: string
+                  enum: [ml_optimized, webster_formula, adaptive]
+                  example: "ml_optimized"
+      responses:
+        '200':
+          description: Signal optimization completed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  optimized_phases:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        phase:
+                          type: integer
+                        duration:
+                          type: number
+                        state:
+                          type: string
+                  performance_metrics:
+                    type: object
+                    properties:
+                      wait_time_reduction:
+                        type: number
+                      throughput_increase:
+                        type: number
+                      fuel_efficiency:
+                        type: number
+        '400':
+          description: Bad request
+        '404':
+          description: Intersection not found
+
+  /api/v1/signals/status/{intersection_id}:
+    get:
+      summary: Get Signal Status
+      description: Retrieve current signal status for an intersection
+      tags:
+        - Signals
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      responses:
+        '200':
+          description: Signal status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intersection_id:
+                    type: string
+                  current_phase:
+                    type: integer
+                  phase_duration:
+                    type: number
+                  next_phase:
+                    type: integer
+                  cycle_time:
+                    type: number
+                  last_updated:
+                    type: string
+                    format: date-time
+        '404':
+          description: Intersection not found
+
+  /api/v1/signals/override/{intersection_id}:
+    put:
+      summary: Manual Signal Override
+      description: Manually override traffic signals
+      tags:
+        - Signals
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phase
+                - duration
+                - reason
+              properties:
+                phase:
+                  type: integer
+                  minimum: 0
+                  maximum: 7
+                  example: 1
+                duration:
+                  type: number
+                  minimum: 5
+                  maximum: 300
+                  example: 30
+                reason:
+                  type: string
+                  enum: [emergency_vehicle, maintenance, manual_control]
+                  example: "emergency_vehicle"
+      responses:
+        '200':
+          description: Signal override applied successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Intersection not found
+
+  /api/v1/ml/metrics:
+    get:
+      summary: Get ML Metrics
+      description: Retrieve current ML optimization metrics
+      tags:
+        - ML
+      responses:
+        '200':
+          description: ML metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_cycles:
+                    type: integer
+                  successful_cycles:
+                    type: integer
+                  average_cycle_time:
+                    type: number
+                  current_reward:
+                    type: number
+                  performance_improvement:
+                    type: number
+                  timestamp:
+                    type: string
+                    format: date-time
+        '500':
+          description: Internal server error
+
+  /api/v1/ml/performance/{intersection_id}:
+    get:
+      summary: Get ML Performance
+      description: Retrieve ML performance metrics for an intersection
+      tags:
+        - ML
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      responses:
+        '200':
+          description: ML performance retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intersection_id:
+                    type: string
+                  model_status:
+                    type: string
+                  accuracy:
+                    type: number
+                  reward_trend:
+                    type: array
+                    items:
+                      type: number
+                  last_training:
+                    type: string
+                    format: date-time
+        '404':
+          description: Intersection not found
+
+  /api/v1/cv/counts:
+    post:
+      summary: Submit Vehicle Counts
+      description: Submit computer vision vehicle count data
+      tags:
+        - Computer Vision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - camera_id
+                - intersection_id
+                - timestamp
+                - total_vehicles
+                - counts_by_class
+                - coordinates
+              properties:
+                camera_id:
+                  type: string
+                  example: "cam_001"
+                intersection_id:
+                  type: string
+                  example: "intersection_1"
+                timestamp:
+                  type: integer
+                  format: int64
+                  example: 1640995200
+                total_vehicles:
+                  type: integer
+                  minimum: 0
+                  example: 18
+                counts_by_class:
+                  type: object
+                  properties:
+                    car:
+                      type: integer
+                      minimum: 0
+                      example: 12
+                    motorcycle:
+                      type: integer
+                      minimum: 0
+                      example: 4
+                    bus:
+                      type: integer
+                      minimum: 0
+                      example: 1
+                    truck:
+                      type: integer
+                      minimum: 0
+                      example: 1
+                coordinates:
+                  type: object
+                  properties:
+                    lat:
+                      type: number
+                      format: float
+                      example: 20.2961
+                    lng:
+                      type: number
+                      format: float
+                      example: 85.8245
+      responses:
+        '200':
+          description: Vehicle counts submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+        '400':
+          description: Bad request
+        '422':
+          description: Validation error
+
+  /api/v1/cv/counts/{intersection_id}:
+    get:
+      summary: Get Vehicle Counts
+      description: Retrieve vehicle count data for an intersection
+      tags:
+        - Computer Vision
+      parameters:
+        - name: intersection_id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "intersection_1"
+      responses:
+        '200':
+          description: Vehicle counts retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  intersection_id:
+                    type: string
+                  cameras:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        camera_id:
+                          type: string
+                        total_vehicles:
+                          type: integer
+                        counts_by_class:
+                          type: object
+                        last_updated:
+                          type: string
+                          format: date-time
+        '404':
+          description: Intersection not found
+
+  /api/v1/cv/streams:
+    get:
+      summary: Get Camera Streams
+      description: Retrieve available camera stream information
+      tags:
+        - Computer Vision
+      responses:
+        '200':
+          description: Camera streams retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  streams:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        camera_id:
+                          type: string
+                        intersection_id:
+                          type: string
+                        hls_url:
+                          type: string
+                        coordinates:
+                          type: object
+                        status:
+                          type: string
+                        last_updated:
+                          type: string
+                          format: date-time
+                  count:
+                    type: integer
+
+components:
+  schemas:
+    APIResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+        message:
+          type: string
+          example: "Operation completed successfully"
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - success
+        - message
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Validation error"
+        details:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - success
+        - error
+
+  securitySchemes:
+    APIKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication
+
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for authentication
+
+security:
+  - APIKey: []
+  - BearerAuth: []
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: Traffic
+    description: Traffic data management endpoints
+  - name: Signals
+    description: Traffic signal control endpoints
+  - name: ML
+    description: Machine learning metrics and performance endpoints
+  - name: Computer Vision
+    description: Computer vision and vehicle detection endpoints

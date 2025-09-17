@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Card,
   CardHeader,
@@ -11,18 +11,19 @@ import {
   Icon,
   Switch,
   Label,
-  Badge
-} from '@ui5/webcomponents-react';
-import { useApp } from '@/contexts/AppContext';
-import { TrafficOverview } from './TrafficOverview';
-import { PerformanceMetrics } from './PerformanceMetrics';
-import { TrafficLightsGrid } from './TrafficLightsGrid';
-import { RealTimeChart } from './RealTimeChart';
-import { AlertsPanel } from './AlertsPanel';
-import { useWebSocket } from '@/services/websocketService';
-import { trafficService } from '@/services/trafficService';
-import { PerformanceMetrics as PerformanceMetricsType } from '@/types';
-import './Dashboard.scss';
+  Badge,
+} from "@ui5/webcomponents-react";
+import { useApp } from "@/contexts/AppContext";
+import { TrafficOverview } from "./TrafficOverview";
+import { PerformanceMetrics } from "./PerformanceMetrics";
+import { TrafficLightsGrid } from "./TrafficLightsGrid";
+import { RealTimeChart } from "./RealTimeChart";
+import { AlertsPanel } from "./AlertsPanel";
+import { TrafficMap } from "../map/TrafficMap";
+import { useWebSocket } from "@/services/websocketService";
+import { trafficService } from "@/services/trafficService";
+import { PerformanceMetrics as PerformanceMetricsType } from "@/types";
+import "./Dashboard.scss";
 
 export function Dashboard() {
   const { systemConfig, updateSystemConfig } = useApp();
@@ -35,10 +36,10 @@ export function Dashboard() {
   const { isConnected, subscribe } = useWebSocket({
     enabled: true,
     onMessage: (message) => {
-      if (message.type === 'metrics_update') {
+      if (message.type === "metrics_update") {
         setMetrics(message.payload);
       }
-    }
+    },
   });
 
   // Fetch initial data
@@ -49,7 +50,7 @@ export function Dashboard() {
         const currentMetrics = await trafficService.getCurrentMetrics();
         setMetrics(currentMetrics);
       } catch (error) {
-        console.error('Failed to fetch dashboard data:', error);
+        console.error("Failed to fetch dashboard data:", error);
         // Use mock data in case of error
         setMetrics({
           timestamp: new Date(),
@@ -60,7 +61,7 @@ export function Dashboard() {
           averageSpeed: 28.3,
           totalCo2Emission: 45.2,
           totalFuelConsumption: 23.1,
-          throughput: 89
+          throughput: 89,
         });
       } finally {
         setLoading(false);
@@ -79,7 +80,7 @@ export function Dashboard() {
         const currentMetrics = await trafficService.getCurrentMetrics();
         setMetrics(currentMetrics);
       } catch (error) {
-        console.error('Failed to refresh metrics:', error);
+        console.error("Failed to refresh metrics:", error);
       }
     }, refreshInterval);
 
@@ -88,7 +89,7 @@ export function Dashboard() {
 
   // Subscribe to real-time updates
   useEffect(() => {
-    const unsubscribe = subscribe('realtime_data', (data) => {
+    const unsubscribe = subscribe("realtime_data", (data) => {
       if (data.metrics) {
         setMetrics(data.metrics);
       }
@@ -103,7 +104,7 @@ export function Dashboard() {
       const currentMetrics = await trafficService.getCurrentMetrics();
       setMetrics(currentMetrics);
     } catch (error) {
-      console.error('Failed to refresh data:', error);
+      console.error("Failed to refresh data:", error);
     } finally {
       setLoading(false);
     }
@@ -111,7 +112,7 @@ export function Dashboard() {
 
   const handleSimulationToggle = (enabled: boolean) => {
     updateSystemConfig({
-      simulation: { ...systemConfig.simulation, enabled }
+      simulation: { ...systemConfig.simulation, enabled },
     });
   };
 
@@ -125,8 +126,8 @@ export function Dashboard() {
         </div>
         <div className="header-right">
           <div className="connection-status">
-            <Icon name={isConnected ? 'connected' : 'disconnected'} />
-            <Text>{isConnected ? 'Connected' : 'Disconnected'}</Text>
+            <Icon name={isConnected ? "connected" : "disconnected"} />
+            <Text>{isConnected ? "Connected" : "Disconnected"}</Text>
           </div>
           <div className="simulation-control">
             <Label>Simulation</Label>
@@ -158,7 +159,7 @@ export function Dashboard() {
           >
             <TrafficOverview metrics={metrics} loading={loading} />
           </motion.div>
-          
+
           <motion.div
             className="metrics-card"
             initial={{ opacity: 0, y: 20 }}
@@ -187,7 +188,9 @@ export function Dashboard() {
                   <Button
                     icon="full-screen"
                     design="Transparent"
-                    onClick={() => {/* Open full screen */}}
+                    onClick={() => {
+                      /* Open full screen */
+                    }}
                   />
                 </div>
               </CardHeader>
@@ -207,15 +210,32 @@ export function Dashboard() {
           </motion.div>
         </div>
 
-        {/* Bottom Row - Traffic Lights Grid */}
-        <motion.div
-          className="traffic-lights-section"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <TrafficLightsGrid />
-        </motion.div>
+        {/* Bottom Row - Traffic Map and Lights Grid */}
+        <div className="dashboard-row">
+          <motion.div
+            className="map-section"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <TrafficMap
+              height="400px"
+              showCameraFeeds={true}
+              onIntersectionClick={(intersection) => {
+                console.log("Intersection clicked:", intersection);
+              }}
+            />
+          </motion.div>
+
+          <motion.div
+            className="traffic-lights-section"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <TrafficLightsGrid />
+          </motion.div>
+        </div>
       </div>
 
       {/* Auto-refresh Controls */}
@@ -245,7 +265,9 @@ export function Dashboard() {
           </div>
           <ToolbarSpacer />
           <div className="controls-right">
-            <Text>Last updated: {metrics?.timestamp.toLocaleTimeString() || 'Never'}</Text>
+            <Text>
+              Last updated: {metrics?.timestamp.toLocaleTimeString() || "Never"}
+            </Text>
           </div>
         </Toolbar>
       </div>

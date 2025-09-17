@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
 import {
   Card,
   CardHeader,
@@ -7,10 +7,10 @@ import {
   Button,
   Icon,
   MessageStrip,
-  MessageStripDesign
-} from '@ui5/webcomponents-react';
-import { AppError } from '@/types';
-import './ErrorBoundary.scss';
+  MessageStripDesign,
+} from "@ui5/webcomponents-react";
+import { AppError } from "@/types";
+import "./ErrorBoundary.scss";
 
 interface Props {
   children: ReactNode;
@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.state = {
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
     };
   }
 
@@ -39,38 +39,38 @@ export class ErrorBoundary extends Component<Props, State> {
     return {
       hasError: true,
       error: {
-        code: 'COMPONENT_ERROR',
+        code: "COMPONENT_ERROR",
         message: error.message,
         timestamp: new Date(),
-        stack: error.stack
-      }
+        stack: error.stack,
+      },
     };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
 
     // Update state with error info
     this.setState({
       error: {
-        code: 'COMPONENT_ERROR',
+        code: "COMPONENT_ERROR",
         message: error.message,
         timestamp: new Date(),
         stack: error.stack,
-        details: errorInfo
+        details: errorInfo,
       },
-      errorInfo
+      errorInfo,
     });
 
     // Call onError callback if provided
     if (this.props.onError) {
       this.props.onError({
-        code: 'COMPONENT_ERROR',
+        code: "COMPONENT_ERROR",
         message: error.message,
         timestamp: new Date(),
         stack: error.stack,
-        details: errorInfo
+        details: errorInfo,
       });
     }
 
@@ -81,11 +81,11 @@ export class ErrorBoundary extends Component<Props, State> {
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
     // Here you would typically send the error to an external service
     // For example, Sentry, LogRocket, or your own error tracking service
-    console.log('Logging error to external service:', {
+    console.log("Logging error to external service:", {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   };
 
@@ -93,7 +93,7 @@ export class ErrorBoundary extends Component<Props, State> {
     this.setState({
       hasError: false,
       error: null,
-      errorInfo: null
+      errorInfo: null,
     });
   };
 
@@ -110,13 +110,15 @@ export class ErrorBoundary extends Component<Props, State> {
         componentStack: this.state.errorInfo?.componentStack,
         timestamp: this.state.error.timestamp.toISOString(),
         userAgent: navigator.userAgent,
-        url: window.location.href
+        url: window.location.href,
       };
 
-      console.log('Error report:', errorReport);
-      
+      console.log("Error report:", errorReport);
+
       // You could send this to your backend or open a support ticket
-      alert('Error report generated. Please contact support with this information.');
+      alert(
+        "Error report generated. Please contact support with this information."
+      );
     }
   };
 
@@ -133,7 +135,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <Card className="error-card">
             <CardHeader>
               <div className="error-header">
-                <Icon name="error" size="L" />
+                <Icon name="error" />
                 <Title level="H2">Something went wrong</Title>
               </div>
             </CardHeader>
@@ -144,19 +146,24 @@ export class ErrorBoundary extends Component<Props, State> {
                 className="error-message"
               >
                 <div className="error-details">
-                  <Text className="error-title">An unexpected error occurred</Text>
+                  <Text className="error-title">
+                    An unexpected error occurred
+                  </Text>
                   <Text className="error-description">
-                    We're sorry, but something went wrong. Our team has been notified and is working to fix the issue.
+                    We're sorry, but something went wrong. Our team has been
+                    notified and is working to fix the issue.
                   </Text>
                 </div>
               </MessageStrip>
 
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {process.env.NODE_ENV === "development" && this.state.error && (
                 <div className="error-debug">
                   <Title level="H4">Error Details (Development)</Title>
                   <div className="debug-info">
                     <Text className="debug-label">Message:</Text>
-                    <Text className="debug-value">{this.state.error.message}</Text>
+                    <Text className="debug-value">
+                      {this.state.error.message}
+                    </Text>
                   </div>
                   <div className="debug-info">
                     <Text className="debug-label">Code:</Text>
@@ -171,7 +178,9 @@ export class ErrorBoundary extends Component<Props, State> {
                   {this.state.error.stack && (
                     <div className="debug-info">
                       <Text className="debug-label">Stack Trace:</Text>
-                      <pre className="debug-stack">{this.state.error.stack}</pre>
+                      <pre className="debug-stack">
+                        {this.state.error.stack}
+                      </pre>
                     </div>
                   )}
                 </div>
@@ -186,7 +195,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   <Icon name="refresh" />
                   Try Again
                 </Button>
-                
+
                 <Button
                   design="Transparent"
                   onClick={this.handleReload}
@@ -195,7 +204,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   <Icon name="refresh" />
                   Reload Page
                 </Button>
-                
+
                 <Button
                   design="Transparent"
                   onClick={this.handleReport}
@@ -207,7 +216,10 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
 
               <div className="error-help">
-                <Text>If the problem persists, please contact support or try refreshing the page.</Text>
+                <Text>
+                  If the problem persists, please contact support or try
+                  refreshing the page.
+                </Text>
               </div>
             </div>
           </Card>
@@ -222,7 +234,7 @@ export class ErrorBoundary extends Component<Props, State> {
 // HOC for wrapping components with error boundary
 export function withErrorBoundary<P extends object>(
   Component: React.ComponentType<P>,
-  errorBoundaryProps?: Omit<Props, 'children'>
+  errorBoundaryProps?: Omit<Props, "children">
 ) {
   const WrappedComponent = (props: P) => (
     <ErrorBoundary {...errorBoundaryProps}>
@@ -230,8 +242,10 @@ export function withErrorBoundary<P extends object>(
     </ErrorBoundary>
   );
 
-  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
-  
+  WrappedComponent.displayName = `withErrorBoundary(${
+    Component.displayName || Component.name
+  })`;
+
   return WrappedComponent;
 }
 
@@ -245,20 +259,20 @@ export function useErrorHandler() {
 
   const handleError = React.useCallback((error: Error | AppError) => {
     const appError: AppError = {
-      code: 'error' in error && 'code' in error ? error.code : 'UNKNOWN_ERROR',
+      code: "error" in error && "code" in error ? error.code : "UNKNOWN_ERROR",
       message: error.message,
       timestamp: new Date(),
-      stack: error.stack
+      stack: error.stack,
     };
-    
+
     setError(appError);
   }, []);
 
   React.useEffect(() => {
     if (error) {
       // Log error to console
-      console.error('Error caught by useErrorHandler:', error);
-      
+      console.error("Error caught by useErrorHandler:", error);
+
       // You could also send to external error tracking service here
     }
   }, [error]);

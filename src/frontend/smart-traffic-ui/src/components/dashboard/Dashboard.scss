@@ -1,0 +1,208 @@
+.dashboard {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--sapBackgroundColor);
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--sapShellColor);
+    border-bottom: 1px solid var(--sapNeutralBorderColor);
+
+    .header-left {
+      h1 {
+        margin: 0;
+        color: var(--sapTextColor);
+        font-size: 1.5rem;
+      }
+
+      .ui5-text {
+        color: var(--sapTextColor);
+        opacity: 0.7;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .connection-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .ui5-icon {
+          color: var(--sapPositiveColor);
+        }
+
+        &.disconnected .ui5-icon {
+          color: var(--sapNegativeColor);
+        }
+      }
+
+      .simulation-control {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+  }
+
+  .dashboard-content {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .dashboard-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+
+      @media (max-width: 1200px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .overview-card,
+    .metrics-card {
+      height: 300px;
+    }
+
+    .chart-card {
+      height: 400px;
+    }
+
+    .alerts-card {
+      height: 400px;
+    }
+
+    .map-section {
+      height: 400px;
+    }
+
+    .traffic-lights-section {
+      height: 400px;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .dashboard-controls {
+    padding: 1rem 2rem;
+    background: var(--sapShellColor);
+    border-top: 1px solid var(--sapNeutralBorderColor);
+
+    .controls-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .interval-select {
+        padding: 0.5rem;
+        border: 1px solid var(--sapNeutralBorderColor);
+        border-radius: 4px;
+        background: var(--sapNeutralBackground);
+        color: var(--sapTextColor);
+        font-size: 0.875rem;
+      }
+    }
+
+    .controls-right {
+      .ui5-text {
+        color: var(--sapTextColor);
+        opacity: 0.7;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+// Loading states
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+
+  .ui5-text {
+    color: var(--sapTextColor);
+    opacity: 0.7;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .dashboard {
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem;
+
+      .header-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    }
+
+    .dashboard-content {
+      padding: 1rem;
+      gap: 1rem;
+
+      .dashboard-row {
+        gap: 1rem;
+      }
+
+      .overview-card,
+      .metrics-card,
+      .chart-card,
+      .alerts-card,
+      .map-section,
+      .traffic-lights-section {
+        height: auto;
+        min-height: 300px;
+      }
+    }
+
+    .dashboard-controls {
+      padding: 1rem;
+
+      .controls-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .dashboard {
+    background: var(--sapBackgroundColor);
+
+    .dashboard-header {
+      background: var(--sapShellColor);
+    }
+
+    .dashboard-controls {
+      background: var(--sapShellColor);
+    }
+  }
+}

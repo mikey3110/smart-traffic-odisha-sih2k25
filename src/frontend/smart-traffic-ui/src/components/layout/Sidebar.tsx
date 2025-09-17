@@ -1,19 +1,18 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from "react";
+import { motion } from "framer-motion";
 import {
-  NavigationList,
-  NavigationListItem,
   Icon,
   Badge,
   Toolbar,
   ToolbarSpacer,
   Switch,
-  Label
-} from '@ui5/webcomponents-react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useApp } from '@/contexts/AppContext';
-import { Permission } from '@/types';
-import './Sidebar.scss';
+  Label,
+  Button,
+} from "@ui5/webcomponents-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useApp } from "@/contexts/AppContext";
+import { Permission } from "@/types";
+import "./Sidebar.scss";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -32,114 +31,114 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: 'home',
-    path: '/dashboard',
-    permission: Permission.VIEW_DASHBOARD
+    id: "dashboard",
+    label: "Dashboard",
+    icon: "home",
+    path: "/dashboard",
+    permission: Permission.VIEW_DASHBOARD,
   },
   {
-    id: 'traffic',
-    label: 'Traffic Control',
-    icon: 'traffic-light',
-    path: '/traffic',
+    id: "traffic",
+    label: "Traffic Control",
+    icon: "traffic-light",
+    path: "/traffic",
     permission: Permission.MANAGE_TRAFFIC,
     children: [
       {
-        id: 'traffic-lights',
-        label: 'Traffic Lights',
-        icon: 'traffic-light',
-        path: '/traffic/lights'
+        id: "traffic-lights",
+        label: "Traffic Lights",
+        icon: "traffic-light",
+        path: "/traffic/lights",
       },
       {
-        id: 'intersections',
-        label: 'Intersections',
-        icon: 'intersection',
-        path: '/traffic/intersections'
+        id: "intersections",
+        label: "Intersections",
+        icon: "intersection",
+        path: "/traffic/intersections",
       },
       {
-        id: 'vehicles',
-        label: 'Vehicles',
-        icon: 'car',
-        path: '/traffic/vehicles'
-      }
-    ]
+        id: "vehicles",
+        label: "Vehicles",
+        icon: "car",
+        path: "/traffic/vehicles",
+      },
+    ],
   },
   {
-    id: 'analytics',
-    label: 'Analytics',
-    icon: 'analytics',
-    path: '/analytics',
+    id: "analytics",
+    label: "Analytics",
+    icon: "analytics",
+    path: "/analytics",
     permission: Permission.VIEW_ANALYTICS,
     children: [
       {
-        id: 'performance',
-        label: 'Performance',
-        icon: 'performance',
-        path: '/analytics/performance'
+        id: "performance",
+        label: "Performance",
+        icon: "performance",
+        path: "/analytics/performance",
       },
       {
-        id: 'reports',
-        label: 'Reports',
-        icon: 'document',
-        path: '/analytics/reports'
+        id: "reports",
+        label: "Reports",
+        icon: "document",
+        path: "/analytics/reports",
       },
       {
-        id: 'trends',
-        label: 'Trends',
-        icon: 'trending-up',
-        path: '/analytics/trends'
-      }
-    ]
+        id: "trends",
+        label: "Trends",
+        icon: "trending-up",
+        path: "/analytics/trends",
+      },
+    ],
   },
   {
-    id: 'simulation',
-    label: 'Simulation',
-    icon: 'simulation',
-    path: '/simulation',
-    permission: Permission.MANAGE_TRAFFIC
+    id: "simulation",
+    label: "Simulation",
+    icon: "simulation",
+    path: "/simulation",
+    permission: Permission.MANAGE_TRAFFIC,
   },
   {
-    id: 'configuration',
-    label: 'Configuration',
-    icon: 'settings',
-    path: '/configuration',
+    id: "configuration",
+    label: "Configuration",
+    icon: "settings",
+    path: "/configuration",
     permission: Permission.CONFIGURE_SYSTEM,
     children: [
       {
-        id: 'system-settings',
-        label: 'System Settings',
-        icon: 'settings',
-        path: '/configuration/system'
+        id: "system-settings",
+        label: "System Settings",
+        icon: "settings",
+        path: "/configuration/system",
       },
       {
-        id: 'user-management',
-        label: 'User Management',
-        icon: 'group',
-        path: '/configuration/users'
+        id: "user-management",
+        label: "User Management",
+        icon: "group",
+        path: "/configuration/users",
       },
       {
-        id: 'alerts',
-        label: 'Alerts & Notifications',
-        icon: 'bell',
-        path: '/configuration/alerts'
-      }
-    ]
-  }
+        id: "alerts",
+        label: "Alerts & Notifications",
+        icon: "bell",
+        path: "/configuration/alerts",
+      },
+    ],
+  },
 ];
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, hasPermission, systemConfig, updateSystemConfig } = useApp();
+  const { user, systemConfig, updateSystemConfig } = useApp();
   const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
 
   const handleItemClick = (item: MenuItem) => {
     if (item.children) {
       // Toggle expanded state
-      setExpandedItems(prev => 
-        prev.includes(item.id) 
-          ? prev.filter(id => id !== item.id)
+      setExpandedItems((prev) =>
+        prev.includes(item.id)
+          ? prev.filter((id) => id !== item.id)
           : [...prev, item.id]
       );
     } else {
@@ -152,8 +151,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   };
 
   const isItemActive = (item: MenuItem) => {
-    return location.pathname === item.path || 
-           (item.children && item.children.some(child => location.pathname.startsWith(child.path)));
+    return (
+      location.pathname === item.path ||
+      (item.children &&
+        item.children.some((child) => location.pathname.startsWith(child.path)))
+    );
   };
 
   const isSubItemActive = (item: MenuItem) => {
@@ -162,13 +164,13 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   const canAccessItem = (item: MenuItem) => {
     if (!item.permission) return true;
-    return hasPermission(item.permission);
+    return user?.permissions.includes(item.permission) || false;
   };
 
   const filteredMenuItems = menuItems.filter(canAccessItem);
 
   return (
-    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+    <div className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       {/* Header */}
       <div className="sidebar-header">
         <motion.div
@@ -189,7 +191,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             </motion.span>
           )}
         </motion.div>
-        
+
         <Button
           icon="navigation-left-arrow"
           design="Transparent"
@@ -200,53 +202,60 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
       {/* Navigation */}
       <div className="sidebar-content">
-        <NavigationList>
+        <div className="navigation-list">
           {filteredMenuItems.map((item) => (
             <React.Fragment key={item.id}>
-              <NavigationListItem
-                icon={item.icon}
-                text={collapsed ? '' : item.label}
-                selected={isItemActive(item)}
+              <div
+                className={`nav-item ${isItemActive(item) ? "active" : ""}`}
                 onClick={() => handleItemClick(item)}
-                className={`nav-item ${isItemActive(item) ? 'active' : ''}`}
               >
+                <Icon name={item.icon} />
+                {!collapsed && <span>{item.label}</span>}
                 {!collapsed && item.badge && (
                   <Badge colorScheme="8" className="nav-badge">
                     {item.badge}
                   </Badge>
                 )}
                 {!collapsed && item.children && (
-                  <Icon 
-                    name={expandedItems.includes(item.id) ? 'slim-arrow-down' : 'slim-arrow-right'} 
+                  <Icon
+                    name={
+                      expandedItems.includes(item.id)
+                        ? "slim-arrow-down"
+                        : "slim-arrow-right"
+                    }
                     className="expand-icon"
                   />
                 )}
-              </NavigationListItem>
+              </div>
 
               {/* Sub-items */}
-              {!collapsed && item.children && expandedItems.includes(item.id) && (
-                <motion.div
-                  className="sub-items"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {item.children.map((subItem) => (
-                    <NavigationListItem
-                      key={subItem.id}
-                      icon={subItem.icon}
-                      text={subItem.label}
-                      selected={isSubItemActive(subItem)}
-                      onClick={() => handleSubItemClick(subItem)}
-                      className={`sub-item ${isSubItemActive(subItem) ? 'active' : ''}`}
-                    />
-                  ))}
-                </motion.div>
-              )}
+              {!collapsed &&
+                item.children &&
+                expandedItems.includes(item.id) && (
+                  <motion.div
+                    className="sub-items"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {item.children.map((subItem) => (
+                      <div
+                        key={subItem.id}
+                        className={`sub-item ${
+                          isSubItemActive(subItem) ? "active" : ""
+                        }`}
+                        onClick={() => handleSubItemClick(subItem)}
+                      >
+                        <Icon name={subItem.icon} />
+                        <span>{subItem.label}</span>
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
             </React.Fragment>
           ))}
-        </NavigationList>
+        </div>
       </div>
 
       {/* Footer */}
@@ -261,12 +270,17 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <Label>Simulation</Label>
             <Switch
               checked={systemConfig.simulation.enabled}
-              onChange={(e) => updateSystemConfig({
-                simulation: { ...systemConfig.simulation, enabled: e.target.checked }
-              })}
+              onChange={(e) =>
+                updateSystemConfig({
+                  simulation: {
+                    ...systemConfig.simulation,
+                    enabled: e.target.checked,
+                  },
+                })
+              }
             />
           </div>
-          
+
           <div className="user-info">
             <Icon name="customer" />
             <span>{user?.name}</span>

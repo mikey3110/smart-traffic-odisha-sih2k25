@@ -1,0 +1,76 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+
+jobs:
+  type-check:
+    name: TypeScript Type Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'src/frontend/smart-traffic-ui/package-lock.json'
+          
+      - name: Install dependencies
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm ci
+        
+      - name: Run TypeScript type check
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm run build
+        
+      - name: Run ESLint
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm run lint
+        
+      - name: Run tests
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm run test:coverage
+        
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    needs: type-check
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'src/frontend/smart-traffic-ui/package-lock.json'
+          
+      - name: Install dependencies
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm ci
+        
+      - name: Build application
+        working-directory: src/frontend/smart-traffic-ui
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: src/frontend/smart-traffic-ui/dist/
+          retention-days: 7

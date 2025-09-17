@@ -1,0 +1,316 @@
+{
+  "performance_metrics": {
+    "total_images_processed": 30,
+    "total_vehicles_detected": 317,
+    "average_vehicles_per_image": 10.566666666666666,
+    "average_processing_time": 0.5157684803009033,
+    "fps": 1.9388544244049042,
+    "min_processing_time": 0.43773603439331055,
+    "max_processing_time": 1.157653570175171,
+    "model_path": "../../yolov8n.pt",
+    "test_images_dir": "test_images",
+    "validation_timestamp": "2025-09-17T08:01:55.986612"
+  },
+  "detailed_results": [
+    {
+      "image_name": "adhitya-ginanjar-FU6LSA6TFg8-unsplash.jpg",
+      "vehicles_detected": 3,
+      "processing_time": 1.157653570175171,
+      "image_size": [
+        2748,
+        2061
+      ],
+      "timestamp": "2025-09-17T08:01:23.141617"
+    },
+    {
+      "image_name": "al-khaff-q8X-rzYht4o-unsplash.jpg",
+      "vehicles_detected": 10,
+      "processing_time": 0.5515453815460205,
+      "image_size": [
+        4946,
+        3297
+      ],
+      "timestamp": "2025-09-17T08:01:24.464931"
+    },
+    {
+      "image_name": "aleksei-zaitcev-OpsqETHSsVw-unsplash.jpg",
+      "vehicles_detected": 12,
+      "processing_time": 0.5715725421905518,
+      "image_size": [
+        3056,
+        4592
+      ],
+      "timestamp": "2025-09-17T08:01:25.563851"
+    },
+    {
+      "image_name": "alex-gurung-CuMN4xYb-e8-unsplash (1).jpg",
+      "vehicles_detected": 14,
+      "processing_time": 0.5562942028045654,
+      "image_size": [
+        3919,
+        3135
+      ],
+      "timestamp": "2025-09-17T08:01:26.606905"
+    },
+    {
+      "image_name": "alex-gurung-CuMN4xYb-e8-unsplash.jpg",
+      "vehicles_detected": 14,
+      "processing_time": 0.49686121940612793,
+      "image_size": [
+        3919,
+        3135
+      ],
+      "timestamp": "2025-09-17T08:01:27.526987"
+    },
+    {
+      "image_name": "aniket-singh-VUNoTFpncKk-unsplash.jpg",
+      "vehicles_detected": 11,
+      "processing_time": 0.5115103721618652,
+      "image_size": [
+        4032,
+        3024
+      ],
+      "timestamp": "2025-09-17T08:01:28.603565"
+    },
+    {
+      "image_name": "ankit-shetty-_c3S8_-XjGI-unsplash.jpg",
+      "vehicles_detected": 23,
+      "processing_time": 0.5160181522369385,
+      "image_size": [
+        3264,
+        4896
+      ],
+      "timestamp": "2025-09-17T08:01:29.730982"
+    },
+    {
+      "image_name": "arto-suraj-tkTSWcoXluQ-unsplash.jpg",
+      "vehicles_detected": 8,
+      "processing_time": 0.4684152603149414,
+      "image_size": [
+        3995,
+        5993
+      ],
+      "timestamp": "2025-09-17T08:01:30.977941"
+    },
+    {
+      "image_name": "atharva-tulsi-poiZagysHEY-unsplash.jpg",
+      "vehicles_detected": 18,
+      "processing_time": 0.4662148952484131,
+      "image_size": [
+        4189,
+        3120
+      ],
+      "timestamp": "2025-09-17T08:01:31.876622"
+    },
+    {
+      "image_name": "bornil-amin-GNcDnsQEaE8-unsplash.jpg",
+      "vehicles_detected": 13,
+      "processing_time": 0.5039465427398682,
+      "image_size": [
+        2916,
+        5184
+      ],
+      "timestamp": "2025-09-17T08:01:32.910572"
+    },
+    {
+      "image_name": "nomadic-julien-GTMjxwhRt-Q-unsplash.jpg",
+      "vehicles_detected": 13,
+      "processing_time": 0.43773603439331055,
+      "image_size": [
+        6000,
+        4000
+      ],
+      "timestamp": "2025-09-17T08:01:34.162174"
+    },
+    {
+      "image_name": "people-driving-cars-city-street.jpg",
+      "vehicles_detected": 15,
+      "processing_time": 0.4584801197052002,
+      "image_size": [
+        4024,
+        6048
+      ],
+      "timestamp": "2025-09-17T08:01:34.946923"
+    },
+    {
+      "image_name": "pexels-stijn-dijkstra-1306815-15528021.jpg",
+      "vehicles_detected": 5,
+      "processing_time": 0.4636521339416504,
+      "image_size": [
+        6766,
+        4511
+      ],
+      "timestamp": "2025-09-17T08:01:36.442343"
+    },
+    {
+      "image_name": "piero-regnante-Rg_29ECKqzA-unsplash (1).jpg",
+      "vehicles_detected": 10,
+      "processing_time": 0.4824519157409668,
+      "image_size": [
+        2592,
+        3872
+      ],
+      "timestamp": "2025-09-17T08:01:37.330075"
+    },
+    {
+      "image_name": "piero-regnante-Rg_29ECKqzA-unsplash.jpg",
+      "vehicles_detected": 10,
+      "processing_time": 0.45343661308288574,
+      "image_size": [
+        2592,
+        3872
+      ],
+      "timestamp": "2025-09-17T08:01:38.263479"
+    },
+    {
+      "image_name": "raghav-triapthi-lcKQLzvod5A-unsplash.jpg",
+      "vehicles_detected": 15,
+      "processing_time": 0.5452032089233398,
+      "image_size": [
+        4032,
+        3024
+      ],
+      "timestamp": "2025-09-17T08:01:39.409391"
+    },
+    {
+      "image_name": "ravi-sharma-XBN7w2vuiO8-unsplash.jpg",
+      "vehicles_detected": 0,
+      "processing_time": 0.45934438705444336,
+      "image_size": [
+        5184,
+        3456
+      ],
+      "timestamp": "2025-09-17T08:01:40.703116"
+    },
+    {
+      "image_name": "refhad-GQMOID7qa2o-unsplash.jpg",
+      "vehicles_detected": 2,
+      "processing_time": 0.46711277961730957,
+      "image_size": [
+        5148,
+        3432
+      ],
+      "timestamp": "2025-09-17T08:01:41.963849"
+    },
+    {
+      "image_name": "rohit-durbha-Vn69o53l908-unsplash.jpg",
+      "vehicles_detected": 29,
+      "processing_time": 0.5236482620239258,
+      "image_size": [
+        4000,
+        3000
+      ],
+      "timestamp": "2025-09-17T08:01:43.127438"
+    },
+    {
+      "image_name": "sagar-bhujel-1c1c9afYx9w-unsplash.jpg",
+      "vehicles_detected": 27,
+      "processing_time": 0.5220377445220947,
+      "image_size": [
+        4000,
+        3000
+      ],
+      "timestamp": "2025-09-17T08:01:44.355769"
+    },
+    {
+      "image_name": "shohidul-alam-vSwJHOC7EA8-unsplash.jpg",
+      "vehicles_detected": 2,
+      "processing_time": 0.4984617233276367,
+      "image_size": [
+        4032,
+        3024
+      ],
+      "timestamp": "2025-09-17T08:01:45.359962"
+    },
+    {
+      "image_name": "shubham-dhage-KWj4NPwSQkc-unsplash.jpg",
+      "vehicles_detected": 0,
+      "processing_time": 0.5241689682006836,
+      "image_size": [
+        6831,
+        5152
+      ],
+      "timestamp": "2025-09-17T08:01:47.087044"
+    },
+    {
+      "image_name": "simon-reza-bbAduDc5RuM-unsplash.jpg",
+      "vehicles_detected": 5,
+      "processing_time": 0.5162742137908936,
+      "image_size": [
+        5938,
+        3959
+      ],
+      "timestamp": "2025-09-17T08:01:48.411647"
+    },
+    {
+      "image_name": "soham-banerjee-d6GF6DW7QA8-unsplash.jpg",
+      "vehicles_detected": 0,
+      "processing_time": 0.4617483615875244,
+      "image_size": [
+        3386,
+        5092
+      ],
+      "timestamp": "2025-09-17T08:01:49.605258"
+    },
+    {
+      "image_name": "tony-sebastian-DYfT2tK6Rrw-unsplash.jpg",
+      "vehicles_detected": 6,
+      "processing_time": 0.4515974521636963,
+      "image_size": [
+        5600,
+        4000
+      ],
+      "timestamp": "2025-09-17T08:01:50.795302"
+    },
+    {
+      "image_name": "urban-landscape-japan-cars.jpg",
+      "vehicles_detected": 21,
+      "processing_time": 0.4553182125091553,
+      "image_size": [
+        4045,
+        2890
+      ],
+      "timestamp": "2025-09-17T08:01:51.443617"
+    },
+    {
+      "image_name": "vu-le-fNMpevndtDk-unsplash.jpg",
+      "vehicles_detected": 8,
+      "processing_time": 0.4516134262084961,
+      "image_size": [
+        4032,
+        3024
+      ],
+      "timestamp": "2025-09-17T08:01:52.290452"
+    },
+    {
+      "image_name": "yash-rawat-nIPV1q-TfiM-unsplash.jpg",
+      "vehicles_detected": 4,
+      "processing_time": 0.5159838199615479,
+      "image_size": [
+        4032,
+        2268
+      ],
+      "timestamp": "2025-09-17T08:01:53.093796"
+    },
+    {
+      "image_name": "zoshua-colah-aEFCJ8hAyPM-unsplash.jpg",
+      "vehicles_detected": 9,
+      "processing_time": 0.47819995880126953,
+      "image_size": [
+        3985,
+        5977
+      ],
+      "timestamp": "2025-09-17T08:01:54.525077"
+    },
+    {
+      "image_name": "zoshua-colah-aqLB0ZanHc8-unsplash.jpg",
+      "vehicles_detected": 10,
+      "processing_time": 0.5065529346466064,
+      "image_size": [
+        3883,
+        5825
+      ],
+      "timestamp": "2025-09-17T08:01:55.977516"
+    }
+  ]
+}

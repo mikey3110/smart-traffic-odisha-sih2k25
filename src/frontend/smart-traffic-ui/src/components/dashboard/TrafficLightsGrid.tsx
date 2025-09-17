@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Card,
   CardHeader,
@@ -12,12 +12,12 @@ import {
   ToolbarSpacer,
   ProgressIndicator,
   MessageStrip,
-  MessageStripDesign
-} from '@ui5/webcomponents-react';
-import { TrafficLight, TrafficLightStatus } from '@/types';
-import { trafficService } from '@/services/trafficService';
-import { useWebSocket } from '@/services/websocketService';
-import './TrafficLightsGrid.scss';
+  MessageStripDesign,
+} from "@ui5/webcomponents-react";
+import { TrafficLight, TrafficLightStatus } from "@/types";
+import { trafficService } from "@/services/trafficService";
+import { useWebSocket } from "@/services/websocketService";
+import "./TrafficLightsGrid.scss";
 
 interface TrafficLightsGridProps {
   className?: string;
@@ -27,16 +27,16 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
   const [trafficLights, setTrafficLights] = useState<TrafficLight[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedLight, setSelectedLight] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // WebSocket connection for real-time updates
   const { isConnected, subscribe } = useWebSocket({
     enabled: true,
     onMessage: (message) => {
-      if (message.type === 'traffic_lights_update') {
+      if (message.type === "traffic_lights_update") {
         setTrafficLights(message.payload);
       }
-    }
+    },
   });
 
   // Fetch traffic lights data
@@ -47,7 +47,7 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
         const lights = await trafficService.getTrafficLights();
         setTrafficLights(lights);
       } catch (error) {
-        console.error('Failed to fetch traffic lights:', error);
+        console.error("Failed to fetch traffic lights:", error);
         // Use mock data in case of error
         setTrafficLights(trafficService.getMockTrafficLights());
       } finally {
@@ -60,7 +60,7 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
 
   // Subscribe to real-time updates
   useEffect(() => {
-    const unsubscribe = subscribe('realtime_data', (data) => {
+    const unsubscribe = subscribe("realtime_data", (data) => {
       if (data.trafficLights) {
         setTrafficLights(data.trafficLights);
       }
@@ -71,43 +71,43 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
 
   const getStatusIcon = (status: TrafficLightStatus) => {
     switch (status) {
-      case 'normal':
-        return 'traffic-light';
-      case 'maintenance':
-        return 'wrench';
-      case 'error':
-        return 'error';
-      case 'offline':
-        return 'disconnected';
+      case "normal":
+        return "traffic-light";
+      case "maintenance":
+        return "wrench";
+      case "error":
+        return "error";
+      case "offline":
+        return "disconnected";
       default:
-        return 'question-mark';
+        return "question-mark";
     }
   };
 
   const getStatusColor = (status: TrafficLightStatus) => {
     switch (status) {
-      case 'normal':
-        return 'var(--sapPositiveColor)';
-      case 'maintenance':
-        return 'var(--sapCriticalColor)';
-      case 'error':
-        return 'var(--sapNegativeColor)';
-      case 'offline':
-        return 'var(--sapNeutralColor)';
+      case "normal":
+        return "var(--sapPositiveColor)";
+      case "maintenance":
+        return "var(--sapCriticalColor)";
+      case "error":
+        return "var(--sapNegativeColor)";
+      case "offline":
+        return "var(--sapNeutralColor)";
       default:
-        return 'var(--sapNeutralColor)';
+        return "var(--sapNeutralColor)";
     }
   };
 
   const getStatusBadge = (status: TrafficLightStatus) => {
     switch (status) {
-      case 'normal':
+      case "normal":
         return <Badge colorScheme="8">Normal</Badge>;
-      case 'maintenance':
+      case "maintenance":
         return <Badge colorScheme="2">Maintenance</Badge>;
-      case 'error':
+      case "error":
         return <Badge colorScheme="1">Error</Badge>;
-      case 'offline':
+      case "offline":
         return <Badge colorScheme="9">Offline</Badge>;
       default:
         return <Badge colorScheme="9">Unknown</Badge>;
@@ -117,26 +117,26 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
   const getPhaseColor = (phase: number) => {
     switch (phase) {
       case 0: // Red
-        return '#dc3545';
+        return "#dc3545";
       case 1: // Yellow
-        return '#ffc107';
+        return "#ffc107";
       case 2: // Green
-        return '#28a745';
+        return "#28a745";
       default:
-        return '#6c757d';
+        return "#6c757d";
     }
   };
 
   const getPhaseName = (phase: number) => {
     switch (phase) {
       case 0:
-        return 'Red';
+        return "Red";
       case 1:
-        return 'Yellow';
+        return "Yellow";
       case 2:
-        return 'Green';
+        return "Green";
       default:
-        return 'Unknown';
+        return "Unknown";
     }
   };
 
@@ -144,32 +144,44 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
     setSelectedLight(selectedLight === lightId ? null : lightId);
   };
 
-  const handleControlLight = async (lightId: string, phase: number, duration: number) => {
+  const handleControlLight = async (
+    lightId: string,
+    phase: number,
+    duration: number
+  ) => {
     try {
       await trafficService.controlTrafficLight(lightId, phase, duration);
       // Refresh data after control
       const lights = await trafficService.getTrafficLights();
       setTrafficLights(lights);
     } catch (error) {
-      console.error('Failed to control traffic light:', error);
+      console.error("Failed to control traffic light:", error);
     }
   };
 
   const getOverallStatus = () => {
-    const normalCount = trafficLights.filter(light => light.status === 'normal').length;
-    const errorCount = trafficLights.filter(light => light.status === 'error').length;
-    const offlineCount = trafficLights.filter(light => light.status === 'offline').length;
-    
-    if (errorCount > 0) return { status: 'error', count: errorCount, label: 'Errors' };
-    if (offlineCount > 0) return { status: 'warning', count: offlineCount, label: 'Offline' };
-    return { status: 'success', count: normalCount, label: 'Normal' };
+    const normalCount = trafficLights.filter(
+      (light) => light.status === "normal"
+    ).length;
+    const errorCount = trafficLights.filter(
+      (light) => light.status === "error"
+    ).length;
+    const offlineCount = trafficLights.filter(
+      (light) => light.status === "offline"
+    ).length;
+
+    if (errorCount > 0)
+      return { status: "error", count: errorCount, label: "Errors" };
+    if (offlineCount > 0)
+      return { status: "warning", count: offlineCount, label: "Offline" };
+    return { status: "success", count: normalCount, label: "Normal" };
   };
 
   const overallStatus = getOverallStatus();
 
   if (loading) {
     return (
-      <Card className={`traffic-lights-grid ${className || ''}`}>
+      <Card className={`traffic-lights-grid ${className || ""}`}>
         <CardHeader titleText="Traffic Lights">
           <ProgressIndicator value={undefined} />
         </CardHeader>
@@ -183,23 +195,27 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
   }
 
   return (
-    <Card className={`traffic-lights-grid ${className || ''}`}>
+    <Card className={`traffic-lights-grid ${className || ""}`}>
       <CardHeader titleText="Traffic Lights">
         <div className="header-actions">
           <div className="status-summary">
             <MessageStrip
-              design={overallStatus.status === 'success' ? MessageStripDesign.Success :
-                     overallStatus.status === 'warning' ? MessageStripDesign.Warning :
-                     MessageStripDesign.Negative}
+              design={
+                overallStatus.status === "success"
+                  ? MessageStripDesign.Positive
+                  : overallStatus.status === "warning"
+                  ? MessageStripDesign.Warning
+                  : MessageStripDesign.Negative
+              }
             >
               {overallStatus.count} {overallStatus.label}
             </MessageStrip>
           </div>
           <div className="view-controls">
             <Button
-              icon={viewMode === 'grid' ? 'grid' : 'list'}
+              icon={viewMode === "grid" ? "grid" : "list"}
               design="Transparent"
-              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+              onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}
             />
           </div>
         </div>
@@ -208,7 +224,7 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
       <div className="card-content">
         {trafficLights.length === 0 ? (
           <div className="empty-state">
-            <Icon name="traffic-light" size="L" />
+            <Icon name="traffic-light" />
             <Text>No traffic lights found</Text>
             <Text>Check your connection or configuration</Text>
           </div>
@@ -218,7 +234,9 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
               {trafficLights.map((light, index) => (
                 <motion.div
                   key={light.id}
-                  className={`traffic-light-card ${selectedLight === light.id ? 'selected' : ''}`}
+                  className={`traffic-light-card ${
+                    selectedLight === light.id ? "selected" : ""
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -227,14 +245,15 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
                 >
                   <div className="light-header">
                     <div className="light-info">
-                      <Icon 
+                      <Icon
                         name={getStatusIcon(light.status)}
                         style={{ color: getStatusColor(light.status) }}
                       />
                       <div className="light-details">
                         <Text className="light-name">{light.name}</Text>
                         <Text className="light-location">
-                          {light.location.lat.toFixed(4)}, {light.location.lng.toFixed(4)}
+                          {light.location.lat.toFixed(4)},{" "}
+                          {light.location.lng.toFixed(4)}
                         </Text>
                       </div>
                     </div>
@@ -243,18 +262,18 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
 
                   <div className="light-status">
                     <div className="phase-indicator">
-                      <div 
+                      <div
                         className="phase-circle"
-                        style={{ backgroundColor: getPhaseColor(light.currentPhase) }}
+                        style={{
+                          backgroundColor: getPhaseColor(light.currentPhase),
+                        }}
                       />
                       <Text className="phase-text">
                         {getPhaseName(light.currentPhase)}
                       </Text>
                     </div>
                     <div className="phase-timer">
-                      <Text className="timer-text">
-                        {light.phaseDuration}s
-                      </Text>
+                      <Text className="timer-text">{light.phaseDuration}s</Text>
                     </div>
                   </div>
 
@@ -273,13 +292,12 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
                     <motion.div
                       className="light-controls"
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
                     >
                       <div className="control-buttons">
                         <Button
-                          size="S"
                           design="Emphasized"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -289,7 +307,6 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
                           Red
                         </Button>
                         <Button
-                          size="S"
                           design="Emphasized"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -299,7 +316,6 @@ export function TrafficLightsGrid({ className }: TrafficLightsGridProps) {
                           Yellow
                         </Button>
                         <Button
-                          size="S"
                           design="Emphasized"
                           onClick={(e) => {
                             e.stopPropagation();

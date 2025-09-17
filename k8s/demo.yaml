@@ -1,0 +1,547 @@
+# Demo Environment Configuration for Smart Traffic Management System
+# Optimized for hackathon presentation and external access
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smart-traffic-demo
+  labels:
+    name: smart-traffic-demo
+    environment: demo
+---
+# Backend API Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: backend-demo
+    environment: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-demo
+  template:
+    metadata:
+      labels:
+        app: backend-demo
+        environment: demo
+    spec:
+      containers:
+      - name: backend
+        image: smart-traffic-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENVIRONMENT
+          value: "demo"
+        - name: DEBUG
+          value: "true"
+        - name: POSTGRES_HOST
+          value: "postgres-demo"
+        - name: REDIS_HOST
+          value: "redis-demo"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+# Backend Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: backend-demo
+spec:
+  selector:
+    app: backend-demo
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+    nodePort: 30080  # External access
+  type: NodePort
+---
+# Frontend Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: frontend-demo
+    environment: demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-demo
+  template:
+    metadata:
+      labels:
+        app: frontend-demo
+        environment: demo
+    spec:
+      containers:
+      - name: frontend
+        image: smart-traffic-frontend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VITE_API_BASE_URL
+          value: "http://localhost:30080"
+        - name: VITE_WS_URL
+          value: "ws://localhost:30080"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+# Frontend Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: frontend-demo
+spec:
+  selector:
+    app: frontend-demo
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+    nodePort: 30000  # External access
+  type: NodePort
+---
+# ML API Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-api-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: ml-api-demo
+    environment: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-api-demo
+  template:
+    metadata:
+      labels:
+        app: ml-api-demo
+        environment: demo
+    spec:
+      containers:
+      - name: ml-api
+        image: smart-traffic-ml:latest
+        ports:
+        - containerPort: 8001
+        env:
+        - name: ENVIRONMENT
+          value: "demo"
+        - name: REDIS_HOST
+          value: "redis-demo"
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 60
+          periodSeconds: 30
+---
+# ML API Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ml-api-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: ml-api-demo
+spec:
+  selector:
+    app: ml-api-demo
+  ports:
+  - name: http
+    port: 8001
+    targetPort: 8001
+    nodePort: 30081  # External access
+  type: NodePort
+---
+# CV Service Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cv-service-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: cv-service-demo
+    environment: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cv-service-demo
+  template:
+    metadata:
+      labels:
+        app: cv-service-demo
+        environment: demo
+    spec:
+      containers:
+      - name: cv-service
+        image: smart-traffic-cv:latest
+        ports:
+        - containerPort: 5001
+        env:
+        - name: ENVIRONMENT
+          value: "demo"
+        - name: BACKEND_URL
+          value: "http://backend-demo:8000"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /cv/streams
+            port: 5001
+          initialDelaySeconds: 30
+          periodSeconds: 15
+---
+# CV Service Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: cv-service-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: cv-service-demo
+spec:
+  selector:
+    app: cv-service-demo
+  ports:
+  - name: http
+    port: 5001
+    targetPort: 5001
+    nodePort: 30082  # External access
+  type: NodePort
+---
+# SUMO Simulation Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sumo-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: sumo-demo
+    environment: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sumo-demo
+  template:
+    metadata:
+      labels:
+        app: sumo-demo
+        environment: demo
+    spec:
+      containers:
+      - name: sumo
+        image: smart-traffic-sumo:latest
+        ports:
+        - containerPort: 8080  # SUMO GUI
+        - containerPort: 8813  # TraCI
+        env:
+        - name: ENVIRONMENT
+          value: "demo"
+        - name: SUMO_GUI
+          value: "true"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: sumo-data
+          mountPath: /app/sumo
+      volumes:
+      - name: sumo-data
+        persistentVolumeClaim:
+          claimName: sumo-data-pvc
+---
+# SUMO Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sumo-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: sumo-demo
+spec:
+  selector:
+    app: sumo-demo
+  ports:
+  - name: gui
+    port: 8080
+    targetPort: 8080
+    nodePort: 30083  # SUMO GUI access
+  - name: traci
+    port: 8813
+    targetPort: 8813
+    nodePort: 30813  # TraCI access
+  type: NodePort
+---
+# PostgreSQL Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: postgres-demo
+    environment: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-demo
+  template:
+    metadata:
+      labels:
+        app: postgres-demo
+        environment: demo
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "traffic_management"
+        - name: POSTGRES_USER
+          value: "traffic_user"
+        - name: POSTGRES_PASSWORD
+          value: "demo_password"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-data-pvc
+---
+# PostgreSQL Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: postgres-demo
+spec:
+  selector:
+    app: postgres-demo
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+# Redis Demo Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: redis-demo
+    environment: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-demo
+  template:
+    metadata:
+      labels:
+        app: redis-demo
+        environment: demo
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-data-pvc
+---
+# Redis Demo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-demo
+  namespace: smart-traffic-demo
+  labels:
+    app: redis-demo
+spec:
+  selector:
+    app: redis-demo
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: 6379
+  type: ClusterIP
+---
+# Persistent Volume Claims for Demo
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data-pvc
+  namespace: smart-traffic-demo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-pvc
+  namespace: smart-traffic-demo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sumo-data-pvc
+  namespace: smart-traffic-demo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
+---
+# Demo Ingress for External Access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-traffic-demo-ingress
+  namespace: smart-traffic-demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - host: smart-traffic-demo.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-demo
+            port:
+              number: 3000
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-demo
+            port:
+              number: 8000
+      - path: /ml
+        pathType: Prefix
+        backend:
+          service:
+            name: ml-api-demo
+            port:
+              number: 8001
+      - path: /cv
+        pathType: Prefix
+        backend:
+          service:
+            name: cv-service-demo
+            port:
+              number: 5001
+      - path: /sumo
+        pathType: Prefix
+        backend:
+          service:
+            name: sumo-demo
+            port:
+              number: 8080

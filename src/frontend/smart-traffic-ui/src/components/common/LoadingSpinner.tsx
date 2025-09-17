@@ -1,29 +1,25 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  ProgressIndicator,
-  Text,
-  Icon
-} from '@ui5/webcomponents-react';
-import './LoadingSpinner.scss';
+import React from "react";
+import { motion } from "framer-motion";
+import { ProgressIndicator, Text, Icon } from "@ui5/webcomponents-react";
+import "./LoadingSpinner.scss";
 
 interface LoadingSpinnerProps {
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
   text?: string;
   overlay?: boolean;
   className?: string;
 }
 
-export function LoadingSpinner({ 
-  size = 'medium', 
-  text = 'Loading...', 
+export function LoadingSpinner({
+  size = "medium",
+  text = "Loading...",
   overlay = false,
-  className = ''
+  className = "",
 }: LoadingSpinnerProps) {
   const sizeClasses = {
-    small: 'spinner-small',
-    medium: 'spinner-medium',
-    large: 'spinner-large'
+    small: "spinner-small",
+    medium: "spinner-medium",
+    large: "spinner-large",
   };
 
   const content = (
@@ -40,12 +36,12 @@ export function LoadingSpinner({
           transition={{
             duration: 1,
             repeat: Infinity,
-            ease: 'linear'
+            ease: "linear",
           }}
         >
           <Icon name="loading" />
         </motion.div>
-        
+
         {text && (
           <motion.div
             className="spinner-text"
@@ -70,9 +66,7 @@ export function LoadingSpinner({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         />
-        <div className="overlay-content">
-          {content}
-        </div>
+        <div className="overlay-content">{content}</div>
       </div>
     );
   }
@@ -81,7 +75,11 @@ export function LoadingSpinner({
 }
 
 // Full page loading spinner
-export function FullPageLoadingSpinner({ text = 'Loading...' }: { text?: string }) {
+export function FullPageLoadingSpinner({
+  text = "Loading...",
+}: {
+  text?: string;
+}) {
   return (
     <div className="full-page-loading">
       <motion.div
@@ -92,19 +90,19 @@ export function FullPageLoadingSpinner({ text = 'Loading...' }: { text?: string 
       >
         <motion.div
           className="logo-container"
-          animate={{ 
+          animate={{
             scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0]
+            rotate: [0, 5, -5, 0],
           }}
-          transition={{ 
+          transition={{
             duration: 2,
             repeat: Infinity,
-            ease: 'easeInOut'
+            ease: "easeInOut",
           }}
         >
-          <Icon name="traffic-light" size="L" />
+          <Icon name="traffic-light" />
         </motion.div>
-        
+
         <motion.div
           className="loading-spinner-container"
           initial={{ opacity: 0 }}
@@ -113,7 +111,7 @@ export function FullPageLoadingSpinner({ text = 'Loading...' }: { text?: string 
         >
           <LoadingSpinner size="large" text={text} />
         </motion.div>
-        
+
         <motion.div
           className="loading-message"
           initial={{ opacity: 0 }}
@@ -138,10 +136,10 @@ export function InlineLoadingSpinner({ text }: { text?: string }) {
         transition={{
           duration: 1,
           repeat: Infinity,
-          ease: 'linear'
+          ease: "linear",
         }}
       >
-        <Icon name="loading" size="S" />
+        <Icon name="loading" />
       </motion.div>
       {text && <Text className="inline-text">{text}</Text>}
     </div>
@@ -157,16 +155,16 @@ export function ButtonLoadingSpinner() {
       transition={{
         duration: 1,
         repeat: Infinity,
-        ease: 'linear'
+        ease: "linear",
       }}
     >
-      <Icon name="loading" size="S" />
+      <Icon name="loading" />
     </motion.div>
   );
 }
 
 // Skeleton loading components
-export function SkeletonCard({ className = '' }: { className?: string }) {
+export function SkeletonCard({ className = "" }: { className?: string }) {
   return (
     <motion.div
       className={`skeleton-card ${className}`}
@@ -187,7 +185,13 @@ export function SkeletonCard({ className = '' }: { className?: string }) {
   );
 }
 
-export function SkeletonTable({ rows = 5, className = '' }: { rows?: number; className?: string }) {
+export function SkeletonTable({
+  rows = 5,
+  className = "",
+}: {
+  rows?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       className={`skeleton-table ${className}`}
@@ -229,12 +233,12 @@ export function ChartLoadingSkeleton() {
                 key={index}
                 className="skeleton-bar"
                 initial={{ height: 0 }}
-                animate={{ height: '100%' }}
-                transition={{ 
-                  duration: 0.5, 
+                animate={{ height: "100%" }}
+                transition={{
+                  duration: 0.5,
                   delay: index * 0.1,
                   repeat: Infinity,
-                  repeatType: 'reverse'
+                  repeatType: "reverse",
                 }}
               />
             ))}

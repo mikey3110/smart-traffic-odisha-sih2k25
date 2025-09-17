@@ -1,0 +1,176 @@
+.alerts-panel {
+  height: 100%;
+
+  .card-content {
+    padding: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .critical-alerts {
+    margin-bottom: 1.5rem;
+
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--sapTextColor);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .alert-item {
+      margin-bottom: 0.75rem;
+
+      &.critical {
+        border-left: 4px solid var(--sapNegativeColor);
+      }
+
+      .alert-content {
+        .alert-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0.5rem;
+
+          .ui5-icon {
+            margin-right: 0.5rem;
+            color: var(--sapNegativeColor);
+          }
+
+          .alert-title {
+            font-weight: 600;
+            flex: 1;
+          }
+
+          .alert-time {
+            font-size: 0.75rem;
+            color: var(--sapTextColor);
+            opacity: 0.7;
+          }
+        }
+
+        .alert-message {
+          font-size: 0.875rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .alert-actions {
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+    }
+  }
+
+  .all-alerts {
+    .alerts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+
+      .section-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--sapTextColor);
+        margin: 0;
+      }
+    }
+
+    .alert-item {
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+
+      &.unread {
+        border-left-color: var(--sapBrandColor);
+        background-color: var(--sapHighlightColor);
+      }
+
+      &.read {
+        opacity: 0.7;
+      }
+
+      .alert-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        .alert-time {
+          font-size: 0.75rem;
+          color: var(--sapTextColor);
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    .ui5-icon {
+      margin-bottom: 1rem;
+      color: var(--sapNeutralColor);
+      font-size: 2rem;
+    }
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+}
+
+// Scrollbar styling
+.alerts-panel .card-content {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--sapNeutralBackground);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--sapNeutralColor);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--sapBrandColor);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .alerts-panel {
+    .critical-alerts .alert-item .alert-content .alert-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .alert-time {
+        margin-top: 0.25rem;
+      }
+    }
+
+    .all-alerts .alerts-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,12 +9,12 @@ import {
   Tooltip,
   Legend,
   Filler,
-  TimeScale
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import 'chartjs-adapter-date-fns';
-import { PerformanceMetrics } from '@/types';
-import './RealTimeChart.scss';
+  TimeScale,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import "chartjs-adapter-date-fns";
+import { PerformanceMetrics } from "@/types";
+import "./RealTimeChart.scss";
 
 // Register Chart.js components
 ChartJS.register(
@@ -45,7 +45,7 @@ interface ChartDataPoint {
 export function RealTimeChart({ metrics }: RealTimeChartProps) {
   const chartRef = useRef<ChartJS>(null);
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
-  const [selectedMetric, setSelectedMetric] = useState<string>('totalVehicles');
+  const [selectedMetric, setSelectedMetric] = useState<string>("totalVehicles");
 
   // Update chart data when new metrics arrive
   useEffect(() => {
@@ -56,10 +56,10 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
         runningVehicles: metrics.runningVehicles,
         waitingVehicles: metrics.waitingVehicles,
         averageSpeed: metrics.averageSpeed,
-        throughput: metrics.throughput
+        throughput: metrics.throughput,
       };
 
-      setChartData(prev => {
+      setChartData((prev) => {
         const updated = [...prev, newDataPoint];
         // Keep only last 50 data points
         return updated.slice(-50);
@@ -73,24 +73,24 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
     maintainAspectRatio: false,
     interaction: {
       intersect: false,
-      mode: 'index' as const,
+      mode: "index" as const,
     },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
         labels: {
           usePointStyle: true,
           padding: 20,
           font: {
-            size: 12
-          }
-        }
+            size: 12,
+          },
+        },
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: 'white',
-        bodyColor: 'white',
-        borderColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
+        titleColor: "white",
+        bodyColor: "white",
+        borderColor: "rgba(255, 255, 255, 0.1)",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: true,
@@ -100,113 +100,119 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
             return date.toLocaleTimeString();
           },
           label: (context: any) => {
-            const label = context.dataset.label || '';
+            const label = context.dataset.label || "";
             const value = context.parsed.y;
             return `${label}: ${value}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
-        type: 'time' as const,
+        type: "time" as const,
         time: {
           displayFormats: {
-            minute: 'HH:mm',
-            hour: 'HH:mm'
-          }
+            minute: "HH:mm",
+            hour: "HH:mm",
+          },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-          drawBorder: false
+          color: "rgba(0, 0, 0, 0.1)",
+          drawBorder: false,
         },
         ticks: {
-          color: 'var(--sapTextColor)',
+          color: "var(--sapTextColor)",
           font: {
-            size: 11
-          }
-        }
+            size: 11,
+          },
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)',
-          drawBorder: false
+          color: "rgba(0, 0, 0, 0.1)",
+          drawBorder: false,
         },
         ticks: {
-          color: 'var(--sapTextColor)',
+          color: "var(--sapTextColor)",
           font: {
-            size: 11
-          }
-        }
-      }
+            size: 11,
+          },
+        },
+      },
     },
     elements: {
       point: {
         radius: 3,
         hoverRadius: 6,
-        borderWidth: 2
+        borderWidth: 2,
       },
       line: {
         tension: 0.4,
-        borderWidth: 2
-      }
+        borderWidth: 2,
+      },
     },
     animation: {
       duration: 750,
-      easing: 'easeInOutQuart' as const
-    }
+      easing: "easeInOutQuart" as const,
+    },
   };
 
   // Get chart data based on selected metric
   const getChartData = () => {
-    const labels = chartData.map(point => point.timestamp);
-    
+    const labels = chartData.map((point) => point.timestamp);
+
     const datasets = [
       {
-        label: 'Total Vehicles',
-        data: chartData.map(point => point.totalVehicles),
-        borderColor: 'rgb(0, 112, 243)',
-        backgroundColor: 'rgba(0, 112, 243, 0.1)',
+        label: "Total Vehicles",
+        data: chartData.map((point) => point.totalVehicles),
+        borderColor: "rgb(0, 112, 243)",
+        backgroundColor: "rgba(0, 112, 243, 0.1)",
         fill: true,
-        tension: 0.4
+        tension: 0.4,
       },
       {
-        label: 'Running Vehicles',
-        data: chartData.map(point => point.runningVehicles),
-        borderColor: 'rgb(40, 167, 69)',
-        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+        label: "Running Vehicles",
+        data: chartData.map((point) => point.runningVehicles),
+        borderColor: "rgb(40, 167, 69)",
+        backgroundColor: "rgba(40, 167, 69, 0.1)",
         fill: false,
-        tension: 0.4
+        tension: 0.4,
       },
       {
-        label: 'Waiting Vehicles',
-        data: chartData.map(point => point.waitingVehicles),
-        borderColor: 'rgb(255, 193, 7)',
-        backgroundColor: 'rgba(255, 193, 7, 0.1)',
+        label: "Waiting Vehicles",
+        data: chartData.map((point) => point.waitingVehicles),
+        borderColor: "rgb(255, 193, 7)",
+        backgroundColor: "rgba(255, 193, 7, 0.1)",
         fill: false,
-        tension: 0.4
-      }
+        tension: 0.4,
+      },
     ];
 
     return {
       labels,
-      datasets: selectedMetric === 'all' ? datasets : datasets.filter(d => 
-        selectedMetric === 'totalVehicles' ? d.label === 'Total Vehicles' :
-        selectedMetric === 'runningVehicles' ? d.label === 'Running Vehicles' :
-        selectedMetric === 'waitingVehicles' ? d.label === 'Waiting Vehicles' :
-        false
-      )
+      datasets:
+        selectedMetric === "all"
+          ? datasets
+          : datasets.filter((d) =>
+              selectedMetric === "totalVehicles"
+                ? d.label === "Total Vehicles"
+                : selectedMetric === "runningVehicles"
+                ? d.label === "Running Vehicles"
+                : selectedMetric === "waitingVehicles"
+                ? d.label === "Waiting Vehicles"
+                : false
+            ),
     };
   };
 
   const metricOptions = [
-    { value: 'all', label: 'All Metrics' },
-    { value: 'totalVehicles', label: 'Total Vehicles' },
-    { value: 'runningVehicles', label: 'Running Vehicles' },
-    { value: 'waitingVehicles', label: 'Waiting Vehicles' },
-    { value: 'averageSpeed', label: 'Average Speed' },
-    { value: 'throughput', label: 'Throughput' }
+    { value: "all", label: "All Metrics" },
+    { value: "totalVehicles", label: "Total Vehicles" },
+    { value: "runningVehicles", label: "Running Vehicles" },
+    { value: "waitingVehicles", label: "Waiting Vehicles" },
+    { value: "averageSpeed", label: "Average Speed" },
+    { value: "throughput", label: "Throughput" },
   ];
 
   if (chartData.length === 0) {
@@ -223,7 +229,7 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
               onChange={(e) => setSelectedMetric(e.target.value)}
               className="metric-select"
             >
-              {metricOptions.map(option => (
+              {metricOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -255,7 +261,7 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
             onChange={(e) => setSelectedMetric(e.target.value)}
             className="metric-select"
           >
-            {metricOptions.map(option => (
+            {metricOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
@@ -263,29 +269,38 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
           </select>
           <div className="chart-legend">
             <div className="legend-item">
-              <div className="legend-color" style={{ backgroundColor: 'rgb(0, 112, 243)' }}></div>
+              <div
+                className="legend-color"
+                style={{ backgroundColor: "rgb(0, 112, 243)" }}
+              ></div>
               <span>Total</span>
             </div>
             <div className="legend-item">
-              <div className="legend-color" style={{ backgroundColor: 'rgb(40, 167, 69)' }}></div>
+              <div
+                className="legend-color"
+                style={{ backgroundColor: "rgb(40, 167, 69)" }}
+              ></div>
               <span>Running</span>
             </div>
             <div className="legend-item">
-              <div className="legend-color" style={{ backgroundColor: 'rgb(255, 193, 7)' }}></div>
+              <div
+                className="legend-color"
+                style={{ backgroundColor: "rgb(255, 193, 7)" }}
+              ></div>
               <span>Waiting</span>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div className="chart-container">
         <Line
-          ref={chartRef}
+          ref={chartRef as any}
           data={getChartData()}
           options={chartOptions}
         />
       </div>
-      
+
       <div className="chart-footer">
         <div className="chart-stats">
           <div className="stat">
@@ -295,7 +310,9 @@ export function RealTimeChart({ metrics }: RealTimeChartProps) {
           <div className="stat">
             <span className="stat-label">Last Update:</span>
             <span className="stat-value">
-              {chartData[chartData.length - 1]?.timestamp.toLocaleTimeString() || 'Never'}
+              {chartData[
+                chartData.length - 1
+              ]?.timestamp.toLocaleTimeString() || "Never"}
             </span>
           </div>
           <div className="stat">

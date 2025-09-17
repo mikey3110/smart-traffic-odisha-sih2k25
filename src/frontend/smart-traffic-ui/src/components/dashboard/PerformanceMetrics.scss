@@ -1,0 +1,132 @@
+.performance-metrics {
+  height: 100%;
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  .efficiency-section {
+    margin-bottom: 1.5rem;
+
+    .efficiency-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+
+      .efficiency-score {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+    }
+
+    .efficiency-bar {
+      width: 100%;
+      height: 8px;
+      background-color: var(--sapNeutralColor);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+
+      .efficiency-fill {
+        height: 100%;
+        transition: width 0.3s ease;
+        border-radius: 4px;
+      }
+    }
+
+    .efficiency-status {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    .kpi-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      background-color: var(--sapNeutralBackground);
+      border-radius: 8px;
+      border: 1px solid var(--sapNeutralBorderColor);
+
+      .kpi-icon {
+        margin-right: 0.75rem;
+        color: var(--sapBrandColor);
+      }
+
+      .kpi-content {
+        flex: 1;
+
+        .kpi-value {
+          font-size: 1.25rem;
+          font-weight: bold;
+          color: var(--sapTextColor);
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+
+        .kpi-label {
+          font-size: 0.75rem;
+          color: var(--sapTextColor);
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .trends-section {
+    .section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--sapTextColor);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .trend-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .trend-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.875rem;
+
+        .ui5-icon {
+          margin-right: 0.5rem;
+          color: var(--sapBrandColor);
+        }
+      }
+    }
+  }
+
+  .loading-state,
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+
+    .ui5-icon {
+      margin-bottom: 1rem;
+      color: var(--sapNeutralColor);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .performance-metrics {
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

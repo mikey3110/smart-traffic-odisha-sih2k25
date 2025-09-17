@@ -1,8 +1,7 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Panel,
-  PanelHeader,
   List,
   StandardListItem,
   Button,
@@ -13,11 +12,11 @@ import {
   Text,
   Title,
   MessageStrip,
-  MessageStripDesign
-} from '@ui5/webcomponents-react';
-import { Notification, NotificationType, NotificationPriority } from '@/types';
-import { formatDistanceToNow } from 'date-fns';
-import './NotificationPanel.scss';
+  MessageStripDesign,
+} from "@ui5/webcomponents-react";
+import { Notification, NotificationType, NotificationPriority } from "@/types";
+import { formatDistanceToNow } from "date-fns";
+import "./NotificationPanel.scss";
 
 interface NotificationPanelProps {
   notifications: Notification[];
@@ -30,50 +29,50 @@ export function NotificationPanel({
   notifications,
   onNotificationClick,
   onMarkAllAsRead,
-  onClose
+  onClose,
 }: NotificationPanelProps) {
-  const unreadNotifications = notifications.filter(n => !n.read);
-  const readNotifications = notifications.filter(n => n.read);
+  const unreadNotifications = notifications.filter((n) => !n.read);
+  const readNotifications = notifications.filter((n) => n.read);
 
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
-      case 'success':
-        return 'accept';
-      case 'error':
-        return 'error';
-      case 'warning':
-        return 'alert';
-      case 'alert':
-        return 'bell';
+      case "success":
+        return "accept";
+      case "error":
+        return "error";
+      case "warning":
+        return "alert";
+      case "alert":
+        return "bell";
       default:
-        return 'information';
+        return "information";
     }
   };
 
   const getNotificationColor = (type: NotificationType) => {
     switch (type) {
-      case 'success':
-        return 'var(--sapPositiveColor)';
-      case 'error':
-        return 'var(--sapNegativeColor)';
-      case 'warning':
-        return 'var(--sapCriticalColor)';
-      case 'alert':
-        return 'var(--sapHighlightColor)';
+      case "success":
+        return "var(--sapPositiveColor)";
+      case "error":
+        return "var(--sapNegativeColor)";
+      case "warning":
+        return "var(--sapCriticalColor)";
+      case "alert":
+        return "var(--sapHighlightColor)";
       default:
-        return 'var(--sapNeutralColor)';
+        return "var(--sapNeutralColor)";
     }
   };
 
   const getPriorityBadge = (priority: NotificationPriority) => {
     switch (priority) {
-      case 'critical':
+      case "critical":
         return <Badge colorScheme="1">Critical</Badge>;
-      case 'high':
+      case "high":
         return <Badge colorScheme="2">High</Badge>;
-      case 'medium':
+      case "medium":
         return <Badge colorScheme="8">Medium</Badge>;
-      case 'low':
+      case "low":
         return <Badge colorScheme="9">Low</Badge>;
       default:
         return null;
@@ -86,7 +85,7 @@ export function NotificationPanel({
 
   return (
     <Panel className="notification-panel">
-      <PanelHeader>
+      <div className="panel-header">
         <div className="panel-header-content">
           <div className="header-left">
             <Icon name="bell" />
@@ -113,12 +112,12 @@ export function NotificationPanel({
             />
           </div>
         </div>
-      </PanelHeader>
+      </div>
 
       <div className="notification-content">
         {notifications.length === 0 ? (
           <div className="empty-state">
-            <Icon name="bell" size="L" />
+            <Icon name="bell" />
             <Text>No notifications</Text>
             <Text>You're all caught up!</Text>
           </div>
@@ -146,9 +145,13 @@ export function NotificationPanel({
                           description={notification.message}
                           onClick={() => onNotificationClick(notification)}
                           className={`notification-item unread ${notification.priority}`}
-                          style={{
-                            '--notification-color': getNotificationColor(notification.type)
-                          } as React.CSSProperties}
+                          style={
+                            {
+                              "--notification-color": getNotificationColor(
+                                notification.type
+                              ),
+                            } as React.CSSProperties
+                          }
                         >
                           <div className="notification-meta">
                             <div className="notification-badges">
@@ -188,9 +191,13 @@ export function NotificationPanel({
                           description={notification.message}
                           onClick={() => onNotificationClick(notification)}
                           className={`notification-item read ${notification.priority}`}
-                          style={{
-                            '--notification-color': getNotificationColor(notification.type)
-                          } as React.CSSProperties}
+                          style={
+                            {
+                              "--notification-color": getNotificationColor(
+                                notification.type
+                              ),
+                            } as React.CSSProperties
+                          }
                         >
                           <div className="notification-meta">
                             <div className="notification-badges">
@@ -215,7 +222,9 @@ export function NotificationPanel({
       <div className="notification-footer">
         <Button
           design="Transparent"
-          onClick={() => {/* Navigate to all notifications */}}
+          onClick={() => {
+            /* Navigate to all notifications */
+          }}
         >
           View all notifications
         </Button>

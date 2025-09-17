@@ -1,0 +1,181 @@
+.map-demo {
+  min-height: 100vh;
+  background: var(--sapBackgroundColor);
+
+  .demo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    background: var(--sapShellColor);
+    border-bottom: 1px solid var(--sapNeutralBorderColor);
+
+    .header-content {
+      h1 {
+        margin: 0 0 0.5rem 0;
+        color: var(--sapTextColor);
+        font-size: 2rem;
+      }
+
+      .ui5-text {
+        color: var(--sapTextColor);
+        opacity: 0.7;
+        font-size: 1.1rem;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+
+  .demo-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    min-height: 600px;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: 1fr;
+    }
+
+    .map-section {
+      .demo-map {
+        height: 600px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    .selected-info {
+      .intersection-details {
+        padding: 1.5rem;
+
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid var(--sapNeutralBorderColor);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          .label {
+            font-weight: 600;
+            color: var(--sapTextColor);
+            min-width: 120px;
+          }
+
+          .value {
+            color: var(--sapTextColor);
+            text-align: right;
+            flex: 1;
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  .demo-features {
+    padding: 0 2rem 2rem;
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 1.5rem;
+
+      .feature-item {
+        padding: 1.5rem;
+        background: var(--sapNeutralBackground);
+        border-radius: 8px;
+        border: 1px solid var(--sapNeutralBorderColor);
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          border-color: var(--sapBrandColor);
+        }
+
+        .feature-title {
+          font-weight: 600;
+          color: var(--sapTextColor);
+          margin-bottom: 0.5rem;
+          display: block;
+          font-size: 1.1rem;
+        }
+
+        .feature-description {
+          color: var(--sapTextColor);
+          opacity: 0.8;
+          line-height: 1.5;
+          font-size: 0.95rem;
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .map-demo {
+    .demo-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 1.5rem;
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .demo-content {
+      padding: 1rem;
+      gap: 1rem;
+
+      .map-section .demo-map {
+        height: 400px;
+      }
+    }
+
+    .demo-features {
+      padding: 0 1rem 1rem;
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+
+        .feature-item {
+          padding: 1rem;
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .map-demo {
+    background: var(--sapBackgroundColor);
+
+    .demo-header {
+      background: var(--sapShellColor);
+    }
+
+    .demo-features .features-grid .feature-item {
+      background: var(--sapNeutralBackground);
+      border-color: var(--sapNeutralBorderColor);
+    }
+  }
+}

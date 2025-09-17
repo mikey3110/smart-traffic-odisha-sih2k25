@@ -1,0 +1,162 @@
+name: Frontend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/frontend/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/frontend/**'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'src/frontend/smart-traffic-ui/package-lock.json'
+        
+    - name: Install dependencies
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm ci
+      
+    - name: Run linting
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm run lint
+      
+    - name: Run type checking
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm run build
+      
+    - name: Run unit tests
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm run test:coverage
+      
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: src/frontend/smart-traffic-ui/coverage/lcov.info
+        flags: frontend
+        name: frontend-coverage
+
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'src/frontend/smart-traffic-ui/package-lock.json'
+        
+    - name: Install dependencies
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm ci
+      
+    - name: Build application
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm run build
+      
+    - name: Start application
+      working-directory: src/frontend/smart-traffic-ui
+      run: |
+        npm run preview &
+        sleep 10
+        
+    - name: Run E2E tests
+      working-directory: src/frontend/smart-traffic-ui
+      run: npm run test:e2e
+      
+    - name: Upload E2E screenshots
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: cypress-screenshots
+        path: src/frontend/smart-traffic-ui/cypress/screenshots
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [test, e2e-tests]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: smart-traffic/frontend
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+          
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: src/frontend/smart-traffic-ui
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+        
+    - name: Configure kubectl
+      run: |
+        echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+        
+    - name: Deploy to Kubernetes
+      run: |
+        export KUBECONFIG=kubeconfig
+        kubectl apply -f src/frontend/smart-traffic-ui/k8s/
+        
+    - name: Verify deployment
+      run: |
+        export KUBECONFIG=kubeconfig
+        kubectl get pods -n smart-traffic
+        kubectl get services -n smart-traffic

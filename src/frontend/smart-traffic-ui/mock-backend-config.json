@@ -1,0 +1,158 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/traffic/lights"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"]
+      },
+      "body": {
+        "lights": [
+          {
+            "id": "intersection_1",
+            "name": "Main Street & First Avenue",
+            "location": {
+              "lat": 20.2961,
+              "lng": 85.8245
+            },
+            "status": "normal",
+            "currentPhase": 0,
+            "waitingTime": 45,
+            "lastUpdate": "2024-01-15T10:30:00Z"
+          },
+          {
+            "id": "intersection_2",
+            "name": "Second Street & Park Avenue",
+            "location": {
+              "lat": 20.3000,
+              "lng": 85.8300
+            },
+            "status": "normal",
+            "currentPhase": 2,
+            "waitingTime": 30,
+            "lastUpdate": "2024-01-15T10:30:00Z"
+          },
+          {
+            "id": "intersection_3",
+            "name": "Third Street & Central Avenue",
+            "location": {
+              "lat": 20.2900,
+              "lng": 85.8200
+            },
+            "status": "warning",
+            "currentPhase": 1,
+            "waitingTime": 75,
+            "lastUpdate": "2024-01-15T10:30:00Z"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/cv/counts"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"]
+      },
+      "body": [
+        {
+          "intersectionId": "intersection_1",
+          "vehicleCount": 12
+        },
+        {
+          "intersectionId": "intersection_2",
+          "vehicleCount": 8
+        },
+        {
+          "intersectionId": "intersection_3",
+          "vehicleCount": 25
+        }
+      ]
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/traffic/analytics"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"]
+      },
+      "body": {
+        "totalVehicles": 45,
+        "averageSpeed": 25.5,
+        "totalWaitingTime": 150.0,
+        "totalCo2Emission": 12.3,
+        "throughput": 120,
+        "peakHours": [
+          { "hour": 8, "count": 45 },
+          { "hour": 9, "count": 52 },
+          { "hour": 17, "count": 48 },
+          { "hour": 18, "count": 55 }
+        ],
+        "vehicleTypeDistribution": [
+          { "type": "car", "count": 30 },
+          { "type": "motorcycle", "count": 10 },
+          { "type": "truck", "count": 5 }
+        ],
+        "intersectionPerformance": [
+          { "id": "intersection_1", "name": "Main Street & First Avenue", "efficiency": 85 },
+          { "id": "intersection_2", "name": "Second Street & Park Avenue", "efficiency": 92 },
+          { "id": "intersection_3", "name": "Third Street & Central Avenue", "efficiency": 78 }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/config/status"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"],
+        "Access-Control-Allow-Origin": ["*"]
+      },
+      "body": {
+        "status": "online",
+        "uptime": 86400,
+        "lastUpdate": "2024-01-15T10:30:00Z",
+        "services": [
+          {
+            "name": "Traffic Management API",
+            "status": "healthy",
+            "responseTime": 45
+          },
+          {
+            "name": "Database",
+            "status": "healthy",
+            "responseTime": 12
+          },
+          {
+            "name": "WebSocket Service",
+            "status": "healthy",
+            "responseTime": 8
+          },
+          {
+            "name": "File Storage",
+            "status": "degraded",
+            "responseTime": 150
+          }
+        ]
+      }
+    }
+  }
+]

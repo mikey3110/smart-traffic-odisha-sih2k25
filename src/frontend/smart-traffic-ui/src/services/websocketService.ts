@@ -1,10 +1,10 @@
-import { WebSocketMessage, RealtimeData, UseRealtimeOptions } from '@/types';
+import { WebSocketMessage, RealtimeData, UseRealtimeOptions } from "@/types";
 
-type WebSocketStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
+type WebSocketStatus = "connecting" | "connected" | "disconnected" | "error";
 
 class WebSocketService {
   private ws: WebSocket | null = null;
-  private status: WebSocketStatus = 'disconnected';
+  private status: WebSocketStatus = "disconnected";
   private reconnectInterval: number = 5000;
   private maxReconnectAttempts: number = 10;
   private reconnectAttempts: number = 0;
@@ -14,7 +14,7 @@ class WebSocketService {
   private url: string;
 
   constructor() {
-    this.url = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+    this.url = import.meta.env.VITE_WS_URL || "ws://localhost:8000/ws";
   }
 
   // Connect to WebSocket
@@ -25,14 +25,14 @@ class WebSocketService {
         return;
       }
 
-      this.status = 'connecting';
+      this.status = "connecting";
       this.notifyStatusHandlers();
 
       try {
         this.ws = new WebSocket(this.url);
 
         this.ws.onopen = () => {
-          this.status = 'connected';
+          this.status = "connected";
           this.reconnectAttempts = 0;
           this.notifyStatusHandlers();
           this.startHeartbeat();
@@ -44,29 +44,31 @@ class WebSocketService {
             const message: WebSocketMessage = JSON.parse(event.data);
             this.handleMessage(message);
           } catch (error) {
-            console.error('Failed to parse WebSocket message:', error);
+            console.error("Failed to parse WebSocket message:", error);
           }
         };
 
         this.ws.onclose = (event) => {
-          this.status = 'disconnected';
+          this.status = "disconnected";
           this.notifyStatusHandlers();
           this.stopHeartbeat();
 
-          if (!event.wasClean && this.reconnectAttempts < this.maxReconnectAttempts) {
+          if (
+            !event.wasClean &&
+            this.reconnectAttempts < this.maxReconnectAttempts
+          ) {
             this.scheduleReconnect();
           }
         };
 
         this.ws.onerror = (error) => {
-          this.status = 'error';
+          this.status = "error";
           this.notifyStatusHandlers();
-          console.error('WebSocket error:', error);
+          console.error("WebSocket error:", error);
           reject(error);
         };
-
       } catch (error) {
-        this.status = 'error';
+        this.status = "error";
         this.notifyStatusHandlers();
         reject(error);
       }
@@ -77,10 +79,10 @@ class WebSocketService {
   disconnect(): void {
     this.stopHeartbeat();
     if (this.ws) {
-      this.ws.close(1000, 'Client disconnect');
+      this.ws.close(1000, "Client disconnect");
       this.ws = null;
     }
-    this.status = 'disconnected';
+    this.status = "disconnected";
     this.notifyStatusHandlers();
   }
 
@@ -89,7 +91,7 @@ class WebSocketService {
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(message));
     } else {
-      console.warn('WebSocket is not connected. Message not sent:', message);
+      console.warn("WebSocket is not connected. Message not sent:", message);
     }
   }
 
@@ -130,29 +132,31 @@ class WebSocketService {
 
   // Check if connected
   isConnected(): boolean {
-    return this.status === 'connected' && this.ws?.readyState === WebSocket.OPEN;
+    return (
+      this.status === "connected" && this.ws?.readyState === WebSocket.OPEN
+    );
   }
 
   // Private methods
   private handleMessage(message: WebSocketMessage): void {
     const handlers = this.messageHandlers.get(message.type);
     if (handlers) {
-      handlers.forEach(handler => {
+      handlers.forEach((handler) => {
         try {
           handler(message.payload);
         } catch (error) {
-          console.error('Error in message handler:', error);
+          console.error("Error in message handler:", error);
         }
       });
     }
   }
 
   private notifyStatusHandlers(): void {
-    this.statusHandlers.forEach(handler => {
+    this.statusHandlers.forEach((handler) => {
       try {
         handler(this.status);
       } catch (error) {
-        console.error('Error in status handler:', error);
+        console.error("Error in status handler:", error);
       }
     });
   }
@@ -160,7 +164,9 @@ class WebSocketService {
   private scheduleReconnect(): void {
     setTimeout(() => {
       this.reconnectAttempts++;
-      console.log(`Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
+      console.log(
+        `Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`
+      );
       this.connect().catch(() => {
         // Reconnect failed, will try again
       });
@@ -171,9 +177,9 @@ class WebSocketService {
     this.heartbeatInterval = setInterval(() => {
       if (this.isConnected()) {
         this.send({
-          type: 'ping',
+          type: "ping",
           payload: { timestamp: new Date().toISOString() },
-          timestamp: new Date()
+          timestamp: new Date(),
         });
       }
     }, 30000); // Send ping every 30 seconds
@@ -192,7 +198,12 @@ export const websocketService = new WebSocketService();
 
 // React hook for WebSocket
 export function useWebSocket(options: UseRealtimeOptions = {}) {
-  const { enabled = true, reconnectInterval = 5000, onMessage, onError } = options;
+  const {
+    enabled = true,
+    reconnectInterval = 5000,
+    onMessage,
+    onError,
+  } = options;
 
   React.useEffect(() => {
     if (!enabled) return;
@@ -216,7 +227,10 @@ export function useWebSocket(options: UseRealtimeOptions = {}) {
 
   React.useEffect(() => {
     if (onMessage) {
-      const unsubscribe = websocketService.subscribe('realtime_data', onMessage);
+      const unsubscribe = websocketService.subscribe(
+        "realtime_data",
+        onMessage
+      );
       return unsubscribe;
     }
   }, [onMessage]);
@@ -225,9 +239,9 @@ export function useWebSocket(options: UseRealtimeOptions = {}) {
     status: websocketService.getStatus(),
     isConnected: websocketService.isConnected(),
     send: websocketService.send.bind(websocketService),
-    subscribe: websocketService.subscribe.bind(websocketService)
+    subscribe: websocketService.subscribe.bind(websocketService),
   };
 }
 
 // Import React for the hook
-import React from 'react';
+import React from "react";

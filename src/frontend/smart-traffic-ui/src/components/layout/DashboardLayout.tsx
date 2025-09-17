@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ShellBar,
   ShellBarItem,
@@ -13,22 +13,23 @@ import {
   Switch,
   Toolbar,
   ToolbarSpacer,
-  ToolbarSeparator
-} from '@ui5/webcomponents-react';
-import { useApp } from '@/contexts/AppContext';
-import { Notification, NotificationType } from '@/types';
-import { Sidebar } from './Sidebar';
-import { NotificationPanel } from './NotificationPanel';
-import { SystemStatus } from './SystemStatus';
-import { useWebSocket } from '@/services/websocketService';
-import './DashboardLayout.scss';
+  ToolbarSeparator,
+} from "@ui5/webcomponents-react";
+import { useApp } from "@/contexts/AppContext";
+import { Notification, NotificationType } from "@/types";
+import { Sidebar } from "./Sidebar";
+import { NotificationPanel } from "./NotificationPanel";
+import { SystemStatus } from "./SystemStatus";
+import { useWebSocket } from "@/services/websocketService";
+import "./DashboardLayout.scss";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { user, notifications, addNotification, markNotificationAsRead } = useApp();
+  const { user, notifications, addNotification, markNotificationAsRead } =
+    useApp();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSystemStatus, setShowSystemStatus] = useState(false);
@@ -38,23 +39,23 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   const { isConnected, subscribe } = useWebSocket({
     enabled: true,
     onMessage: (message) => {
-      if (message.type === 'notification') {
+      if (message.type === "notification") {
         addNotification(message.payload);
       }
-    }
+    },
   });
 
   // Update unread count
   useEffect(() => {
-    const count = notifications.filter(n => !n.read).length;
+    const count = notifications.filter((n) => !n.read).length;
     setUnreadCount(count);
   }, [notifications]);
 
   // Subscribe to real-time data updates
   useEffect(() => {
-    const unsubscribe = subscribe('realtime_data', (data) => {
+    const unsubscribe = subscribe("realtime_data", (data) => {
       // Handle real-time data updates
-      console.log('Real-time data received:', data);
+      console.log("Real-time data received:", data);
     });
 
     return unsubscribe;
@@ -69,7 +70,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   const handleMarkAllAsRead = () => {
-    notifications.forEach(notification => {
+    notifications.forEach((notification) => {
       if (!notification.read) {
         markNotificationAsRead(notification.id);
       }
@@ -78,31 +79,31 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
-      case 'success':
-        return 'accept';
-      case 'error':
-        return 'error';
-      case 'warning':
-        return 'alert';
-      case 'alert':
-        return 'bell';
+      case "success":
+        return "accept";
+      case "error":
+        return "error";
+      case "warning":
+        return "alert";
+      case "alert":
+        return "bell";
       default:
-        return 'information';
+        return "information";
     }
   };
 
   const getNotificationColor = (type: NotificationType) => {
     switch (type) {
-      case 'success':
-        return 'var(--sapPositiveColor)';
-      case 'error':
-        return 'var(--sapNegativeColor)';
-      case 'warning':
-        return 'var(--sapCriticalColor)';
-      case 'alert':
-        return 'var(--sapHighlightColor)';
+      case "success":
+        return "var(--sapPositiveColor)";
+      case "error":
+        return "var(--sapNegativeColor)";
+      case "warning":
+        return "var(--sapCriticalColor)";
+      case "alert":
+        return "var(--sapHighlightColor)";
       default:
-        return 'var(--sapNeutralColor)';
+        return "var(--sapNeutralColor)";
     }
   };
 
@@ -110,12 +111,12 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="dashboard-layout">
       {/* Sidebar */}
       <motion.div
-        className={`sidebar-container ${sidebarCollapsed ? 'collapsed' : ''}`}
+        className={`sidebar-container ${sidebarCollapsed ? "collapsed" : ""}`}
         initial={false}
         animate={{ width: sidebarCollapsed ? 60 : 280 }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <Sidebar 
+        <Sidebar
           collapsed={sidebarCollapsed}
           onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
         />
@@ -143,7 +144,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             {unreadCount > 0 && (
               <Badge
                 colorScheme="8"
-                style={{ position: 'absolute', top: '8px', right: '8px' }}
+                style={{ position: "absolute", top: "8px", right: "8px" }}
               >
                 {unreadCount}
               </Badge>
@@ -157,24 +158,22 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             onClick={() => setShowSystemStatus(!showSystemStatus)}
           >
             <Badge
-              colorScheme={isConnected ? '8' : '1'}
-              style={{ position: 'absolute', top: '8px', right: '8px' }}
+              colorScheme={isConnected ? "8" : "1"}
+              style={{ position: "absolute", top: "8px", right: "8px" }}
             >
-              {isConnected ? 'ON' : 'OFF'}
+              {isConnected ? "ON" : "OFF"}
             </Badge>
           </ShellBarItem>
 
           {/* User Menu */}
           <ShellBarItem
             icon="customer"
-            text={user?.name || 'User'}
-            onClick={() => {/* Handle user menu */}}
+            text={user?.name || "User"}
+            onClick={() => {
+              /* Handle user menu */
+            }}
           >
-            <Avatar
-              image={user?.avatar}
-              initials={user?.name?.charAt(0) || 'U'}
-              size="S"
-            />
+            <Avatar initials={user?.name?.charAt(0) || "U"} size="S" />
           </ShellBarItem>
         </ShellBar>
 
@@ -198,9 +197,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
             <ToolbarSpacer />
             <div className="footer-right">
-              <span className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
-                <Icon name={isConnected ? 'connected' : 'disconnected'} />
-                {isConnected ? 'Connected' : 'Disconnected'}
+              <span
+                className={`connection-status ${
+                  isConnected ? "connected" : "disconnected"
+                }`}
+              >
+                <Icon name={isConnected ? "connected" : "disconnected"} />
+                {isConnected ? "Connected" : "Disconnected"}
               </span>
               <ToolbarSeparator />
               <span>Last updated: {new Date().toLocaleTimeString()}</span>

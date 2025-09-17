@@ -1,0 +1,246 @@
+.traffic-map {
+  height: 100%;
+
+  .map-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .map-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .map-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .refresh-button {
+      min-width: 40px;
+    }
+
+    .last-update {
+      font-size: 0.875rem;
+      color: var(--sapTextColor);
+      opacity: 0.7;
+    }
+  }
+
+  .camera-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .map-legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+    .legend-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--sapTextColor);
+    }
+
+    .legend-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+
+        .legend-color {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+          &.green {
+            background-color: #388e3c;
+          }
+
+          &.yellow {
+            background-color: #fbc02d;
+          }
+
+          &.red {
+            background-color: #d32f2f;
+          }
+
+          &.error {
+            background-color: #d32f2f;
+            border: 2px solid #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+    gap: 1rem;
+
+    .ui5-icon {
+      font-size: 3rem;
+      color: var(--sapNegativeColor);
+    }
+  }
+}
+
+// Custom marker styles
+.custom-traffic-marker {
+  background: transparent !important;
+  border: none !important;
+
+  .traffic-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .signal-light {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-bottom: 2px;
+
+      &.green {
+        background-color: #4caf50;
+        box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+      }
+
+      &.yellow {
+        background-color: #ffeb3b;
+        box-shadow: 0 0 8px rgba(255, 235, 59, 0.6);
+      }
+
+      &.red {
+        background-color: #f44336;
+        box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+      }
+    }
+
+    .vehicle-count {
+      font-size: 8px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      line-height: 1;
+    }
+  }
+}
+
+// Popup styles
+.intersection-popup {
+  min-width: 200px;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: var(--sapTextColor);
+    font-size: 1rem;
+  }
+
+  .popup-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+
+      .ui5-icon {
+        color: var(--sapBrandColor);
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .traffic-map {
+    .camera-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      max-width: none;
+      z-index: 2000;
+    }
+
+    .map-legend {
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+
+      .legend-items {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .traffic-map {
+    .map-legend {
+      background: rgba(30, 30, 30, 0.95);
+      color: #fff;
+    }
+
+    .map-loading {
+      background: rgba(30, 30, 30, 0.9);
+      color: #fff;
+    }
+  }
+}

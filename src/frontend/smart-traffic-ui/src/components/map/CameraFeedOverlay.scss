@@ -1,0 +1,371 @@
+.camera-feed-overlay {
+  position: relative;
+  z-index: 1000;
+
+  &.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+
+    .camera-card {
+      height: 100vh;
+      width: 100vw;
+      border-radius: 0;
+    }
+  }
+
+  .camera-card {
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+
+    .camera-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+      height: 500px;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+  }
+
+  .main-video {
+    display: flex;
+    flex-direction: column;
+
+    .video-container {
+      flex: 1;
+      position: relative;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+
+      .video-frame {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        .video-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .video-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.7) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(0, 0, 0, 0.7) 100%
+          );
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          padding: 1rem;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+
+          &:hover {
+            opacity: 1;
+          }
+
+          .video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .feed-name {
+              color: #fff;
+              font-weight: 600;
+              text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+            }
+          }
+
+          .video-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+          }
+        }
+      }
+
+      .video-offline {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #666;
+
+        .ui5-icon {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+        }
+      }
+    }
+
+    .no-feed {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #666;
+
+      .ui5-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .feed-thumbnails {
+    display: flex;
+    flex-direction: column;
+
+    .thumbnails-header {
+      margin-bottom: 1rem;
+
+      .ui5-text {
+        font-weight: 600;
+        color: var(--sapTextColor);
+      }
+    }
+
+    .thumbnails-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      flex: 1;
+
+      @media (max-width: 768px) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .thumbnail {
+      cursor: pointer;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      background: var(--sapNeutralBackground);
+
+      &:hover {
+        border-color: var(--sapBrandColor);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      &.selected {
+        border-color: var(--sapBrandColor);
+        box-shadow: 0 0 0 2px rgba(var(--sapBrandColor), 0.2);
+      }
+
+      &.offline {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .thumbnail-image {
+        position: relative;
+        aspect-ratio: 16/9;
+        background: #f5f5f5;
+
+        .thumbnail-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .thumbnail-placeholder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          color: #999;
+
+          .ui5-icon {
+            font-size: 1.5rem;
+          }
+        }
+
+        .thumbnail-overlay {
+          position: absolute;
+          top: 0.25rem;
+          right: 0.25rem;
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: 4px;
+          padding: 0.25rem;
+
+          .ui5-icon {
+            color: #fff;
+            font-size: 0.75rem;
+          }
+        }
+      }
+
+      .thumbnail-info {
+        padding: 0.5rem;
+
+        .thumbnail-name {
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: var(--sapTextColor);
+          margin-bottom: 0.25rem;
+          display: block;
+        }
+
+        .thumbnail-status {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+
+          .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+          }
+
+          .status-text {
+            font-size: 0.625rem;
+            color: var(--sapTextColor);
+            opacity: 0.7;
+          }
+        }
+      }
+    }
+  }
+
+  .intersection-info {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+
+    .info-section {
+      .section-title {
+        font-weight: 600;
+        color: var(--sapTextColor);
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+
+        .info-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.75rem;
+          background: var(--sapNeutralBackground);
+          border-radius: 8px;
+          border: 1px solid var(--sapNeutralBorderColor);
+
+          .ui5-icon {
+            color: var(--sapBrandColor);
+            font-size: 1.25rem;
+          }
+
+          .info-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .info-label {
+              font-size: 0.75rem;
+              color: var(--sapTextColor);
+              opacity: 0.7;
+            }
+
+            .info-value {
+              font-size: 0.875rem;
+              font-weight: 600;
+              color: var(--sapTextColor);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+
+// Animation for fullscreen toggle
+.camera-feed-overlay {
+  .camera-card {
+    transition: all 0.3s ease;
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .camera-feed-overlay {
+    .camera-card {
+      .camera-content {
+        height: 70vh;
+      }
+    }
+
+    .feed-thumbnails {
+      .thumbnails-grid {
+        grid-template-columns: repeat(4, 1fr);
+
+        .thumbnail {
+          .thumbnail-info {
+            padding: 0.25rem;
+
+            .thumbnail-name {
+              font-size: 0.625rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .camera-feed-overlay {
+    .thumbnail {
+      background: var(--sapNeutralBackground);
+
+      .thumbnail-image {
+        background: #333;
+      }
+    }
+
+    .intersection-info {
+      .info-item {
+        background: var(--sapNeutralBackground);
+        border-color: var(--sapNeutralBorderColor);
+      }
+    }
+  }
+}

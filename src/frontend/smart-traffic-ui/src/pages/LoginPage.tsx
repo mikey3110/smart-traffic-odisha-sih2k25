@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -13,36 +13,39 @@ import {
   MessageStripDesign,
   Icon,
   Toolbar,
-  ToolbarSpacer
-} from '@ui5/webcomponents-react';
-import { useApp } from '@/contexts/AppContext';
-import { LoginForm } from '@/types';
-import { authService } from '@/services/authService';
-import './LoginPage.scss';
+  ToolbarSpacer,
+} from "@ui5/webcomponents-react";
+import { useApp } from "@/contexts/AppContext";
+import { LoginForm } from "@/types";
+import { authService } from "@/services/authService";
+import "./LoginPage.scss";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { login, isAuthenticated, loading } = useApp();
+  const { login, loading, user } = useApp();
   const [formData, setFormData] = useState<LoginForm>({
-    email: '',
-    password: '',
-    rememberMe: false
+    email: "",
+    password: "",
+    rememberMe: false,
   });
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const [showPassword, setShowPassword] = useState(false);
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
+    if (user) {
+      navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [user, navigate]);
 
-  const handleInputChange = (field: keyof LoginForm, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (
+    field: keyof LoginForm,
+    value: string | boolean
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -50,15 +53,15 @@ export function LoginPage() {
     const newErrors: Partial<LoginForm> = {};
 
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = "Email is invalid";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     setErrors(newErrors);
@@ -67,16 +70,16 @@ export function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     try {
       await login(formData);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error: any) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       // Error is handled by the context
     }
   };
@@ -84,13 +87,13 @@ export function LoginPage() {
   const handleDemoLogin = async () => {
     try {
       await login({
-        email: 'admin@example.com',
-        password: 'admin123',
-        rememberMe: false
+        email: "admin@example.com",
+        password: "admin123",
+        rememberMe: false,
       });
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
-      console.error('Demo login failed:', error);
+      console.error("Demo login failed:", error);
     }
   };
 
@@ -106,13 +109,13 @@ export function LoginPage() {
           className="login-card"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Card>
             <CardHeader>
               <div className="login-header">
                 <div className="logo">
-                  <Icon name="traffic-light" size="L" />
+                  <Icon name="traffic-light" />
                   <Title level="H1">Smart Traffic</Title>
                 </div>
                 <Text>Traffic Management System</Text>
@@ -123,11 +126,11 @@ export function LoginPage() {
               <form onSubmit={handleSubmit} className="login-form">
                 <div className="form-group">
                   <Input
-                    type="email"
+                    type="Email"
                     placeholder="Email address"
                     value={formData.email}
-                    onInput={(e) => handleInputChange('email', e.target.value)}
-                    className={errors.email ? 'error' : ''}
+                    onInput={(e) => handleInputChange("email", e.target.value)}
+                    className={errors.email ? "error" : ""}
                     disabled={loading.isLoading}
                   />
                   {errors.email && (
@@ -142,15 +145,17 @@ export function LoginPage() {
 
                 <div className="form-group">
                   <Input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "Text" : "Password"}
                     placeholder="Password"
                     value={formData.password}
-                    onInput={(e) => handleInputChange('password', e.target.value)}
-                    className={errors.password ? 'error' : ''}
+                    onInput={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    className={errors.password ? "error" : ""}
                     disabled={loading.isLoading}
                   />
                   <Button
-                    icon={showPassword ? 'hide' : 'show'}
+                    icon={showPassword ? "hide" : "show"}
                     design="Transparent"
                     onClick={() => setShowPassword(!showPassword)}
                     className="password-toggle"
@@ -169,12 +174,16 @@ export function LoginPage() {
                   <CheckBox
                     text="Remember me"
                     checked={formData.rememberMe}
-                    onChange={(e) => handleInputChange('rememberMe', e.target.checked)}
+                    onChange={(e) =>
+                      handleInputChange("rememberMe", e.target.checked)
+                    }
                     disabled={loading.isLoading}
                   />
                   <Button
                     design="Transparent"
-                    onClick={() => {/* Handle forgot password */}}
+                    onClick={() => {
+                      /* Handle forgot password */
+                    }}
                     className="forgot-password"
                   >
                     Forgot password?
@@ -182,7 +191,7 @@ export function LoginPage() {
                 </div>
 
                 <Button
-                  type="submit"
+                  type="Submit"
                   design="Emphasized"
                   className="login-button"
                   disabled={loading.isLoading}
@@ -193,7 +202,7 @@ export function LoginPage() {
                       Signing in...
                     </>
                   ) : (
-                    'Sign In'
+                    "Sign In"
                   )}
                 </Button>
               </form>
@@ -230,10 +239,11 @@ export function LoginPage() {
           <div className="info-content">
             <Title level="H2">Welcome to Smart Traffic Management</Title>
             <Text>
-              Monitor and control traffic in real-time with our advanced AI-powered system.
-              Optimize traffic flow, reduce congestion, and improve safety across your city.
+              Monitor and control traffic in real-time with our advanced
+              AI-powered system. Optimize traffic flow, reduce congestion, and
+              improve safety across your city.
             </Text>
-            
+
             <div className="features">
               <div className="feature">
                 <Icon name="traffic-light" />
@@ -242,7 +252,7 @@ export function LoginPage() {
                   <Text>Monitor and control traffic lights in real-time</Text>
                 </div>
               </div>
-              
+
               <div className="feature">
                 <Icon name="analytics" />
                 <div>
@@ -250,7 +260,7 @@ export function LoginPage() {
                   <Text>Get insights with comprehensive traffic analytics</Text>
                 </div>
               </div>
-              
+
               <div className="feature">
                 <Icon name="simulation" />
                 <div>
