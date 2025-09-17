@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <edges>
-    <edge id="north_approach" from="north_in" to="center" priority="1" numLanes="2" speed="50" />
-    <edge id="north_exit" from="center" to="north_out" priority="1" numLanes="2" speed="50" />
-    <edge id="south_approach" from="south_in" to="center" priority="1" numLanes="2" speed="50" />
-    <edge id="south_exit" from="center" to="south_out" priority="1" numLanes="2" speed="50" />
-    <edge id="east_approach" from="east_in" to="center" priority="1" numLanes="2" speed="50" />
-    <edge id="east_exit" from="center" to="east_out" priority="1" numLanes="2" speed="50" />
-    <edge id="west_approach" from="west_in" to="center" priority="1" numLanes="2" speed="50" />
-    <edge id="west_exit" from="center" to="west_out" priority="1" numLanes="2" speed="50" />
+    <!-- North to South -->
+    <edge id="north_to_south" from="north" to="south" priority="1" numLanes="2" speed="13.89"/>
+    
+    <!-- South to North -->
+    <edge id="south_to_north" from="south" to="north" priority="1" numLanes="2" speed="13.89"/>
+    
+    <!-- East to West -->
+    <edge id="east_to_west" from="east" to="west" priority="1" numLanes="2" speed="13.89"/>
+    
+    <!-- West to East -->
+    <edge id="west_to_east" from="west" to="east" priority="1" numLanes="2" speed="13.89"/>
 </edges>

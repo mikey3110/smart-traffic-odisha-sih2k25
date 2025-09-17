@@ -1,15 +1,9 @@
 #!/bin/bash
 
-# Production Deployment Script
-# Smart Traffic Management System - Phase 4
+# Smart Traffic Management System - Production Deployment Script
+# This script handles the complete deployment process
 
-set -e
-
-# Configuration
-NAMESPACE="traffic-ml"
-REGISTRY="your-registry.com"
-VERSION="v1.0.0"
-ENVIRONMENT="production"
+set -e  # Exit on any error
 
 # Colors for output
 RED='\033[0;31m'
@@ -18,315 +12,363 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Logging functions
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+# Configuration
+PROJECT_NAME="smart-traffic-odisha-sih2k25"
+ENVIRONMENT=${1:-production}
+DOCKER_REGISTRY="ghcr.io"
+NAMESPACE="smart-traffic-${ENVIRONMENT}"
+
+# Logging
+log() {
+    echo -e "${BLUE}[$(date +'%Y-%m-%d %H:%M:%S')]${NC} $1"
 }
 
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+success() {
+    echo -e "${GREEN}[$(date +'%Y-%m-%d %H:%M:%S')] ✅ $1${NC}"
 }
 
-log_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+warning() {
+    echo -e "${YELLOW}[$(date +'%Y-%m-%d %H:%M:%S')] ⚠️  $1${NC}"
 }
 
-log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+error() {
+    echo -e "${RED}[$(date +'%Y-%m-%d %H:%M:%S')] ❌ $1${NC}"
 }
 
 # Check prerequisites
 check_prerequisites() {
-    log_info "Checking prerequisites..."
+    log "Checking prerequisites..."
     
-    # Check if kubectl is installed
-    if ! command -v kubectl &> /dev/null; then
-        log_error "kubectl is not installed"
-        exit 1
-    fi
-    
-    # Check if helm is installed
-    if ! command -v helm &> /dev/null; then
-        log_warning "helm is not installed, some features may not work"
-    fi
-    
-    # Check if docker is installed
+    # Check Docker
     if ! command -v docker &> /dev/null; then
-        log_error "docker is not installed"
+        error "Docker is not installed"
         exit 1
     fi
+    success "Docker is available"
     
-    # Check kubectl connection
-    if ! kubectl cluster-info &> /dev/null; then
-        log_error "Cannot connect to Kubernetes cluster"
+    # Check kubectl
+    if ! command -v kubectl &> /dev/null; then
+        error "kubectl is not installed"
         exit 1
     fi
+    success "kubectl is available"
     
-    log_success "Prerequisites check passed"
+    # Check helm (optional)
+    if command -v helm &> /dev/null; then
+        success "Helm is available"
+    else
+        warning "Helm is not installed (optional)"
+    fi
+    
+    # Check environment variables
+    if [ -z "$POSTGRES_PASSWORD" ]; then
+        error "POSTGRES_PASSWORD environment variable is not set"
+        exit 1
+    fi
+    success "Required environment variables are set"
+}
+
+# Build Docker images
+build_images() {
+    log "Building Docker images..."
+    
+    services=("backend" "frontend" "ml-engine" "cv-service")
+    
+    for service in "${services[@]}"; do
+        log "Building ${service}..."
+        docker build -t "${DOCKER_REGISTRY}/${PROJECT_NAME}/${service}:latest" \
+                     -f "src/${service}/Dockerfile" .
+        success "Built ${service} image"
+    done
+}
+
+# Push images to registry
+push_images() {
+    log "Pushing images to registry..."
+    
+    services=("backend" "frontend" "ml-engine" "cv-service")
+    
+    for service in "${services[@]}"; do
+        log "Pushing ${service}..."
+        docker push "${DOCKER_REGISTRY}/${PROJECT_NAME}/${service}:latest"
+        success "Pushed ${service} image"
+    done
 }
 
 # Create namespace
 create_namespace() {
-    log_info "Creating namespace: $NAMESPACE"
+    log "Creating namespace ${NAMESPACE}..."
     
-    if kubectl get namespace $NAMESPACE &> /dev/null; then
-        log_warning "Namespace $NAMESPACE already exists"
-    else
-        kubectl apply -f k8s/namespace.yaml
-        log_success "Namespace $NAMESPACE created"
-    fi
+    kubectl create namespace "${NAMESPACE}" --dry-run=client -o yaml | kubectl apply -f -
+    success "Namespace ${NAMESPACE} created/updated"
 }
 
 # Deploy secrets
 deploy_secrets() {
-    log_info "Deploying secrets..."
+    log "Deploying secrets..."
     
-    # Check if secrets already exist
-    if kubectl get secret postgres-secret -n $NAMESPACE &> /dev/null; then
-        log_warning "Secrets already exist, skipping..."
-        return
-    fi
+    # Create secrets from environment variables
+    kubectl create secret generic smart-traffic-secrets \
+        --from-literal=postgres-password="${POSTGRES_PASSWORD}" \
+        --from-literal=redis-password="${REDIS_PASSWORD:-}" \
+        --from-literal=jwt-secret="${JWT_SECRET:-$(openssl rand -base64 32)}" \
+        --namespace="${NAMESPACE}" \
+        --dry-run=client -o yaml | kubectl apply -f -
     
-    kubectl apply -f k8s/secrets.yaml
-    log_success "Secrets deployed"
+    success "Secrets deployed"
 }
 
-# Deploy persistent volumes
-deploy_persistent_volumes() {
-    log_info "Deploying persistent volumes..."
+# Deploy configmaps
+deploy_configmaps() {
+    log "Deploying configmaps..."
     
-    kubectl apply -f k8s/persistent-volumes.yaml
-    log_success "Persistent volumes deployed"
+    # Create configmap for application configuration
+    kubectl create configmap smart-traffic-config \
+        --from-literal=environment="${ENVIRONMENT}" \
+        --from-literal=log-level="INFO" \
+        --from-literal=postgres-host="postgres" \
+        --from-literal=redis-host="redis" \
+        --namespace="${NAMESPACE}" \
+        --dry-run=client -o yaml | kubectl apply -f -
+    
+    success "ConfigMaps deployed"
 }
 
 # Deploy database
 deploy_database() {
-    log_info "Deploying PostgreSQL database..."
+    log "Deploying PostgreSQL database..."
     
-    kubectl apply -f k8s/postgres-deployment.yaml
+    # Deploy PostgreSQL
+    kubectl apply -f k8s/postgres-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/postgres-service.yaml -n "${NAMESPACE}"
     
     # Wait for database to be ready
-    log_info "Waiting for PostgreSQL to be ready..."
-    kubectl wait --for=condition=ready pod -l app=postgres -n $NAMESPACE --timeout=300s
+    log "Waiting for database to be ready..."
+    kubectl wait --for=condition=ready pod -l app=postgres -n "${NAMESPACE}" --timeout=300s
     
-    log_success "PostgreSQL deployed and ready"
+    success "Database deployed and ready"
 }
 
 # Deploy Redis
 deploy_redis() {
-    log_info "Deploying Redis cache..."
+    log "Deploying Redis cache..."
     
-    kubectl apply -f k8s/redis-deployment.yaml
+    kubectl apply -f k8s/redis-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/redis-service.yaml -n "${NAMESPACE}"
     
     # Wait for Redis to be ready
-    log_info "Waiting for Redis to be ready..."
-    kubectl wait --for=condition=ready pod -l app=redis -n $NAMESPACE --timeout=300s
+    log "Waiting for Redis to be ready..."
+    kubectl wait --for=condition=ready pod -l app=redis -n "${NAMESPACE}" --timeout=300s
     
-    log_success "Redis deployed and ready"
+    success "Redis deployed and ready"
 }
 
-# Build and push Docker images
-build_and_push_images() {
-    log_info "Building and pushing Docker images..."
+# Deploy backend services
+deploy_backend_services() {
+    log "Deploying backend services..."
     
-    # Build ML API image
-    log_info "Building ML API image..."
-    docker build -t $REGISTRY/traffic-ml-api:$VERSION -f src/ml_engine/Dockerfile.ml-api .
-    docker push $REGISTRY/traffic-ml-api:$VERSION
-    
-    # Build Streaming API image
-    log_info "Building Streaming API image..."
-    docker build -t $REGISTRY/traffic-streaming-api:$VERSION -f src/ml_engine/Dockerfile.streaming .
-    docker push $REGISTRY/traffic-streaming-api:$VERSION
-    
-    # Build ML Engine image
-    log_info "Building ML Engine image..."
-    docker build -t $REGISTRY/traffic-ml-engine:$VERSION -f src/ml_engine/Dockerfile.ml-engine .
-    docker push $REGISTRY/traffic-ml-engine:$VERSION
-    
-    log_success "Docker images built and pushed"
-}
-
-# Deploy ML services
-deploy_ml_services() {
-    log_info "Deploying ML services..."
-    
-    # Update image tags in deployment files
-    sed -i "s|image: traffic-ml-api:latest|image: $REGISTRY/traffic-ml-api:$VERSION|g" k8s/ml-api-deployment.yaml
-    sed -i "s|image: traffic-streaming-api:latest|image: $REGISTRY/traffic-streaming-api:$VERSION|g" k8s/streaming-api-deployment.yaml
-    sed -i "s|image: traffic-ml-engine:latest|image: $REGISTRY/traffic-ml-engine:$VERSION|g" k8s/ml-api-deployment.yaml
+    # Deploy Backend API
+    kubectl apply -f k8s/backend-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/backend-service.yaml -n "${NAMESPACE}"
     
     # Deploy ML API
-    kubectl apply -f k8s/ml-api-deployment.yaml
+    kubectl apply -f k8s/ml-api-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/ml-api-service.yaml -n "${NAMESPACE}"
     
-    # Deploy Streaming API
-    kubectl apply -f k8s/streaming-api-deployment.yaml
+    # Deploy CV Service
+    kubectl apply -f k8s/cv-service-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/cv-service.yaml -n "${NAMESPACE}"
     
     # Wait for services to be ready
-    log_info "Waiting for ML services to be ready..."
-    kubectl wait --for=condition=ready pod -l app=ml-api -n $NAMESPACE --timeout=300s
-    kubectl wait --for=condition=ready pod -l app=streaming-api -n $NAMESPACE --timeout=300s
+    log "Waiting for backend services to be ready..."
+    kubectl wait --for=condition=ready pod -l app=backend -n "${NAMESPACE}" --timeout=300s
+    kubectl wait --for=condition=ready pod -l app=ml-api -n "${NAMESPACE}" --timeout=300s
+    kubectl wait --for=condition=ready pod -l app=cv-service -n "${NAMESPACE}" --timeout=300s
     
-    log_success "ML services deployed and ready"
+    success "Backend services deployed and ready"
 }
 
-# Deploy monitoring
-deploy_monitoring() {
-    log_info "Deploying monitoring stack..."
+# Deploy frontend
+deploy_frontend() {
+    log "Deploying frontend..."
     
-    kubectl apply -f k8s/monitoring-deployment.yaml
+    kubectl apply -f k8s/frontend-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/frontend-service.yaml -n "${NAMESPACE}"
     
-    # Wait for monitoring to be ready
-    log_info "Waiting for monitoring to be ready..."
-    kubectl wait --for=condition=ready pod -l app=prometheus -n $NAMESPACE --timeout=300s
-    kubectl wait --for=condition=ready pod -l app=grafana -n $NAMESPACE --timeout=300s
+    # Wait for frontend to be ready
+    log "Waiting for frontend to be ready..."
+    kubectl wait --for=condition=ready pod -l app=frontend -n "${NAMESPACE}" --timeout=300s
     
-    log_success "Monitoring stack deployed and ready"
+    success "Frontend deployed and ready"
 }
 
 # Deploy ingress
 deploy_ingress() {
-    log_info "Deploying ingress..."
+    log "Deploying ingress..."
     
-    kubectl apply -f k8s/ingress.yaml
+    kubectl apply -f k8s/ingress.yaml -n "${NAMESPACE}"
     
-    log_success "Ingress deployed"
+    success "Ingress deployed"
+}
+
+# Deploy monitoring
+deploy_monitoring() {
+    log "Deploying monitoring stack..."
+    
+    # Deploy Prometheus
+    kubectl apply -f k8s/prometheus-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/prometheus-service.yaml -n "${NAMESPACE}"
+    
+    # Deploy Grafana
+    kubectl apply -f k8s/grafana-deployment.yaml -n "${NAMESPACE}"
+    kubectl apply -f k8s/grafana-service.yaml -n "${NAMESPACE}"
+    
+    success "Monitoring stack deployed"
 }
 
 # Run health checks
 run_health_checks() {
-    log_info "Running health checks..."
+    log "Running health checks..."
     
-    # Check ML API health
-    ML_API_POD=$(kubectl get pods -l app=ml-api -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}')
-    if kubectl exec $ML_API_POD -n $NAMESPACE -- curl -f http://localhost:8001/health &> /dev/null; then
-        log_success "ML API health check passed"
-    else
-        log_error "ML API health check failed"
-        exit 1
+    # Get service URLs
+    BACKEND_URL=$(kubectl get service backend -n "${NAMESPACE}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    FRONTEND_URL=$(kubectl get service frontend -n "${NAMESPACE}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    
+    if [ -z "$BACKEND_URL" ]; then
+        BACKEND_URL="localhost:8000"
     fi
     
-    # Check Streaming API health
-    STREAMING_POD=$(kubectl get pods -l app=streaming-api -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}')
-    if kubectl exec $STREAMING_POD -n $NAMESPACE -- curl -f http://localhost:8002/stream/stats &> /dev/null; then
-        log_success "Streaming API health check passed"
-    else
-        log_error "Streaming API health check failed"
-        exit 1
+    if [ -z "$FRONTEND_URL" ]; then
+        FRONTEND_URL="localhost:3000"
     fi
     
-    # Check database connectivity
-    POSTGRES_POD=$(kubectl get pods -l app=postgres -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}')
-    if kubectl exec $POSTGRES_POD -n $NAMESPACE -- pg_isready -U traffic_user -d traffic_ml &> /dev/null; then
-        log_success "PostgreSQL health check passed"
+    # Test backend health
+    log "Testing backend health..."
+    if curl -f "http://${BACKEND_URL}/health" > /dev/null 2>&1; then
+        success "Backend health check passed"
     else
-        log_error "PostgreSQL health check failed"
-        exit 1
+        error "Backend health check failed"
+        return 1
     fi
     
-    # Check Redis connectivity
-    REDIS_POD=$(kubectl get pods -l app=redis -n $NAMESPACE -o jsonpath='{.items[0].metadata.name}')
-    if kubectl exec $REDIS_POD -n $NAMESPACE -- redis-cli ping &> /dev/null; then
-        log_success "Redis health check passed"
+    # Test frontend
+    log "Testing frontend..."
+    if curl -f "http://${FRONTEND_URL}" > /dev/null 2>&1; then
+        success "Frontend health check passed"
     else
-        log_error "Redis health check failed"
-        exit 1
+        error "Frontend health check failed"
+        return 1
     fi
+    
+    success "All health checks passed"
 }
 
-# Display deployment information
-display_deployment_info() {
-    log_info "Deployment completed successfully!"
-    echo
-    echo "=== Deployment Information ==="
-    echo "Namespace: $NAMESPACE"
-    echo "Version: $VERSION"
-    echo "Environment: $ENVIRONMENT"
-    echo
-    echo "=== Services ==="
-    kubectl get services -n $NAMESPACE
-    echo
-    echo "=== Pods ==="
-    kubectl get pods -n $NAMESPACE
-    echo
-    echo "=== Ingress ==="
-    kubectl get ingress -n $NAMESPACE
-    echo
-    echo "=== Access URLs ==="
-    echo "ML API: https://api.traffic-ml.com"
-    echo "Streaming API: https://stream.traffic-ml.com"
-    echo "Monitoring: https://monitoring.traffic-ml.com"
-    echo
-    echo "=== Next Steps ==="
-    echo "1. Configure DNS records for the domains"
-    echo "2. Set up SSL certificates"
-    echo "3. Configure monitoring alerts"
-    echo "4. Run integration tests"
-    echo "5. Set up backup procedures"
+# Run smoke tests
+run_smoke_tests() {
+    log "Running smoke tests..."
+    
+    # Run basic smoke tests
+    python tests/smoke_test.py --environment="${ENVIRONMENT}"
+    
+    success "Smoke tests passed"
 }
 
-# Cleanup function
-cleanup() {
-    log_info "Cleaning up temporary files..."
-    # Add cleanup commands here
+# Display deployment status
+show_status() {
+    log "Deployment Status:"
+    echo ""
+    
+    # Show pods
+    echo "📦 Pods:"
+    kubectl get pods -n "${NAMESPACE}"
+    echo ""
+    
+    # Show services
+    echo "🌐 Services:"
+    kubectl get services -n "${NAMESPACE}"
+    echo ""
+    
+    # Show ingress
+    echo "🚪 Ingress:"
+    kubectl get ingress -n "${NAMESPACE}"
+    echo ""
+    
+    # Show access URLs
+    echo "🔗 Access URLs:"
+    echo "  Frontend: http://localhost:3000"
+    echo "  Backend API: http://localhost:8000"
+    echo "  API Documentation: http://localhost:8000/docs"
+    echo "  ML API: http://localhost:8001"
+    echo "  CV Service: http://localhost:5001"
+    echo "  Prometheus: http://localhost:9090"
+    echo "  Grafana: http://localhost:3001"
+    echo ""
 }
 
 # Main deployment function
-main() {
-    log_info "Starting deployment of Smart Traffic Management System"
-    log_info "Version: $VERSION"
-    log_info "Environment: $ENVIRONMENT"
-    echo
+deploy() {
+    log "Starting deployment to ${ENVIRONMENT} environment..."
     
-    # Set trap for cleanup
-    trap cleanup EXIT
-    
-    # Run deployment steps
     check_prerequisites
+    build_images
+    push_images
     create_namespace
     deploy_secrets
-    deploy_persistent_volumes
+    deploy_configmaps
     deploy_database
     deploy_redis
-    
-    # Only build and push images if not using existing ones
-    if [ "$1" != "--skip-build" ]; then
-        build_and_push_images
-    fi
-    
-    deploy_ml_services
-    deploy_monitoring
+    deploy_backend_services
+    deploy_frontend
     deploy_ingress
+    deploy_monitoring
     
-    # Wait a bit for everything to stabilize
-    log_info "Waiting for services to stabilize..."
+    # Wait a bit for everything to settle
+    log "Waiting for services to stabilize..."
     sleep 30
     
     run_health_checks
-    display_deployment_info
+    run_smoke_tests
+    show_status
     
-    log_success "Deployment completed successfully!"
+    success "Deployment completed successfully! 🎉"
 }
 
-# Parse command line arguments
-case "${1:-}" in
-    --help|-h)
-        echo "Usage: $0 [--skip-build] [--help]"
-        echo
-        echo "Options:"
-        echo "  --skip-build    Skip building and pushing Docker images"
-        echo "  --help, -h      Show this help message"
-        exit 0
+# Rollback function
+rollback() {
+    log "Rolling back deployment..."
+    
+    # Delete the namespace (this will remove all resources)
+    kubectl delete namespace "${NAMESPACE}" --ignore-not-found=true
+    
+    success "Rollback completed"
+}
+
+# Main script logic
+case "${1:-deploy}" in
+    "deploy")
+        deploy
         ;;
-    --skip-build)
-        main --skip-build
+    "rollback")
+        rollback
         ;;
-    "")
-        main
+    "status")
+        show_status
+        ;;
+    "health")
+        run_health_checks
+        ;;
+    "smoke")
+        run_smoke_tests
         ;;
     *)
-        log_error "Unknown option: $1"
-        echo "Use --help for usage information"
+        echo "Usage: $0 {deploy|rollback|status|health|smoke}"
+        echo ""
+        echo "Commands:"
+        echo "  deploy   - Deploy the application (default)"
+        echo "  rollback - Rollback the deployment"
+        echo "  status   - Show deployment status"
+        echo "  health   - Run health checks"
+        echo "  smoke    - Run smoke tests"
         exit 1
         ;;
 esac

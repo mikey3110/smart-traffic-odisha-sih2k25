@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <routes>
-    <vType id="car" accel="2.5" decel="4.5" sigma="0.5" length="4.5" maxSpeed="50" color="1,1,0" />
-    <vType id="auto_rickshaw" accel="2.0" decel="4.0" sigma="0.6" length="3.0" maxSpeed="40" color="0,1,0" />
-    <vType id="motorcycle" accel="3.0" decel="5.0" sigma="0.7" length="2.0" maxSpeed="60" color="1,0,0" />
+    <!-- Vehicle types -->
+    <vType id="car" accel="2.6" decel="4.5" sigma="0.5" length="4.3" maxSpeed="13.89"/>
+    <vType id="bus" accel="1.0" decel="3.0" sigma="0.3" length="12.0" maxSpeed="11.11"/>
+    <vType id="motorcycle" accel="3.0" decel="6.0" sigma="0.8" length="2.0" maxSpeed="16.67"/>
     
-    <route id="north_to_south" edges="north_approach north_exit" />
-    <route id="south_to_north" edges="south_approach south_exit" />
-    <route id="east_to_west" edges="east_approach east_exit" />
-    <route id="west_to_east" edges="west_approach west_exit" />
+    <!-- Routes -->
+    <route id="north_south" edges="north_to_south" color="red"/>
+    <route id="south_north" edges="south_to_north" color="blue"/>
+    <route id="east_west" edges="east_to_west" color="green"/>
+    <route id="west_east" edges="west_to_east" color="yellow"/>
     
-    <route id="north_to_east" edges="north_approach east_exit" />
-    <route id="south_to_west" edges="south_approach west_exit" />
-    <route id="east_to_south" edges="east_approach south_exit" />
-    <route id="west_to_north" edges="west_approach north_exit" />
+    <!-- Vehicle flows -->
+    <flow id="north_south_flow" type="car" route="north_south" begin="0" end="300" period="3"/>
+    <flow id="south_north_flow" type="car" route="south_north" begin="5" end="300" period="4"/>
+    <flow id="east_west_flow" type="car" route="east_west" begin="10" end="300" period="5"/>
+    <flow id="west_east_flow" type="car" route="west_east" begin="15" end="300" period="6"/>
     
-    <flow id="north_to_south_cars" route="north_to_south" begin="0" end="7200" number="300" type="car" />
-    <flow id="south_to_north_cars" route="south_to_north" begin="0" end="7200" number="280" type="car" />
-    <flow id="east_to_west_cars" route="east_to_west" begin="0" end="7200" number="250" type="car" />
-    <flow id="west_to_east_cars" route="west_to_east" begin="0" end="7200" number="270" type="car" />
+    <!-- Some buses -->
+    <flow id="bus_flow" type="bus" route="north_south" begin="20" end="300" period="30"/>
     
-    <flow id="north_to_south_autos" route="north_to_south" begin="0" end="7200" number="150" type="auto_rickshaw" />
-    <flow id="south_to_north_autos" route="south_to_north" begin="0" end="7200" number="140" type="auto_rickshaw" />
-    <flow id="east_to_west_autos" route="east_to_west" begin="0" end="7200" number="120" type="auto_rickshaw" />
-    <flow id="west_to_east_autos" route="west_to_east" begin="0" end="7200" number="130" type="auto_rickshaw" />
-    
-    <flow id="north_to_south_bikes" route="north_to_south" begin="0" end="7200" number="200" type="motorcycle" />
-    <flow id="south_to_north_bikes" route="south_to_north" begin="0" end="7200" number="180" type="motorcycle" />
-    <flow id="east_to_west_bikes" route="east_to_west" begin="0" end="7200" number="160" type="motorcycle" />
-    <flow id="west_to_east_bikes" route="west_to_east" begin="0" end="7200" number="170" type="motorcycle" />
-    
-    <flow id="north_to_east_cross" route="north_to_east" begin="0" end="7200" number="40" type="car" />
-    <flow id="south_to_west_cross" route="south_to_west" begin="0" end="7200" number="35" type="car" />
-    <flow id="east_to_south_cross" route="east_to_south" begin="0" end="7200" number="30" type="car" />
-    <flow id="west_to_north_cross" route="west_to_north" begin="0" end="7200" number="45" type="car" />
+    <!-- Some motorcycles -->
+    <flow id="motorcycle_flow" type="motorcycle" route="east_west" begin="25" end="300" period="8"/>
 </routes>
