@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges>
+    <edge id="north_approach" from="north_in" to="center" priority="1" numLanes="2" speed="50" />
+    <edge id="north_exit" from="center" to="north_out" priority="1" numLanes="2" speed="50" />
+    <edge id="south_approach" from="south_in" to="center" priority="1" numLanes="2" speed="50" />
+    <edge id="south_exit" from="center" to="south_out" priority="1" numLanes="2" speed="50" />
+    <edge id="east_approach" from="east_in" to="center" priority="1" numLanes="2" speed="50" />
+    <edge id="east_exit" from="center" to="east_out" priority="1" numLanes="2" speed="50" />
+    <edge id="west_approach" from="west_in" to="center" priority="1" numLanes="2" speed="50" />
+    <edge id="west_exit" from="center" to="west_out" priority="1" numLanes="2" speed="50" />
+</edges>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="../networks/simple_intersection.net.xml"/>
+        <route-files value="../routes/simple_normal_traffic.rou.xml"/>
+    </input>
+    
+    <time>
+        <begin value="0"/>
+        <end value="7200"/>
+        <step-length value="0.1"/>
+    </time>
+    
+    <processing>
+        <ignore-route-errors value="true"/>
+    </processing>
+    
+    <report>
+        <verbose value="true"/>
+        <no-step-log value="true"/>
+    </report>
+    
+    <gui_only>
+        <start value="true"/>
+        <quit-on-end value="true"/>
+    </gui_only>
+    
+    <output>
+        <fcd-output value="../scenarios/normal_traffic_fcd.xml"/>
+        <summary-output value="../scenarios/normal_traffic_summary.xml"/>
+        <tripinfo-output value="../scenarios/normal_traffic_tripinfo.xml"/>
+    </output>
+    
+    <random_number>
+        <seed value="42"/>
+    </random_number>
+</configuration>

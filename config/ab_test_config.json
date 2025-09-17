@@ -1,0 +1,78 @@
+{
+    "sumo_configs": {
+        "normal": "sumo/configs/normal_traffic.sumocfg",
+        "rush_hour": "sumo/configs/rush_hour.sumocfg",
+        "emergency": "sumo/configs/emergency_vehicle.sumocfg"
+    },
+    "test_scenarios": [
+        {
+            "name": "normal_traffic_ml_vs_baseline",
+            "type": "ml_vs_baseline",
+            "scenario": "normal",
+            "duration": 1800,
+            "repetitions": 5,
+            "traffic_volume": "medium",
+            "intersections": ["center"],
+            "description": "Normal traffic conditions: ML optimization vs baseline fixed timing"
+        },
+        {
+            "name": "rush_hour_ml_vs_webster",
+            "type": "ml_vs_webster",
+            "scenario": "rush_hour",
+            "duration": 3600,
+            "repetitions": 3,
+            "traffic_volume": "high",
+            "intersections": ["center"],
+            "description": "Rush hour traffic: ML optimization vs Webster's formula"
+        },
+        {
+            "name": "emergency_scenario_test",
+            "type": "emergency_scenario",
+            "scenario": "emergency",
+            "duration": 600,
+            "repetitions": 3,
+            "traffic_volume": "low",
+            "intersections": ["center"],
+            "description": "Emergency vehicle scenario: ML optimization vs baseline"
+        },
+        {
+            "name": "low_traffic_ml_vs_baseline",
+            "type": "ml_vs_baseline",
+            "scenario": "normal",
+            "duration": 1200,
+            "repetitions": 5,
+            "traffic_volume": "low",
+            "intersections": ["center"],
+            "description": "Low traffic conditions: ML optimization vs baseline"
+        },
+        {
+            "name": "high_traffic_ml_vs_webster",
+            "type": "ml_vs_webster",
+            "scenario": "rush_hour",
+            "duration": 2400,
+            "repetitions": 3,
+            "traffic_volume": "high",
+            "intersections": ["center"],
+            "description": "High traffic conditions: ML optimization vs Webster's formula"
+        }
+    ],
+    "output_dir": "results/ab_tests",
+    "log_level": "INFO",
+    "parallel_tests": false,
+    "max_concurrent_tests": 1,
+    "warmup_time": 60,
+    "cooldown_time": 30,
+    "metrics_collection_interval": 1.0,
+    "statistical_analysis": {
+        "significance_level": 0.05,
+        "confidence_interval": 0.95,
+        "min_sample_size": 3
+    },
+    "performance_thresholds": {
+        "min_wait_time_improvement": 5.0,
+        "min_throughput_improvement": 3.0,
+        "min_queue_reduction": 5.0,
+        "min_fuel_savings": 2.0,
+        "min_emission_reduction": 2.0
+    }
+}

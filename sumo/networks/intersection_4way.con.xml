@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+4-Way Intersection Connections for Indian Urban Traffic
+Realistic connection patterns with proper lane assignments
+-->
+<connections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/connections_file.xsd">
+    
+    <!-- North approach connections -->
+    <connection from="north_approach" to="north_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="north_approach" to="north_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="north_approach" to="north_exit" fromLane="2" toLane="2" dir="s" state="M" />
+    
+    <!-- North to left turn -->
+    <connection from="north_approach" to="center_north" fromLane="0" toLane="0" dir="l" state="M" />
+    <connection from="center_north" to="north_to_west" fromLane="0" toLane="0" dir="l" state="M" />
+    
+    <!-- North to right turn -->
+    <connection from="north_approach" to="center_north_right" fromLane="2" toLane="0" dir="r" state="M" />
+    <connection from="center_north_right" to="north_to_east" fromLane="0" toLane="0" dir="r" state="M" />
+    
+    <!-- South approach connections -->
+    <connection from="south_approach" to="south_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="south_approach" to="south_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="south_approach" to="south_exit" fromLane="2" toLane="2" dir="s" state="M" />
+    
+    <!-- South to left turn -->
+    <connection from="south_approach" to="center_south" fromLane="0" toLane="0" dir="l" state="M" />
+    <connection from="center_south" to="south_to_east" fromLane="0" toLane="0" dir="l" state="M" />
+    
+    <!-- South to right turn -->
+    <connection from="south_approach" to="center_south_right" fromLane="2" toLane="0" dir="r" state="M" />
+    <connection from="center_south_right" to="south_to_west" fromLane="0" toLane="0" dir="r" state="M" />
+    
+    <!-- East approach connections -->
+    <connection from="east_approach" to="east_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="east_approach" to="east_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="east_approach" to="east_exit" fromLane="2" toLane="2" dir="s" state="M" />
+    
+    <!-- East to left turn -->
+    <connection from="east_approach" to="center_east" fromLane="0" toLane="0" dir="l" state="M" />
+    <connection from="center_east" to="east_to_north" fromLane="0" toLane="0" dir="l" state="M" />
+    
+    <!-- East to right turn -->
+    <connection from="east_approach" to="center_east_right" fromLane="2" toLane="0" dir="r" state="M" />
+    <connection from="center_east_right" to="east_to_south" fromLane="0" toLane="0" dir="r" state="M" />
+    
+    <!-- West approach connections -->
+    <connection from="west_approach" to="west_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="west_approach" to="west_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="west_approach" to="west_exit" fromLane="2" toLane="2" dir="s" state="M" />
+    
+    <!-- West to left turn -->
+    <connection from="west_approach" to="center_west" fromLane="0" toLane="0" dir="l" state="M" />
+    <connection from="center_west" to="west_to_south" fromLane="0" toLane="0" dir="l" state="M" />
+    
+    <!-- West to right turn -->
+    <connection from="west_approach" to="center_west_right" fromLane="2" toLane="0" dir="r" state="M" />
+    <connection from="center_west_right" to="west_to_north" fromLane="0" toLane="0" dir="r" state="M" />
+    
+    <!-- Cross traffic connections (through traffic) -->
+    <connection from="north_approach" to="east_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="south_approach" to="west_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="east_approach" to="south_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="west_approach" to="north_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    
+    <!-- U-turn connections (common in Indian traffic) -->
+    <connection from="north_approach" to="south_exit" fromLane="0" toLane="0" dir="t" state="M" />
+    <connection from="south_approach" to="north_exit" fromLane="0" toLane="0" dir="t" state="M" />
+    <connection from="east_approach" to="west_exit" fromLane="0" toLane="0" dir="t" state="M" />
+    <connection from="west_approach" to="east_exit" fromLane="0" toLane="0" dir="t" state="M" />
+</connections>

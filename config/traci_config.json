@@ -1,0 +1,22 @@
+{
+    "max_retries": 5,
+    "retry_delay": 5.0,
+    "port": 8813,
+    "host": "localhost",
+    "monitoring_interval": 1.0,
+    "control_interval": 0.1,
+    "log_level": "INFO",
+    "intersections": [
+        {
+            "id": "center",
+            "phases": ["GGrrGGrr", "yyrryyrr", "rrrrrrrr", "rrGGrrGG", "rryyrryy"],
+            "min_green_time": 10.0,
+            "max_green_time": 60.0,
+            "yellow_time": 3.0,
+            "all_red_time": 2.0,
+            "approach_edges": ["north_approach", "south_approach", "east_approach", "west_approach"],
+            "exit_edges": ["north_exit", "south_exit", "east_exit", "west_exit"],
+            "detectors": []
+        }
+    ]
+}

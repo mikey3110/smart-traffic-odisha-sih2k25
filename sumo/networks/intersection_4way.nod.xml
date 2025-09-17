@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+4-Way Intersection Network for Indian Urban Traffic
+Realistic geometry reflecting typical Indian city intersections
+-->
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+    <!-- North approach -->
+    <node id="north_in" x="0" y="100" type="priority" />
+    <node id="north_out" x="0" y="200" type="priority" />
+    
+    <!-- South approach -->
+    <node id="south_in" x="0" y="-100" type="priority" />
+    <node id="south_out" x="0" y="-200" type="priority" />
+    
+    <!-- East approach -->
+    <node id="east_in" x="100" y="0" type="priority" />
+    <node id="east_out" x="200" y="0" type="priority" />
+    
+    <!-- West approach -->
+    <node id="west_in" x="-100" y="0" type="priority" />
+    <node id="west_out" x="-200" y="0" type="priority" />
+    
+    <!-- Intersection center -->
+    <node id="center" x="0" y="0" type="traffic_light" />
+    
+    <!-- Left turn lanes -->
+    <node id="north_left" x="-20" y="80" type="priority" />
+    <node id="south_left" x="20" y="-80" type="priority" />
+    <node id="east_left" x="80" y="20" type="priority" />
+    <node id="west_left" x="-80" y="-20" type="priority" />
+    
+    <!-- Right turn lanes -->
+    <node id="north_right" x="20" y="80" type="priority" />
+    <node id="south_right" x="-20" y="-80" type="priority" />
+    <node id="east_right" x="80" y="-20" type="priority" />
+    <node id="west_right" x="-80" y="20" type="priority" />
+    
+    <!-- Pedestrian crossings -->
+    <node id="ped_north" x="0" y="50" type="priority" />
+    <node id="ped_south" x="0" y="-50" type="priority" />
+    <node id="ped_east" x="50" y="0" type="priority" />
+    <node id="ped_west" x="-50" y="0" type="priority" />
+</nodes>

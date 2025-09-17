@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Demo Configuration: Emergency Vehicle Priority Scenario
+Demonstrates ML system's emergency response capabilities
+-->
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="../../networks/simple_intersection.net.xml"/>
+        <route-files value="../../routes/emergency_vehicle.rou.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="180"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <ignore-junction-blocker value="5"/>
+        <collision.action value="warn"/>
+    </processing>
+
+    <routing>
+        <device.rerouting.adaptation-interval value="10"/>
+    </routing>
+
+    <report>
+        <verbose value="true"/>
+        <duration-log.statistics value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <gui_only>
+        <start value="true"/>
+        <quit-on-end value="true"/>
+        <delay value="100"/>
+        <breakpoints value="0,30,60,90,120,150,180"/>
+    </gui_only>
+
+    <traffic_light>
+        <tl-logic value="../../networks/simple_intersection.tll.xml"/>
+    </traffic_light>
+
+    <!-- Emergency Vehicle Settings -->
+    <emergency>
+        <priority_override value="true"/>
+        <response_time_target value="30"/>
+        <siren_simulation value="true"/>
+    </emergency>
+
+</configuration>

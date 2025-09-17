@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connections>
+    <connection from="north_approach" to="north_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="north_approach" to="north_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="south_approach" to="south_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="south_approach" to="south_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="east_approach" to="east_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="east_approach" to="east_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    <connection from="west_approach" to="west_exit" fromLane="0" toLane="0" dir="s" state="M" />
+    <connection from="west_approach" to="west_exit" fromLane="1" toLane="1" dir="s" state="M" />
+    
+    <connection from="north_approach" to="east_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="south_approach" to="west_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="east_approach" to="south_exit" fromLane="1" toLane="1" dir="r" state="M" />
+    <connection from="west_approach" to="north_exit" fromLane="1" toLane="1" dir="r" state="M" />
+</connections>
