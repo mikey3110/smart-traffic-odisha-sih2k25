@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Emergency Vehicle Scenario for 4-Way Intersection
+Tests emergency vehicle priority and traffic management
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    
+    <!-- Vehicle types for Indian traffic -->
+    <vType id="car" accel="2.5" decel="4.5" sigma="0.5" length="4.5" maxSpeed="50" color="1,1,0" />
+    <vType id="auto_rickshaw" accel="2.0" decel="4.0" sigma="0.6" length="3.0" maxSpeed="40" color="0,1,0" />
+    <vType id="motorcycle" accel="3.0" decel="5.0" sigma="0.7" length="2.0" maxSpeed="60" color="1,0,0" />
+    <vType id="bus" accel="1.5" decel="3.0" sigma="0.3" length="12.0" maxSpeed="40" color="0,0,1" />
+    <vType id="truck" accel="1.0" decel="2.5" sigma="0.2" length="15.0" maxSpeed="35" color="0.5,0.5,0.5" />
+    <vType id="ambulance" accel="3.0" decel="6.0" sigma="0.1" length="5.0" maxSpeed="80" color="1,1,1" />
+    <vType id="fire_truck" accel="2.5" decel="5.0" sigma="0.1" length="8.0" maxSpeed="70" color="1,0,0" />
+    <vType id="police" accel="3.5" decel="6.5" sigma="0.1" length="4.5" maxSpeed="90" color="0,0,1" />
+    
+    <!-- Route definitions -->
+    <route id="north_to_south" edges="north_approach north_exit" />
+    <route id="south_to_north" edges="south_approach south_exit" />
+    <route id="east_to_west" edges="east_approach east_exit" />
+    <route id="west_to_east" edges="west_approach west_exit" />
+    
+    <!-- Left turn routes -->
+    <route id="north_to_west" edges="north_approach center_north north_to_west" />
+    <route id="south_to_east" edges="south_approach center_south south_to_east" />
+    <route id="east_to_north" edges="east_approach center_east east_to_north" />
+    <route id="west_to_south" edges="west_approach center_west west_to_south" />
+    
+    <!-- Right turn routes -->
+    <route id="north_to_east" edges="north_approach center_north_right north_to_east" />
+    <route id="south_to_west" edges="south_approach center_south_right south_to_west" />
+    <route id="east_to_south" edges="east_approach center_east_right east_to_south" />
+    <route id="west_to_north" edges="west_approach center_west_right west_to_north" />
+    
+    <!-- U-turn routes -->
+    <route id="north_u_turn" edges="north_approach south_exit" />
+    <route id="south_u_turn" edges="south_approach north_exit" />
+    <route id="east_u_turn" edges="east_approach west_exit" />
+    <route id="west_u_turn" edges="west_approach east_exit" />
+    
+    <!-- Cross traffic routes -->
+    <route id="north_to_east_cross" edges="north_approach east_exit" />
+    <route id="south_to_west_cross" edges="south_approach west_exit" />
+    <route id="east_to_south_cross" edges="east_approach south_exit" />
+    <route id="west_to_north_cross" edges="west_approach north_exit" />
+    
+    <!-- Emergency vehicle routes -->
+    <route id="ambulance_north_south" edges="north_approach north_exit" />
+    <route id="ambulance_south_north" edges="south_approach south_exit" />
+    <route id="ambulance_east_west" edges="east_approach east_exit" />
+    <route id="ambulance_west_east" edges="west_approach west_exit" />
+    
+    <route id="fire_truck_north_south" edges="north_approach north_exit" />
+    <route id="fire_truck_south_north" edges="south_approach south_exit" />
+    <route id="fire_truck_east_west" edges="east_approach east_exit" />
+    <route id="fire_truck_west_east" edges="west_approach west_exit" />
+    
+    <route id="police_north_south" edges="north_approach north_exit" />
+    <route id="police_south_north" edges="south_approach south_exit" />
+    <route id="police_east_west" edges="east_approach east_exit" />
+    <route id="police_west_east" edges="west_approach west_exit" />
+    
+    <!-- Normal traffic flows (reduced during emergency) -->
+    <flow id="north_to_south_cars" route="north_to_south" begin="0" end="3600" number="200" type="car" />
+    <flow id="south_to_north_cars" route="south_to_north" begin="0" end="3600" number="180" type="car" />
+    <flow id="east_to_west_cars" route="east_to_west" begin="0" end="3600" number="160" type="car" />
+    <flow id="west_to_east_cars" route="west_to_east" begin="0" end="3600" number="170" type="car" />
+    
+    <!-- Auto-rickshaws -->
+    <flow id="north_to_south_autos" route="north_to_south" begin="0" end="3600" number="100" type="auto_rickshaw" />
+    <flow id="south_to_north_autos" route="south_to_north" begin="0" end="3600" number="90" type="auto_rickshaw" />
+    <flow id="east_to_west_autos" route="east_to_west" begin="0" end="3600" number="80" type="auto_rickshaw" />
+    <flow id="west_to_east_autos" route="west_to_east" begin="0" end="3600" number="85" type="auto_rickshaw" />
+    
+    <!-- Motorcycles -->
+    <flow id="north_to_south_bikes" route="north_to_south" begin="0" end="3600" number="150" type="motorcycle" />
+    <flow id="south_to_north_bikes" route="south_to_north" begin="0" end="3600" number="140" type="motorcycle" />
+    <flow id="east_to_west_bikes" route="east_to_west" begin="0" end="3600" number="130" type="motorcycle" />
+    <flow id="west_to_east_bikes" route="west_to_east" begin="0" end="3600" number="135" type="motorcycle" />
+    
+    <!-- Left turn flows -->
+    <flow id="north_to_west_left" route="north_to_west" begin="0" end="3600" number="60" type="car" />
+    <flow id="south_to_east_left" route="south_to_east" begin="0" end="3600" number="55" type="car" />
+    <flow id="east_to_north_left" route="east_to_north" begin="0" end="3600" number="50" type="car" />
+    <flow id="west_to_south_left" route="west_to_south" begin="0" end="3600" number="65" type="car" />
+    
+    <!-- Right turn flows -->
+    <flow id="north_to_east_right" route="north_to_east" begin="0" end="3600" number="40" type="car" />
+    <flow id="south_to_west_right" route="south_to_west" begin="0" end="3600" number="35" type="car" />
+    <flow id="east_to_south_right" route="east_to_south" begin="0" end="3600" number="30" type="car" />
+    <flow id="west_to_north_right" route="west_to_north" begin="0" end="3600" number="45" type="car" />
+    
+    <!-- Cross traffic flows -->
+    <flow id="north_to_east_cross" route="north_to_east_cross" begin="0" end="3600" number="25" type="car" />
+    <flow id="south_to_west_cross" route="south_to_west_cross" begin="0" end="3600" number="20" type="car" />
+    <flow id="east_to_south_cross" route="east_to_south_cross" begin="0" end="3600" number="18" type="car" />
+    <flow id="west_to_north_cross" route="west_to_north_cross" begin="0" end="3600" number="22" type="car" />
+    
+    <!-- Buses -->
+    <flow id="north_to_south_bus" route="north_to_south" begin="0" end="3600" number="15" type="bus" />
+    <flow id="south_to_north_bus" route="south_to_north" begin="0" end="3600" number="13" type="bus" />
+    <flow id="east_to_west_bus" route="east_to_west" begin="0" end="3600" number="12" type="bus" />
+    <flow id="west_to_east_bus" route="west_to_east" begin="0" end="3600" number="14" type="bus" />
+    
+    <!-- Trucks -->
+    <flow id="north_to_south_truck" route="north_to_south" begin="0" end="3600" number="10" type="truck" />
+    <flow id="south_to_north_truck" route="south_to_north" begin="0" end="3600" number="8" type="truck" />
+    <flow id="east_to_west_truck" route="east_to_west" begin="0" end="3600" number="7" type="truck" />
+    <flow id="west_to_east_truck" route="west_to_east" begin="0" end="3600" number="9" type="truck" />
+    
+    <!-- U-turn flows -->
+    <flow id="north_u_turn" route="north_u_turn" begin="0" end="3600" number="15" type="car" />
+    <flow id="south_u_turn" route="south_u_turn" begin="0" end="3600" number="12" type="car" />
+    <flow id="east_u_turn" route="east_u_turn" begin="0" end="3600" number="10" type="car" />
+    <flow id="west_u_turn" route="west_u_turn" begin="0" end="3600" number="13" type="car" />
+    
+    <!-- Emergency vehicle flows -->
+    <!-- Ambulance from North to South (high priority) -->
+    <flow id="ambulance_north_south" route="ambulance_north_south" begin="1800" end="1900" number="1" type="ambulance" />
+    
+    <!-- Ambulance from South to North (high priority) -->
+    <flow id="ambulance_south_north" route="ambulance_south_north" begin="2400" end="2500" number="1" type="ambulance" />
+    
+    <!-- Fire truck from East to West (high priority) -->
+    <flow id="fire_truck_east_west" route="fire_truck_east_west" begin="3000" end="3100" number="1" type="fire_truck" />
+    
+    <!-- Police from West to East (high priority) -->
+    <flow id="police_west_east" route="police_west_east" begin="3600" end="3700" number="1" type="police" />
+    
+    <!-- Multiple emergency vehicles scenario -->
+    <flow id="ambulance_east_west" route="ambulance_east_west" begin="4200" end="4300" number="1" type="ambulance" />
+    <flow id="fire_truck_north_south" route="fire_truck_north_south" begin="4800" end="4900" number="1" type="fire_truck" />
+    <flow id="police_south_north" route="police_south_north" begin="5400" end="5500" number="1" type="police" />
+    
+    <!-- Pedestrian flows (reduced during emergency) -->
+    <flow id="ped_north_south" route="ped_cross_ns" begin="0" end="3600" number="50" type="pedestrian" />
+    <flow id="ped_east_west" route="ped_cross_ew" begin="0" end="3600" number="45" type="pedestrian" />
+    
+    <!-- Emergency vehicle convoy scenario -->
+    <flow id="ambulance_convoy_1" route="ambulance_north_south" begin="6000" end="6100" number="1" type="ambulance" />
+    <flow id="ambulance_convoy_2" route="ambulance_north_south" begin="6100" end="6200" number="1" type="ambulance" />
+    <flow id="police_convoy_1" route="police_north_south" begin="6200" end="6300" number="1" type="police" />
+    <flow id="police_convoy_2" route="police_north_south" begin="6300" end="6400" number="1" type="police" />
+    
+    <!-- Emergency vehicle from different directions simultaneously -->
+    <flow id="ambulance_simultaneous_1" route="ambulance_north_south" begin="7200" end="7300" number="1" type="ambulance" />
+    <flow id="ambulance_simultaneous_2" route="ambulance_east_west" begin="7200" end="7300" number="1" type="ambulance" />
+    <flow id="fire_truck_simultaneous" route="fire_truck_south_north" begin="7200" end="7300" number="1" type="fire_truck" />
+    <flow id="police_simultaneous" route="police_west_east" begin="7200" end="7300" number="1" type="police" />
+</routes>

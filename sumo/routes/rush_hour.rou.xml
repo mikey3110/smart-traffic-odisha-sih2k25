@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Rush Hour Traffic Routes for 4-Way Intersection
+High-density traffic patterns typical of Indian urban rush hours
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    
+    <!-- Vehicle types for Indian traffic -->
+    <vType id="car" accel="2.5" decel="4.5" sigma="0.5" length="4.5" maxSpeed="50" color="1,1,0" />
+    <vType id="auto_rickshaw" accel="2.0" decel="4.0" sigma="0.6" length="3.0" maxSpeed="40" color="0,1,0" />
+    <vType id="motorcycle" accel="3.0" decel="5.0" sigma="0.7" length="2.0" maxSpeed="60" color="1,0,0" />
+    <vType id="bus" accel="1.5" decel="3.0" sigma="0.3" length="12.0" maxSpeed="40" color="0,0,1" />
+    <vType id="truck" accel="1.0" decel="2.5" sigma="0.2" length="15.0" maxSpeed="35" color="0.5,0.5,0.5" />
+    <vType id="emergency" accel="3.0" decel="6.0" sigma="0.1" length="5.0" maxSpeed="80" color="1,1,1" />
+    
+    <!-- Route definitions -->
+    <route id="north_to_south" edges="north_approach north_exit" />
+    <route id="south_to_north" edges="south_approach south_exit" />
+    <route id="east_to_west" edges="east_approach east_exit" />
+    <route id="west_to_east" edges="west_approach west_exit" />
+    
+    <!-- Left turn routes -->
+    <route id="north_to_west" edges="north_approach center_north north_to_west" />
+    <route id="south_to_east" edges="south_approach center_south south_to_east" />
+    <route id="east_to_north" edges="east_approach center_east east_to_north" />
+    <route id="west_to_south" edges="west_approach center_west west_to_south" />
+    
+    <!-- Right turn routes -->
+    <route id="north_to_east" edges="north_approach center_north_right north_to_east" />
+    <route id="south_to_west" edges="south_approach center_south_right south_to_west" />
+    <route id="east_to_south" edges="east_approach center_east_right east_to_south" />
+    <route id="west_to_north" edges="west_approach center_west_right west_to_north" />
+    
+    <!-- U-turn routes -->
+    <route id="north_u_turn" edges="north_approach south_exit" />
+    <route id="south_u_turn" edges="south_approach north_exit" />
+    <route id="east_u_turn" edges="east_approach west_exit" />
+    <route id="west_u_turn" edges="west_approach east_exit" />
+    
+    <!-- Cross traffic routes -->
+    <route id="north_to_east_cross" edges="north_approach east_exit" />
+    <route id="south_to_west_cross" edges="south_approach west_exit" />
+    <route id="east_to_south_cross" edges="east_approach south_exit" />
+    <route id="west_to_north_cross" edges="west_approach north_exit" />
+    
+    <!-- Morning Rush Hour (7 AM - 9 AM) - High density -->
+    <flow id="north_to_south_cars_morning" route="north_to_south" begin="0" end="7200" number="500" type="car" />
+    <flow id="south_to_north_cars_morning" route="south_to_north" begin="0" end="7200" number="480" type="car" />
+    <flow id="east_to_west_cars_morning" route="east_to_west" begin="0" end="7200" number="450" type="car" />
+    <flow id="west_to_east_cars_morning" route="west_to_east" begin="0" end="7200" number="470" type="car" />
+    
+    <!-- Evening Rush Hour (5 PM - 7 PM) - Very high density -->
+    <flow id="north_to_south_cars_evening" route="north_to_south" begin="18000" end="25200" number="600" type="car" />
+    <flow id="south_to_north_cars_evening" route="south_to_north" begin="18000" end="25200" number="580" type="car" />
+    <flow id="east_to_west_cars_evening" route="east_to_west" begin="18000" end="25200" number="550" type="car" />
+    <flow id="west_to_east_cars_evening" route="west_to_east" begin="18000" end="25200" number="570" type="car" />
+    
+    <!-- Auto-rickshaws (increased during rush hour) -->
+    <flow id="north_to_south_autos_morning" route="north_to_south" begin="0" end="7200" number="250" type="auto_rickshaw" />
+    <flow id="south_to_north_autos_morning" route="south_to_north" begin="0" end="7200" number="240" type="auto_rickshaw" />
+    <flow id="east_to_west_autos_morning" route="east_to_west" begin="0" end="7200" number="220" type="auto_rickshaw" />
+    <flow id="west_to_east_autos_morning" route="west_to_east" begin="0" end="7200" number="230" type="auto_rickshaw" />
+    
+    <flow id="north_to_south_autos_evening" route="north_to_south" begin="18000" end="25200" number="300" type="auto_rickshaw" />
+    <flow id="south_to_north_autos_evening" route="south_to_north" begin="18000" end="25200" number="290" type="auto_rickshaw" />
+    <flow id="east_to_west_autos_evening" route="east_to_west" begin="18000" end="25200" number="270" type="auto_rickshaw" />
+    <flow id="west_to_east_autos_evening" route="west_to_east" begin="18000" end="25200" number="280" type="auto_rickshaw" />
+    
+    <!-- Motorcycles (very high during rush hour) -->
+    <flow id="north_to_south_bikes_morning" route="north_to_south" begin="0" end="7200" number="400" type="motorcycle" />
+    <flow id="south_to_north_bikes_morning" route="south_to_north" begin="0" end="7200" number="380" type="motorcycle" />
+    <flow id="east_to_west_bikes_morning" route="east_to_west" begin="0" end="7200" number="360" type="motorcycle" />
+    <flow id="west_to_east_bikes_morning" route="west_to_east" begin="0" end="7200" number="370" type="motorcycle" />
+    
+    <flow id="north_to_south_bikes_evening" route="north_to_south" begin="18000" end="25200" number="500" type="motorcycle" />
+    <flow id="south_to_north_bikes_evening" route="south_to_north" begin="18000" end="25200" number="480" type="motorcycle" />
+    <flow id="east_to_west_bikes_evening" route="east_to_west" begin="18000" end="25200" number="460" type="motorcycle" />
+    <flow id="west_to_east_bikes_evening" route="west_to_east" begin="18000" end="25200" number="470" type="motorcycle" />
+    
+    <!-- Left turn flows (increased during rush hour) -->
+    <flow id="north_to_west_left_morning" route="north_to_west" begin="0" end="7200" number="120" type="car" />
+    <flow id="south_to_east_left_morning" route="south_to_east" begin="0" end="7200" number="115" type="car" />
+    <flow id="east_to_north_left_morning" route="east_to_north" begin="0" end="7200" number="110" type="car" />
+    <flow id="west_to_south_left_morning" route="west_to_south" begin="0" end="7200" number="125" type="car" />
+    
+    <flow id="north_to_west_left_evening" route="north_to_west" begin="18000" end="25200" number="150" type="car" />
+    <flow id="south_to_east_left_evening" route="south_to_east" begin="18000" end="25200" number="145" type="car" />
+    <flow id="east_to_north_left_evening" route="east_to_north" begin="18000" end="25200" number="140" type="car" />
+    <flow id="west_to_south_left_evening" route="west_to_south" begin="18000" end="25200" number="155" type="car" />
+    
+    <!-- Right turn flows (increased during rush hour) -->
+    <flow id="north_to_east_right_morning" route="north_to_east" begin="0" end="7200" number="90" type="car" />
+    <flow id="south_to_west_right_morning" route="south_to_west" begin="0" end="7200" number="85" type="car" />
+    <flow id="east_to_south_right_morning" route="east_to_south" begin="0" end="7200" number="80" type="car" />
+    <flow id="west_to_north_right_morning" route="west_to_north" begin="0" end="7200" number="95" type="car" />
+    
+    <flow id="north_to_east_right_evening" route="north_to_east" begin="18000" end="25200" number="110" type="car" />
+    <flow id="south_to_west_right_evening" route="south_to_west" begin="18000" end="25200" number="105" type="car" />
+    <flow id="east_to_south_right_evening" route="east_to_south" begin="18000" end="25200" number="100" type="car" />
+    <flow id="west_to_north_right_evening" route="west_to_north" begin="18000" end="25200" number="115" type="car" />
+    
+    <!-- Cross traffic flows (increased during rush hour) -->
+    <flow id="north_to_east_cross_morning" route="north_to_east_cross" begin="0" end="7200" number="60" type="car" />
+    <flow id="south_to_west_cross_morning" route="south_to_west_cross" begin="0" end="7200" number="55" type="car" />
+    <flow id="east_to_south_cross_morning" route="east_to_south_cross" begin="0" end="7200" number="50" type="car" />
+    <flow id="west_to_north_cross_morning" route="west_to_north_cross" begin="0" end="7200" number="65" type="car" />
+    
+    <flow id="north_to_east_cross_evening" route="north_to_east_cross" begin="18000" end="25200" number="80" type="car" />
+    <flow id="south_to_west_cross_evening" route="south_to_west_cross" begin="18000" end="25200" number="75" type="car" />
+    <flow id="east_to_south_cross_evening" route="east_to_south_cross" begin="18000" end="25200" number="70" type="car" />
+    <flow id="west_to_north_cross_evening" route="west_to_north_cross" begin="18000" end="25200" number="85" type="car" />
+    
+    <!-- Buses (increased during rush hour) -->
+    <flow id="north_to_south_bus_morning" route="north_to_south" begin="0" end="7200" number="35" type="bus" />
+    <flow id="south_to_north_bus_morning" route="south_to_north" begin="0" end="7200" number="33" type="bus" />
+    <flow id="east_to_west_bus_morning" route="east_to_west" begin="0" end="7200" number="30" type="bus" />
+    <flow id="west_to_east_bus_morning" route="west_to_east" begin="0" end="7200" number="32" type="bus" />
+    
+    <flow id="north_to_south_bus_evening" route="north_to_south" begin="18000" end="25200" number="40" type="bus" />
+    <flow id="south_to_north_bus_evening" route="south_to_north" begin="18000" end="25200" number="38" type="bus" />
+    <flow id="east_to_west_bus_evening" route="east_to_west" begin="18000" end="25200" number="35" type="bus" />
+    <flow id="west_to_east_bus_evening" route="west_to_east" begin="18000" end="25200" number="37" type="bus" />
+    
+    <!-- Trucks (reduced during rush hour but still present) -->
+    <flow id="north_to_south_truck_morning" route="north_to_south" begin="0" end="7200" number="20" type="truck" />
+    <flow id="south_to_north_truck_morning" route="south_to_north" begin="0" end="7200" number="18" type="truck" />
+    <flow id="east_to_west_truck_morning" route="east_to_west" begin="0" end="7200" number="15" type="truck" />
+    <flow id="west_to_east_truck_morning" route="west_to_east" begin="0" end="7200" number="17" type="truck" />
+    
+    <flow id="north_to_south_truck_evening" route="north_to_south" begin="18000" end="25200" number="25" type="truck" />
+    <flow id="south_to_north_truck_evening" route="south_to_north" begin="18000" end="25200" number="23" type="truck" />
+    <flow id="east_to_west_truck_evening" route="east_to_west" begin="18000" end="25200" number="20" type="truck" />
+    <flow id="west_to_east_truck_evening" route="west_to_east" begin="18000" end="25200" number="22" type="truck" />
+    
+    <!-- U-turn flows (reduced during rush hour) -->
+    <flow id="north_u_turn_morning" route="north_u_turn" begin="0" end="7200" number="15" type="car" />
+    <flow id="south_u_turn_morning" route="south_u_turn" begin="0" end="7200" number="12" type="car" />
+    <flow id="east_u_turn_morning" route="east_u_turn" begin="0" end="7200" number="10" type="car" />
+    <flow id="west_u_turn_morning" route="west_u_turn" begin="0" end="7200" number="13" type="car" />
+    
+    <flow id="north_u_turn_evening" route="north_u_turn" begin="18000" end="25200" number="20" type="car" />
+    <flow id="south_u_turn_evening" route="south_u_turn" begin="18000" end="25200" number="17" type="car" />
+    <flow id="east_u_turn_evening" route="east_u_turn" begin="18000" end="25200" number="15" type="car" />
+    <flow id="west_u_turn_evening" route="west_u_turn" begin="18000" end="25200" number="18" type="car" />
+    
+    <!-- Pedestrian flows (increased during rush hour) -->
+    <flow id="ped_north_south_morning" route="ped_cross_ns" begin="0" end="7200" number="150" type="pedestrian" />
+    <flow id="ped_east_west_morning" route="ped_cross_ew" begin="0" end="7200" number="140" type="pedestrian" />
+    
+    <flow id="ped_north_south_evening" route="ped_cross_ns" begin="18000" end="25200" number="180" type="pedestrian" />
+    <flow id="ped_east_west_evening" route="ped_cross_ew" begin="18000" end="25200" number="170" type="pedestrian" />
+</routes>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Demo Configuration: Rush Hour Traffic Scenario
+High traffic volume to demonstrate ML optimization benefits
+-->
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="../../networks/simple_intersection.net.xml"/>
+        <route-files value="../../routes/rush_hour.rou.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="600"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <ignore-junction-blocker value="5"/>
+        <collision.action value="warn"/>
+    </processing>
+
+    <routing>
+        <device.rerouting.adaptation-interval value="10"/>
+    </routing>
+
+    <report>
+        <verbose value="true"/>
+        <duration-log.statistics value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <gui_only>
+        <start value="true"/>
+        <quit-on-end value="true"/>
+        <delay value="50"/>
+        <breakpoints value="0,120,240,360,480,600"/>
+    </gui_only>
+
+    <traffic_light>
+        <tl-logic value="../../networks/simple_intersection.tll.xml"/>
+    </traffic_light>
+
+    <!-- Rush Hour Specific Settings -->
+    <rush_hour>
+        <vehicle_density value="high"/>
+        <peak_hours value="true"/>
+        <emergency_vehicles value="false"/>
+    </rush_hour>
+
+</configuration>

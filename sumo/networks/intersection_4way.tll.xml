@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+4-Way Intersection Traffic Light Logic for Indian Urban Traffic
+Realistic signal phases with proper timing for Indian traffic patterns
+-->
+<tlLogic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tllogic_file.xsd">
+    <tlLogic id="center" type="static" programID="0" offset="0">
+        <!-- Phase 0: North-South Green (45 seconds) -->
+        <phase duration="45" state="GGGrrrrrGGGrrrrr" />
+        
+        <!-- Phase 1: North-South Yellow (3 seconds) -->
+        <phase duration="3" state="yyyrrrrryyyrrrrr" />
+        
+        <!-- Phase 2: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+        
+        <!-- Phase 3: East-West Green (45 seconds) -->
+        <phase duration="45" state="rrrrGGGrrrrGGGrr" />
+        
+        <!-- Phase 4: East-West Yellow (3 seconds) -->
+        <phase duration="3" state="rrrryyyrrrryyyrr" />
+        
+        <!-- Phase 5: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+        
+        <!-- Phase 6: Left Turn North-South (20 seconds) -->
+        <phase duration="20" state="GGGrrrrrGGGrrrrr" />
+        
+        <!-- Phase 7: Left Turn North-South Yellow (3 seconds) -->
+        <phase duration="3" state="yyyrrrrryyyrrrrr" />
+        
+        <!-- Phase 8: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+        
+        <!-- Phase 9: Left Turn East-West (20 seconds) -->
+        <phase duration="20" state="rrrrGGGrrrrGGGrr" />
+        
+        <!-- Phase 10: Left Turn East-West Yellow (3 seconds) -->
+        <phase duration="3" state="rrrryyyrrrryyyrr" />
+        
+        <!-- Phase 11: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+    </tlLogic>
+    
+    <!-- Alternative program for rush hour (shorter phases) -->
+    <tlLogic id="center" type="static" programID="1" offset="0">
+        <!-- Phase 0: North-South Green (30 seconds) -->
+        <phase duration="30" state="GGGrrrrrGGGrrrrr" />
+        
+        <!-- Phase 1: North-South Yellow (3 seconds) -->
+        <phase duration="3" state="yyyrrrrryyyrrrrr" />
+        
+        <!-- Phase 2: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+        
+        <!-- Phase 3: East-West Green (30 seconds) -->
+        <phase duration="30" state="rrrrGGGrrrrGGGrr" />
+        
+        <!-- Phase 4: East-West Yellow (3 seconds) -->
+        <phase duration="3" state="rrrryyyrrrryyyrr" />
+        
+        <!-- Phase 5: All Red (2 seconds) -->
+        <phase duration="2" state="rrrrrrrrrrrrrrrr" />
+    </tlLogic>
+    
+    <!-- Emergency vehicle priority program -->
+    <tlLogic id="center" type="static" programID="2" offset="0">
+        <!-- Phase 0: All Green for Emergency (10 seconds) -->
+        <phase duration="10" state="GGGGGGGGGGGGGGGG" />
+        
+        <!-- Phase 1: All Yellow (3 seconds) -->
+        <phase duration="3" state="yyyyyyyyyyyyyyyy" />
+        
+        <!-- Phase 2: Normal operation resume -->
+        <phase duration="45" state="GGGrrrrrGGGrrrrr" />
+    </tlLogic>
+</tlLogic>

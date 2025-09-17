@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Demo Configuration: ML-Optimized Traffic Signal Control
+Optimized for SIH presentation - shows ML improvements
+-->
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="../../networks/simple_intersection.net.xml"/>
+        <route-files value="../../routes/simple_normal_traffic.rou.xml"/>
+    </input>
+
+    <time>
+        <begin value="0"/>
+        <end value="300"/>
+        <step-length value="0.1"/>
+    </time>
+
+    <processing>
+        <ignore-junction-blocker value="5"/>
+        <collision.action value="warn"/>
+    </processing>
+
+    <routing>
+        <device.rerouting.adaptation-interval value="10"/>
+    </routing>
+
+    <report>
+        <verbose value="true"/>
+        <duration-log.statistics value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <gui_only>
+        <start value="true"/>
+        <quit-on-end value="true"/>
+        <delay value="100"/>
+        <breakpoints value="0,60,120,180,240,300"/>
+    </gui_only>
+
+    <traffic_light>
+        <tl-logic value="../../networks/simple_intersection.tll.xml"/>
+    </traffic_light>
+
+    <!-- ML Optimization Settings -->
+    <ml_optimization>
+        <enabled value="true"/>
+        <optimization_interval value="30"/>
+        <learning_rate value="0.1"/>
+        <exploration_rate value="0.1"/>
+    </ml_optimization>
+
+</configuration>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+4-Way Intersection Edges for Indian Urban Traffic
+Realistic lane configurations with dedicated turning lanes
+-->
+<edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+    
+    <!-- North approach edges -->
+    <edge id="north_approach" from="north_in" to="center" priority="1" numLanes="3" speed="50">
+        <lane id="north_approach_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="north_approach_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="north_approach_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="north_exit" from="center" to="north_out" priority="1" numLanes="3" speed="50">
+        <lane id="north_exit_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="north_exit_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="north_exit_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- South approach edges -->
+    <edge id="south_approach" from="south_in" to="center" priority="1" numLanes="3" speed="50">
+        <lane id="south_approach_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="south_approach_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="south_approach_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="south_exit" from="center" to="south_out" priority="1" numLanes="3" speed="50">
+        <lane id="south_exit_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="south_exit_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="south_exit_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- East approach edges -->
+    <edge id="east_approach" from="east_in" to="center" priority="1" numLanes="3" speed="50">
+        <lane id="east_approach_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="east_approach_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="east_approach_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="east_exit" from="center" to="east_out" priority="1" numLanes="3" speed="50">
+        <lane id="east_exit_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="east_exit_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="east_exit_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- West approach edges -->
+    <edge id="west_approach" from="west_in" to="center" priority="1" numLanes="3" speed="50">
+        <lane id="west_approach_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="west_approach_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="west_approach_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="west_exit" from="center" to="west_out" priority="1" numLanes="3" speed="50">
+        <lane id="west_exit_0" index="0" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="west_exit_1" index="1" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+        <lane id="west_exit_2" index="2" speed="50" length="100" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- Left turn lanes -->
+    <edge id="north_to_west" from="north_left" to="west_out" priority="1" numLanes="1" speed="30">
+        <lane id="north_to_west_0" index="0" speed="30" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="south_to_east" from="south_left" to="east_out" priority="1" numLanes="1" speed="30">
+        <lane id="south_to_east_0" index="0" speed="30" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="east_to_north" from="east_left" to="north_out" priority="1" numLanes="1" speed="30">
+        <lane id="east_to_north_0" index="0" speed="30" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="west_to_south" from="west_left" to="south_out" priority="1" numLanes="1" speed="30">
+        <lane id="west_to_south_0" index="0" speed="30" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- Right turn lanes -->
+    <edge id="north_to_east" from="north_right" to="east_out" priority="1" numLanes="1" speed="25">
+        <lane id="north_to_east_0" index="0" speed="25" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="south_to_west" from="south_right" to="west_out" priority="1" numLanes="1" speed="25">
+        <lane id="south_to_west_0" index="0" speed="25" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="east_to_south" from="east_right" to="south_out" priority="1" numLanes="1" speed="25">
+        <lane id="east_to_south_0" index="0" speed="25" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="west_to_north" from="west_right" to="north_out" priority="1" numLanes="1" speed="25">
+        <lane id="west_to_north_0" index="0" speed="25" length="120" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <!-- Pedestrian crossings -->
+    <edge id="ped_cross_ns" from="ped_south" to="ped_north" priority="1" numLanes="1" speed="5">
+        <lane id="ped_cross_ns_0" index="0" speed="5" length="100" allow="pedestrian" disallow="passenger" />
+    </edge>
+    
+    <edge id="ped_cross_ew" from="ped_west" to="ped_east" priority="1" numLanes="1" speed="5">
+        <lane id="ped_cross_ew_0" index="0" speed="5" length="100" allow="pedestrian" disallow="pedestrian" />
+    </edge>
+    
+    <!-- Internal intersection edges for complex routing -->
+    <edge id="center_north" from="center" to="north_left" priority="1" numLanes="1" speed="20">
+        <lane id="center_north_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_south" from="center" to="south_left" priority="1" numLanes="1" speed="20">
+        <lane id="center_south_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_east" from="center" to="east_left" priority="1" numLanes="1" speed="20">
+        <lane id="center_east_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_west" from="center" to="west_left" priority="1" numLanes="1" speed="20">
+        <lane id="center_west_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_north_right" from="center" to="north_right" priority="1" numLanes="1" speed="20">
+        <lane id="center_north_right_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_south_right" from="center" to="south_right" priority="1" numLanes="1" speed="20">
+        <lane id="center_south_right_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_east_right" from="center" to="east_right" priority="1" numLanes="1" speed="20">
+        <lane id="center_east_right_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+    
+    <edge id="center_west_right" from="center" to="west_right" priority="1" numLanes="1" speed="20">
+        <lane id="center_west_right_0" index="0" speed="20" length="20" allow="passenger" disallow="pedestrian" />
+    </edge>
+</edges>
